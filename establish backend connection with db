@@ -1,0 +1,44 @@
+-- 2 tables for now, the rest is in the docs 3rd report
+
+Create table User (username VARCHAR(45) PRIMARY KEY, pwd VARCHAR(45), isAdmin BOOLEAN)
+// insert into user values(“johnson111”, “schelect”, false), (hieptran, “123”, true);
+Create table Product (productID INT PRIMARY KEY, pName VARCHAR(255), quantity INT, price DOUBLE, weight DOUBLE)
+// insert into product values (121122, "elevated chair", 80, 59.99, 20), (123321, "height adjustable table", 160, 190, 45);
+
+
+
+-- below is the code for connection.
+-- remember to change your port # and sql password
+
+
+const mysql =require('mysql');
+const express =require('express');
+var app = express();
+const bodyparser =require('body-parser');
+
+app.use(bodyparser.json());
+
+var mysqlConnection = mysql.createConnection({
+    host:'localhost',
+    user: 'root',
+    password: '.......................',
+    database: 'office_depot'
+});
+
+mysqlConnection.connect((err)=> {
+    if(!err)
+        console.log('DB connection succeded.');
+    else
+        console.log('DB connection failed \n Error: ' + JSON.stringify(err,undefined, 2));       
+});
+
+app.listen(3306, ()=>console.log('Express server is running at port no: 3306'));
+
+app.get('/products', (req, res)=>{
+    mysqlConnection.query('Select * from product', (err, rows, fields)=>{
+        if(!err)
+        console.log(rows);
+        else
+        console.log(err);
+    })
+});
