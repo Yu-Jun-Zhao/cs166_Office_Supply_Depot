@@ -6,12 +6,12 @@ class Searchbar extends React.Component {
   render(){
     return (
       <center>
-        <div class="navigation">
-          <a class="active">Home</a>
+        <div className="navigation">
+          <a className="active">Home</a>
             <input type="text" placeholder="Search..."></input>
             <button id="buttons" type="submit">Submit</button>
-          <a class="active">Login/Signup</a>
-          <a id="a1" class="active">Shopping Cart</a>
+          <a className="active">Login/Signup</a>
+          <a id="a1" className="active">Shopping Cart</a>
         </div>
       </center>
     );
