@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { Security, SecureRoute, ImplicitCallback } from '@okta/okta-react';
-import { Container } from 'semantic-ui-react';
-import config from './.samples.config';
-import Home from './Home';
-import CustomLoginComponent from './Login';
-import Messages from './Messages';
-import Navbar from './Navbar';
-import Profile from './Profile';
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Security, SecureRoute, ImplicitCallback } from "@okta/okta-react";
+import { Container } from "semantic-ui-react";
+import config from "./.samples.config";
+import Homepage from "./Homepage";
+import CustomLoginComponent from "./Login";
+import Messages from "./Messages";
+import Navbar from "./Navbar";
+import Profile from "./Profile";
 
 function customAuthHandler({ history }) {
   // Redirect to the /login page that has a CustomLoginComponent
-  history.push('/login');
+  history.push("/login");
 }
 
 class App extends Component {
@@ -26,8 +26,8 @@ class App extends Component {
             onAuthRequired={customAuthHandler}
           >
             <Navbar />
-            <Container text style={{ marginTop: '7em' }}>
-              <Route path="/" exact component={Home} />
+            <Container text style={{ marginTop: "7em" }}>
+              <Route path="/" exact component={Homepage} />
               <Route path="/implicit/callback" component={ImplicitCallback} />
               <Route path="/login" component={CustomLoginComponent} />
               <SecureRoute path="/messages" component={Messages} />
