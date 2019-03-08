@@ -43,3 +43,16 @@ button {
   margin-left: 5px;
   font-size: 20px;
 }
+
+ul {
+  list-style: none;
+}
+
+li:hover {
+  cursor: pointer;
+  background-color: blue;
+}
+
+.active {
+  background-color: blue;
+}
