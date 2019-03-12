@@ -1,27 +1,25 @@
-import React, { Component } from "react";
-import "./Homepage.css";
-import TrieSearch from "trie-search";
-import faker from "faker";
-import { withRouter } from "react-router-dom";
+import React, { Component } from "react"
+import "./Homepage.css"
+import TrieSearch from "trie-search"
+import { withRouter } from "react-router-dom"
+import { Route, Redirect } from 'react-router'
+import products from './products'
 
-// Use fake products for now
-const generateFakeProducts = () => {
-    let count = 100
-    const products = new TrieSearch('text')
-    while (count--) {
-        products.add({ id: count, text: faker.commerce.productName() })
-    }
-    return products
+const createTrie = () => {
+    const p = new TrieSearch('text')
+    p.addAll(products)
+    return p
 }
 
 class Searchbar extends Component {
     state = {
         searchQuery: '',
         tempQuery: '',
-        options: generateFakeProducts(),
+        options: createTrie(),
         suggestions: [],
         activeID: null,
-        activeIdx: null
+        activeIdx: null,
+        toResults: false
     }
 
     // Update search query and first 10 suggestions
@@ -87,17 +85,25 @@ class Searchbar extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault()
-        alert(`submitted: ${this.state.searchQuery}`)
+        this.setState({
+            toResults: true
+        })
     }
 
     handleClick = (text) => {
         this.setState({
-            searchQuery: text
+            searchQuery: text,
+            toResults: true
         })
     }
 
     render() {
-        const { searchQuery, suggestions, activeID } = this.state
+        const { searchQuery, suggestions, activeID, toResults } = this.state
+        if (toResults) return <Redirect to={{
+            pathname: "/result",
+            search: `q=${this.state.searchQuery}`
+        }}/>
+
         return (
             <form onSubmit={this.handleSubmit}>
                 <div className="navigation">
