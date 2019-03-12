@@ -1,13 +1,14 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Security, SecureRoute, ImplicitCallback } from "@okta/okta-react";
-import { Container } from "semantic-ui-react";
-import config from "./.samples.config";
-import Homepage from "./Homepage";
-import CustomLoginComponent from "./Login";
-import Messages from "./Messages";
-import Navbar from "./Navbar";
-import Profile from "./Profile";
+import React, { Component } from "react"
+import { BrowserRouter as Router, Route } from "react-router-dom"
+import { Security, SecureRoute, ImplicitCallback } from "@okta/okta-react"
+import { Container } from "semantic-ui-react"
+import config from "./.samples.config"
+import Homepage from "./Homepage"
+import CustomLoginComponent from "./Login"
+import Messages from "./Messages"
+import Navbar from "./Navbar"
+import Profile from "./Profile"
+import ProductList from './ProductList'
 
 function customAuthHandler({ history }) {
   // Redirect to the /login page that has a CustomLoginComponent
@@ -30,6 +31,7 @@ class App extends Component {
               <Route path="/" exact component={Homepage} />
               <Route path="/implicit/callback" component={ImplicitCallback} />
               <Route path="/login" component={CustomLoginComponent} />
+              <Route path="/result" component={ProductList} />
               <SecureRoute path="/messages" component={Messages} />
               <SecureRoute path="/profile" component={Profile} />
             </Container>
