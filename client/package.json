@@ -10,8 +10,10 @@
     "faker": "^4.1.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-redux": "^6.0.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^2.1.8",
+    "redux": "^4.0.1",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.77.1",
     "trie-search": "^1.2.9"
