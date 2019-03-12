@@ -1,83 +1,41 @@
 import express from 'express'
-import sampleConfig from './.samples.config'
-import OktaJwtVerifier from '@okta/jwt-verifier'
 import cors from 'cors'
 import mysql from 'mysql'
+import { authenticationRequired, adminAuthenticationRequired } from './AuthenticationMiddleware/AuthenticationMiddleware'
+import bodyparser from 'body-parser'
 
-/*
-// Enter your db info here
 const connection = mysql.createConnection({
-  host     : '',
-  user     : '',
+  host     : 'localhost',
+  user     : 'root',
   password : '',
-  database : ''
+  database : 'osd',
+  port: 3306
 });
 
 connection.connect()
 
-*/
-
-/**
-Sharing the same okta account unless we all wanna make our own
- */
-const oktaJwtVerifier = new OktaJwtVerifier({
-  issuer: sampleConfig.resourceServer.oidc.issuer,
-  clientId: sampleConfig.resourceServer.assertClaims.cid,
-  assertClaims: sampleConfig.resourceServer.assertClaims,
-});
-
-/**
- * A simple middleware that asserts  valid access tokens and sends 401 responses
- * if the token is not present or fails validation.  If the token is valid its
- * contents are attached to req.jwt
- */
-function authenticationRequired(req, res, next) {
-  const authHeader = req.headers.authorization || '';
-  const match = authHeader.match(/Bearer (.+)/);
-  if (!match) {
-    res.status(401);
-    return next('Unauthorized');
-  }
-
-  const accessToken = match[1];
-
-  return oktaJwtVerifier.verifyAccessToken(accessToken)
-      .then((jwt) => {
-        req.jwt = jwt;
-        next();
-      })
-      .catch((err) => {
-        res.status(401).send(err.message);
-      });
-}
-
-function adminAuthenticationRequired(req, res, next) {
-  const authHeader = req.headers.authorization || '';
-  const match = authHeader.match(/Bearer (.+)/);
-  if (!match) {
-    res.status(401);
-    return next('Unauthorized');
-  }
-
-  const accessToken = match[1];
-
-  return oktaJwtVerifier.verifyAccessToken(accessToken)
-      .then((jwt) => {
-        if (!jwt.claims.groups.includes('Administrator')) return next('Unauthorized');
-        req.jwt = jwt;
-        next();
-      })
-      .catch((err) => {
-        res.status(401).send(err.message);
-      });
-}
-
 const app = express();
+app.use(bodyparser.json())
 
 /**
  * For local testing only!  Enables CORS for all domains
  */
 app.use(cors());
+
+
+app.get('/api/products/:name', (req, res) => {
+  const name = req.params.name
+  const sql = `SELECT * FROM product WHERE pName LIKE '%${name}%'`
+  connection.query(sql, (error, results) => {
+    if (error) res.send(error)
+    let arr = []
+    for (let i = 0; i < results.length; i++) {
+      arr.push(results[i])
+    }
+    const json = {products: arr}
+    res.json(json)
+  })
+});
 
 app.get('/', (req, res) => {
   res.json({
