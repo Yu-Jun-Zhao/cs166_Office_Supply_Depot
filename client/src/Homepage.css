@@ -44,11 +44,11 @@ button {
   font-size: 20px;
 }
 
-ul {
+ul.suggestions {
   list-style: none;
 }
 
-li:hover {
+li.inactive:hover {
   cursor: pointer;
   background-color: blue;
 }
