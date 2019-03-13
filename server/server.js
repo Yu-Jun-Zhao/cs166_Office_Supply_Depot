@@ -25,7 +25,7 @@ connection.connect(err => {
 });
 
 let sql =
-  "CREATE TABLE product(id INT AUTO_INCREMENT, pName VARCHAR(255), quantity INT, price FLOAT, weight FLOAT, PRIMARY KEY (id))";
+  "CREATE TABLE IF NOT EXISTS product(id INT AUTO_INCREMENT, pName VARCHAR(255), quantity INT, price FLOAT, weight FLOAT, PRIMARY KEY (id))";
 connection.query(sql, (err, result) => {
   if (err) throw err;
 });
@@ -64,6 +64,17 @@ app.get("/api/products/:name/:offset", (req, res) => {
 
     json["total"] = results[0].total;
     res.json(json);
+  });
+});
+
+// MAy not work
+app.get("/api/products/:id", (req, res) => {
+  const { id } = req.params;
+  const select_sql = `SELECT pName FROM product WHERE id = ${id}`;
+
+  connection.query(select_sql, (error, results) => {
+    if (error) res.send(error);
+    res.send({ product: results });
   });
 });
 
