@@ -22,17 +22,31 @@ app.use(bodyparser.json())
  */
 app.use(cors());
 
-
-app.get('/api/products/:name', (req, res) => {
-  const name = req.params.name
-  const sql = `SELECT * FROM product WHERE pName LIKE '%${name}%'`
-  connection.query(sql, (error, results) => {
+/*
+  Returns a json object in this form
+  {
+    products: [{product 1, product 2, ...}],
+    total: total
+  }
+ */
+app.get('/api/products/:name/:offset', (req, res) => {
+  const { name, offset } = req.params
+  const count_sql = `SELECT COUNT(*) as total FROM product WHERE pName LIKE '%${name}%'`
+  const select_sql = `SELECT * FROM product WHERE pName LIKE '%${name}%' LIMIT 10 OFFSET ${offset}`
+  console.log(offset)
+  let json = {}
+  connection.query(select_sql, (error, results) => {
     if (error) res.send(error)
     let arr = []
     for (let i = 0; i < results.length; i++) {
       arr.push(results[i])
     }
-    const json = {products: arr}
+    json = {products: arr}
+  })
+  connection.query(count_sql, (error, results) => {
+    if (error) res.send(error)
+
+    json["total"] = results[0].total
     res.json(json)
   })
 });
