@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import "./Homepage.css"
 import TrieSearch from "trie-search"
 import { withRouter } from "react-router-dom"
-import { Route, Redirect } from 'react-router'
+import { Redirect } from 'react-router'
 import products from './products'
 
 const createTrie = () => {
