@@ -1,16 +1,28 @@
 import React from "react";
 import { connect } from "react-redux";
-import { fetchProducts } from "./productActions";
+import { fetchProducts, changeOffset, changePage } from "./productActions";
 import { withRouter } from "react-router-dom"
+import ReactPaginate from 'react-paginate';
 
 class ProductList extends React.Component {
+
     componentDidMount() {
+        const { offset } = this.props
         const params = new URLSearchParams(this.props.location.search);
-        this.props.dispatch(fetchProducts(params.get('q')));
+        this.props.dispatch(fetchProducts(params.get('q'), offset))
     }
 
+    handlePageClick = data => {
+        const params = new URLSearchParams(this.props.location.search);
+        let selected = data.selected;
+        let offset = Math.ceil(selected * 10);
+        this.props.dispatch(changeOffset(offset))
+        this.props.dispatch(changePage(selected))
+        this.props.dispatch(fetchProducts(params.get('q'), offset))
+    };
+
     render() {
-        const { error, loading, products } = this.props;
+        const { error, loading, products, pageCount, offset, page } = this.props;
 
         if (error) {
             return <div>Error! {error.message}</div>;
@@ -19,12 +31,34 @@ class ProductList extends React.Component {
         if (loading) {
             return <div>Loading...</div>;
         }
+
         return (
+            <React.Fragment>
+                <div> offset: {offset}</div>
                 <ul>
-                    {products.map(product =>
-                        <li key={product.productID}>{product.pName}</li>
-                    )}
+                    {products.map(product => {
+                        return (
+                            <div key={product.productID}>
+                                <div>{product.productID}</div>
+                                <div>{product.pName}</div>
+                            </div>)
+                    })}
                 </ul>
+            <ReactPaginate
+                previousLabel={'previous'}
+                nextLabel={'next'}
+                breakLabel={'...'}
+                breakClassName={'break-me'}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={5}
+                forcePage={page}
+                onPageChange={this.handlePageClick}
+                containerClassName={'pagination'}
+                subContainerClassName={'pages pagination'}
+                activeClassName={'active'}
+            />
+            </React.Fragment>
             );
         }
 }
@@ -32,7 +66,10 @@ class ProductList extends React.Component {
 const mapStateToProps = state => ({
     products: state.products.items,
     loading: state.products.loading,
-    error: state.products.error
+    error: state.products.error,
+    page: state.products.page,
+    pageCount: state.products.pageCount,
+    offset: state.products.offset
 });
 
 export default withRouter(connect(mapStateToProps)(ProductList));

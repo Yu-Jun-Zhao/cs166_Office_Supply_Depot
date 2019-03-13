@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import "./Homepage.css"
 import TrieSearch from "trie-search"
 import { withRouter } from "react-router-dom"
-import { Route, Redirect } from 'react-router'
+import { Redirect } from 'react-router'
 import products from './products'
 
 const createTrie = () => {
@@ -117,13 +117,13 @@ class Searchbar extends Component {
                     <button id="buttons" type="submit">
                         Submit
                     </button>
-                    <ul>
+                    <ul className="suggestions">
                         {suggestions.map(s => {
                             if (s.id === activeID) {
                                 return <li className="active" onClick={() => this.handleClick(s.text)} key={s.id}> {s.text} </li>
                             }
                             else {
-                                return <li onClick={() => this.handleClick(s.text)} key={s.id}> {s.text} </li>
+                                return <li className="inactive" onClick={() => this.handleClick(s.text)} key={s.id}> {s.text} </li>
                             }
                         })
                         }
