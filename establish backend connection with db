@@ -1,3 +1,22 @@
+Create table User (username VARCHAR(45) PRIMARY KEY, pwd VARCHAR(45), isAdmin BOOLEAN)
+
+// insert into user values(“johnson111”, “schelect”, false), (hieptran, “123”, true);
+
+Create table Product (productID INT PRIMARY KEY, pName VARCHAR(255), quantity INT, price DOUBLE, weight DOUBLE)
+
+// insert into product values (121122, "elevated chair", 80, 59.99, 20), (123321, "height adjustable table", 160, 190, 45);
+
+Create table Cart (cartID INT, date TIMESTAMP, productID INT FOREIGN KEY, quantity INT, total DOUBLE FOREIGN KEY)
+PRIMARY KEY (cartID, date) )
+
+// 
+
+Payment(paymentID INT PRIMARY KEY, dateTIMESTAMP, total DOUBLE)
+
+Order (orderID INT PRIMARY KEY, username FOREIGN KEY, cartID FOREIGN KEY, date TIMESTAMP)
+
+
+
 // server
 const mysql =require('mysql');
 const express =require('express');
