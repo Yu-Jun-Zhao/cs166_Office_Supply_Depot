@@ -1,8 +1,7 @@
 import React, { Component } from "react"
 import "./Homepage.css"
 import TrieSearch from "trie-search"
-import { withRouter } from "react-router-dom"
-import { Redirect } from 'react-router'
+import { withRouter, Link } from "react-router-dom"
 import products from './products'
 
 const createTrie = () => {
@@ -79,30 +78,16 @@ class Searchbar extends Component {
                     searchQuery: suggestions[idx].text
                 })
             }
-            return
         }
     }
 
     handleSubmit = (e) => {
         e.preventDefault()
-        this.setState({
-            toResults: true
-        })
-    }
-
-    handleClick = (text) => {
-        this.setState({
-            searchQuery: text,
-            toResults: true
-        })
+        this.props.history.push(`/result?q=${this.state.searchQuery}`)
     }
 
     render() {
-        const { searchQuery, suggestions, activeID, toResults } = this.state
-        if (toResults) return <Redirect to={{
-            pathname: "/result",
-            search: `q=${this.state.searchQuery}`
-        }}/>
+        const { searchQuery, suggestions, activeID } = this.state
 
         return (
             <form onSubmit={this.handleSubmit}>
@@ -118,15 +103,9 @@ class Searchbar extends Component {
                         Submit
                     </button>
                     <ul className="suggestions">
-                        {suggestions.map(s => {
-                            if (s.id === activeID) {
-                                return <li className="active" onClick={() => this.handleClick(s.text)} key={s.id}> {s.text} </li>
-                            }
-                            else {
-                                return <li className="inactive" onClick={() => this.handleClick(s.text)} key={s.id}> {s.text} </li>
-                            }
-                        })
-                        }
+                        {suggestions.map(s =>
+                            <Link to={`/result?q=${s.text}`}> <li className={s.id === activeID ? "active" : "inactive"} key={s.id}> {s.text} </li> </Link>
+                        )}
                     </ul>
                 </div>
             </form>
