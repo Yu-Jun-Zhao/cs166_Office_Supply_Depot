@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="shoppingcartcss.css">
+<meta charset="utf-8">
+<title>Shopping Cart</title>
+</head>
+
+<body style="background: #D7D7D7">
+	<h1>Shopping Cart</h1>
+
+<div style="display: flex">  
+	
+	<div style="text-align: center;">
+		<table >
+			<tr style="background: black; color: whitesmoke">
+				<th>Image</th>
+				<th>Product</th> 
+				<th>Price</th>
+				<th>Quantity</th>
+				<th>Remove</th>
+				<th>Total</th>
+			</tr>
+			
+		  	<tr>
+			 
+				<td>
+					<div>
+						<img style="width: 50%; height: 300px;" src="carrot.jpg" alt="product item">
+					</div>
+				</td>
+
+				<td>
+					<div >
+						  <div >Carrot</div>      
+					</div>
+				</td> 
+
+				<td>
+				  <div >2.99</div>
+				</td>
+
+				<td>
+					<input style="width: 15%" type="number" value="6" min="1">
+				</td>
+
+				<td>
+					 <button 
+						style ="background: red">
+						Remove
+					 </button>
+				</td> 
+
+				<td>
+					<div >17.88</div>
+				</td> 
+			</tr>
+			
+			<tr>
+				<td><!-- {nextItem} --></td>
+				
+			</tr>
+			
+
+		</table>
+		
+	</div>
+	
+	<div style="margin-left: 25px;text-align: left;">
+		<h2 style="background: black; color: whitesmoke">Order Summary</h2>
+		<div>			
+		  <div style="padding-right: 10%">
+			<div >
+			  <label>Subtotal</label>
+			  <div>17.88</div> &emsp;&emsp;&emsp;&emsp;
+			</div>
+			<div >
+			  <label>Tax (5%)</label>
+			  <div  >1.60</div>&emsp;&emsp;&emsp;&emsp;
+			</div>			
+			<div>
+			  <label>Grand Total</label>
+			  <div >19.38</div> <br>
+			</div>
+		  </div>
+			<div>
+			  <button style="height: 10%; margin-right: 10%">Checkout</button>
+			</div>
+		</div>
+	</div>
+	
+
+</div>
+</body>
+</html>
