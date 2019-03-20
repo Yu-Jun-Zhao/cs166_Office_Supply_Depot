@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Searchbar from "./Searchbar";
+import Searchbar from "./components/common/Searchbar";
 
 class Admin extends Component {
   constructor(props) {
