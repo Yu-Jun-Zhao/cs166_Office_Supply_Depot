@@ -16,7 +16,7 @@ const connection = mysql.createConnection({
 });
 
 // Create database on the fly
-// For Now
+// For Development only
 connection.connect(err => {
   if (err) throw err;
   connection.query("CREATE DATABASE IF NOT EXISTS osd", (err, result) => {
@@ -29,6 +29,8 @@ let sql =
 connection.query(sql, (err, result) => {
   if (err) throw err;
 });
+
+////////////////////////////////////
 
 const app = express();
 app.use(bodyparser.json());
@@ -49,7 +51,7 @@ app.get("/api/products/:name/:offset", (req, res) => {
   const { name, offset } = req.params;
   const count_sql = `SELECT COUNT(*) as total FROM product WHERE pName LIKE '%${name}%'`;
   const select_sql = `SELECT * FROM product WHERE pName LIKE '%${name}%' LIMIT 10 OFFSET ${offset}`;
-  console.log(offset);
+
   let json = {};
   connection.query(select_sql, (error, results) => {
     if (error) res.send(error);
