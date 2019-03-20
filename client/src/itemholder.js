@@ -1,13 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Box,
-  Card,
-  Image,
-  Heading,
-  Text
-} from 'rebass';
 
 const Title = props => <div>{props.children}</div>
 
@@ -26,26 +19,20 @@ class Itemholder extends Component {
     //this.setState(())
     const { products } = this.props
     return(
-      <div>
-      <Box width={200}>
-        <Card
-          p={1}
-          borderRadius={2}
-          boxShadow='0 0 16px rgba(0, 0, 0, .25)'>
-          <Box px={2}>
-            <Heading as='h3'>
-              Item
-            </Heading>
-            <Text fontSize={0}>
-              description
-            </Text>
-            <Text fontSize={0}>
-              price
-            </Text>
-          </Box>
-        </Card>
-      </Box>
+      <div class="row">
+  <div class="col s12 m6">
+    <div class="card blue-grey darken-1">
+      <div class="card-content white-text">
+        <span class="card-title">Item</span>
+        <p>Description</p>
+        <p>Price</p>
       </div>
+      <div class="card-action">
+        <a href="#">Expand</a>
+      </div>
+    </div>
+  </div>
+</div>
     );
   }
 }
