@@ -38,12 +38,7 @@ export default withAuth(
                 <Image size="mini" src="/react.svg" />
                 &nbsp; OSD
               </Menu.Item>
-              {this.state.authenticated === true && (
-                <Menu.Item id="messages-button" as="a" href="/messages">
-                  <Icon name="mail outline" />
-                  Messages
-                </Menu.Item>
-              )}
+
               {this.state.authenticated === true && (
                 <Menu.Item id="profile-button" as="a" href="/profile">
                   Profile

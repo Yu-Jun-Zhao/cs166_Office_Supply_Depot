@@ -5,7 +5,6 @@ import { Container } from "semantic-ui-react";
 import config from "./.samples.config";
 import Homepage from "./components/pages/Homepage";
 import CustomLoginComponent from "./Login";
-import Messages from "./Messages";
 import Navbar from "./components/common/Navbar";
 import Profile from "./Profile";
 import ProductList from "./ProductList";
@@ -35,7 +34,6 @@ class App extends Component {
               <Route path="/login" component={CustomLoginComponent} />
               <Route path="/result" component={ProductList} />
               <Route path="/checkout" exact component={Checkout} />
-              <SecureRoute path="/messages" component={Messages} />
               <SecureRoute path="/profile" component={Profile} />
               <Route path="/admin" exact component={Admin} />
             </Container>
