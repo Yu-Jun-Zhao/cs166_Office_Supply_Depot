@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import "../../style/Homepage.css";
+import "../../style/homepage.css";
 import TrieSearch from "trie-search";
 import { withRouter } from "react-router-dom";
 import { Redirect } from "react-router";
-//import products from "../../products";
 
 const createTrie = () => {
   const p = new TrieSearch("text");

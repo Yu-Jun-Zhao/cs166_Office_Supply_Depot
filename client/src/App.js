@@ -3,11 +3,14 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Security, SecureRoute, ImplicitCallback } from "@okta/okta-react";
 import { Container } from "semantic-ui-react";
 import config from "./config/config";
+import store from "./store";
+import { Provider } from "react-redux";
+
 import Homepage from "./components/pages/Homepage";
 import CustomLoginComponent from "./components/auth/Login";
 import Navbar from "./components/common/Navbar";
 import Profile from "./components/pages/Profile";
-import ProductList from "./ProductList";
+import ProductList from "./components/common/ProductList";
 import Admin from "./components/pages/Admin";
 import Checkout from "./components/pages/Checkout";
 
@@ -19,7 +22,7 @@ function customAuthHandler({ history }) {
 class App extends Component {
   render() {
     return (
-      <div>
+      <Provider store={store}>
         <Router>
           <Security
             issuer={config.oidc.issuer}
@@ -39,7 +42,7 @@ class App extends Component {
             </Container>
           </Security>
         </Router>
-      </div>
+      </Provider>
     );
   }
 }

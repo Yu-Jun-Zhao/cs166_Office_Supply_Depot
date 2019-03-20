@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "../../style/Homepage.css";
+import "../../style/homepage.css";
 import Searchbar from "../common/Searchbar";
 
 class Homepage extends Component {
