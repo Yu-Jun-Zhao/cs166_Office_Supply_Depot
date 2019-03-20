@@ -11,6 +11,7 @@ import Profile from "./Profile";
 import ProductList from "./ProductList";
 import Admin from "./Admin";
 import Checkout from "./Checkout";
+import Itemholder from "./itemholder";
 
 function customAuthHandler({ history }) {
   // Redirect to the /login page that has a CustomLoginComponent
@@ -34,6 +35,7 @@ class App extends Component {
               <Route path="/implicit/callback" component={ImplicitCallback} />
               <Route path="/login" component={CustomLoginComponent} />
               <Route path="/result" component={ProductList} />
+              <Route path="/test" component={Itemholder} />
               <Route path="/checkout" exact component={Checkout} />
               <SecureRoute path="/messages" component={Messages} />
               <SecureRoute path="/profile" component={Profile} />
