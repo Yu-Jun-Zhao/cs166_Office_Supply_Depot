@@ -7,6 +7,7 @@ import {
 } from "../../actions/productActions";
 import { withRouter } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import ItemHolder from './Product'
 
 class ProductList extends React.Component {
   componentDidMount() {
@@ -37,13 +38,11 @@ class ProductList extends React.Component {
 
     return (
       <React.Fragment>
-        <div> offset: {offset}</div>
         <ul>
           {products.map(product => {
             return (
               <div key={product.productID}>
-                <div>{product.productID}</div>
-                <div>{product.pName}</div>
+                <ItemHolder product={product}/>
               </div>
             );
           })}
