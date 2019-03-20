@@ -2,14 +2,14 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Security, SecureRoute, ImplicitCallback } from "@okta/okta-react";
 import { Container } from "semantic-ui-react";
-import config from "./.samples.config";
+import config from "./config/config";
 import Homepage from "./components/pages/Homepage";
 import CustomLoginComponent from "./Login";
 import Navbar from "./components/common/Navbar";
-import Profile from "./Profile";
+import Profile from "./components/pages/Profile";
 import ProductList from "./ProductList";
-import Admin from "./Admin";
-import Checkout from "./Checkout";
+import Admin from "./components/pages/Admin";
+import Checkout from "./components/pages/Checkout";
 
 function customAuthHandler({ history }) {
   // Redirect to the /login page that has a CustomLoginComponent
