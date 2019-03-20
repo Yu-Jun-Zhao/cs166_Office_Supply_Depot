@@ -3,11 +3,11 @@ import "../../style/Homepage.css";
 import TrieSearch from "trie-search";
 import { withRouter } from "react-router-dom";
 import { Redirect } from "react-router";
-import products from "../../products";
+//import products from "../../products";
 
 const createTrie = () => {
   const p = new TrieSearch("text");
-  p.addAll(products);
+  p.addAll([]);
   return p;
 };
 

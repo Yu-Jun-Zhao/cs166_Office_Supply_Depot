@@ -4,7 +4,7 @@ import { Security, SecureRoute, ImplicitCallback } from "@okta/okta-react";
 import { Container } from "semantic-ui-react";
 import config from "./config/config";
 import Homepage from "./components/pages/Homepage";
-import CustomLoginComponent from "./Login";
+import CustomLoginComponent from "./components/auth/Login";
 import Navbar from "./components/common/Navbar";
 import Profile from "./components/pages/Profile";
 import ProductList from "./ProductList";
