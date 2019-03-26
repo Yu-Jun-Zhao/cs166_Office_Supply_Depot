@@ -9,9 +9,8 @@ import bodyparser from "body-parser";
 
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "user",
-  password: "1234@bcd",
-  database: "osd",
+  user: "masa",
+  password: "",
   port: 3306
 });
 
