@@ -13,7 +13,6 @@ import Profile from "./components/pages/Profile";
 import ProductList from "./components/common/ProductList";
 import Admin from "./components/pages/Admin";
 import Checkout from "./components/pages/Checkout";
-import Shoppingcart from "./components/pages/Shoppingcart";
 
 function customAuthHandler({ history }) {
   // Redirect to the /login page that has a CustomLoginComponent
@@ -37,7 +36,6 @@ class App extends Component {
               <Route path="/implicit/callback" component={ImplicitCallback} />
               <Route path="/login" component={CustomLoginComponent} />
               <Route path="/result" component={ProductList} />
-              <Route path="/shopping-cart" component={Shoppingcart} />
               <Route path="/checkout" exact component={Checkout} />
               <SecureRoute path="/profile" component={Profile} />
               <Route path="/admin" exact component={Admin} />

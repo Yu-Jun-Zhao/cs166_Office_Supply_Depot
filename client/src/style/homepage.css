@@ -1,9 +1,7 @@
 h1 {
-  color: DodgerBlue;
-  font-family: "Lucida Sans Unicode";
+  color: coral;
+  font-family: "Comic Sans MS";
   text-align: center;
-  font-size: 500%;
-  text-shadow: 2px 2px LightBlue;
 }
 /*flex*/
 .homepage {
@@ -24,7 +22,7 @@ button {
   justify-content: center;
   color: black;
   padding: 10px 12px;
-  font-size: 90%;
+  font-size: 150%x;
   text-align: center;
   text-decoration: none;
 }
