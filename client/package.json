@@ -26,8 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject",
-    "postinstall": "node post-install.js"
+    "eject": "react-scripts eject"
   },
   "browserslist": [
     ">0.2%",

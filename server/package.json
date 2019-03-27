@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node_modules/.bin/nodemon server.js --exec babel-node --preset-es2015"
+    "server": "node_modules/.bin/nodemon server.js --exec babel-node --preset-es2015",
+    "client": "npm start --prefix ../client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +22,7 @@
     "mysql": "^2.16.0"
   },
   "devDependencies": {
+    "concurrently": "^4.1.0",
     "nodemon": "^1.18.10"
   }
 }

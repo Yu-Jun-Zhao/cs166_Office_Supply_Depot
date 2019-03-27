@@ -2,16 +2,17 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Security, SecureRoute, ImplicitCallback } from "@okta/okta-react";
 import { Container } from "semantic-ui-react";
-import config from "./.samples.config";
-import Homepage from "./Homepage";
-import CustomLoginComponent from "./Login";
-import Messages from "./Messages";
-import Navbar from "./Navbar";
-import Profile from "./Profile";
-import ProductList from "./ProductList";
-import Admin from "./Admin";
-import Checkout from "./Checkout";
-import Itemholder from "./itemholder";
+import config from "./config/config";
+import store from "./store";
+import { Provider } from "react-redux";
+
+import Homepage from "./components/pages/Homepage";
+import CustomLoginComponent from "./components/auth/Login";
+import Navbar from "./components/common/Navbar";
+import Profile from "./components/pages/Profile";
+import ProductList from "./components/common/ProductList";
+import Admin from "./components/pages/Admin";
+import Checkout from "./components/pages/Checkout";
 
 function customAuthHandler({ history }) {
   // Redirect to the /login page that has a CustomLoginComponent
@@ -21,7 +22,7 @@ function customAuthHandler({ history }) {
 class App extends Component {
   render() {
     return (
-      <div>
+      <Provider store={store}>
         <Router>
           <Security
             issuer={config.oidc.issuer}
@@ -37,13 +38,12 @@ class App extends Component {
               <Route path="/result" component={ProductList} />
               <Route path="/test" component={Itemholder} />
               <Route path="/checkout" exact component={Checkout} />
-              <SecureRoute path="/messages" component={Messages} />
               <SecureRoute path="/profile" component={Profile} />
               <Route path="/admin" exact component={Admin} />
             </Container>
           </Security>
         </Router>
-      </div>
+      </Provider>
     );
   }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./App.css";
+import "../../style/checkout.css";
 
 class Checkout extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class Checkout extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="checkout">
         <div>
           <h3>Order Summary</h3>
         </div>

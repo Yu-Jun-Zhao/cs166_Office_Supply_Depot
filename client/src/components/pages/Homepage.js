@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import "./Homepage.css";
-import Searchbar from './Searchbar'
+import "../../style/homepage.css";
+import Searchbar from "../common/Searchbar";
 
 class Homepage extends Component {
   render() {
@@ -17,4 +17,4 @@ class Homepage extends Component {
   }
 }
 
-export default Homepage
+export default Homepage;
