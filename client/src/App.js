@@ -40,7 +40,7 @@ class App extends Component {
               <Route path="/checkout" exact component={Checkout} />
               <SecureRoute path="/profile" component={Profile} />
               <SecureRoute path="/user" component={User} />
-              <Route path="/admin" exact component={Admin} />
+              <SecureRoute path="/admin" exact component={Admin} />
             </Container>
           </Security>
         </Router>

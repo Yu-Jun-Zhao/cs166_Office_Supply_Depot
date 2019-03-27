@@ -1,3 +1,5 @@
+import axios from "axios";
+
 import {
   FETCH_PRODUCTS_BEGIN,
   FETCH_PRODUCTS_SUCCESS,
@@ -39,6 +41,16 @@ export function fetchProducts(name, offset) {
         dispatch(fetchProductsSuccess(json.products, json.total));
         return json;
       })
+      .catch(error => dispatch(fetchProductsFailure(error)));
+  };
+}
+
+export function fetchProductsByOffset(offset) {
+  return dispatch => {
+    dispatch(fetchProductsBegin());
+    axios
+      .get(`/api/products/${offset}`)
+      .then(res => dispatch(fetchProductsSuccess(res.data, offset)))
       .catch(error => dispatch(fetchProductsFailure(error)));
   };
 }

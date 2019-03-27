@@ -12,13 +12,13 @@ class Profile extends Component {
     //this.state = { userInfo: null, ready: false };
   }
 
+  // Need to changes these code later
   componentDidMount() {
     this.props.checkAuthentication(
       this.props.auth,
       this.props.authentication.isAuthenticated,
       this.props.authentication.userInfo
     );
-    //this.applyClaims();
   }
 
   componentDidUpdate() {
@@ -27,17 +27,7 @@ class Profile extends Component {
       this.props.authentication.isAuthenticated,
       this.props.authentication.userInfo
     );
-
-    //this.applyClaims();
   }
-  /*
-  applyClaims() {
-    if (this.state.userInfo && !this.state.claims) {
-      const claims = Object.entries(this.props.authentication.userInfo);
-      this.setState({ claims, ready: true });
-    }
-  }
-  */
 
   render() {
     const { isAuthenticated, userInfo } = this.props.authentication;
