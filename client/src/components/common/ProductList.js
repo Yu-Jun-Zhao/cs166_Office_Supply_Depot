@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   fetchProducts,
@@ -7,9 +7,9 @@ import {
 } from "../../actions/productActions";
 import { withRouter } from "react-router-dom";
 import ReactPaginate from "react-paginate";
-import ItemHolder from './Product'
+import ItemHolder from "./Product";
 
-class ProductList extends React.Component {
+class ProductList extends Component {
   componentDidMount() {
     const { offset } = this.props;
     const params = new URLSearchParams(this.props.location.search);
@@ -42,7 +42,7 @@ class ProductList extends React.Component {
           {products.map(product => {
             return (
               <div key={product.productID}>
-                <ItemHolder product={product}/>
+                <ItemHolder product={product} />
               </div>
             );
           })}

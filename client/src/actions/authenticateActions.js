@@ -1,4 +1,4 @@
-import { FETCH_AUTHENTICATION } from "./types";
+import { FETCH_AUTHENTICATION, REMOVE_AUTHENTICATION } from "./types";
 
 export const checkAuthentication = (
   auth,
@@ -7,7 +7,7 @@ export const checkAuthentication = (
 ) => async dispatch => {
   const authenticated = await auth.isAuthenticated();
   if (authenticated !== isAuthenticated) {
-    if (authenticated && !userInfo) {
+    if (authenticated && Object.keys(userInfo).length === 0) {
       const userInfo = await auth.getUser();
       dispatch(logInCurrentUser(userInfo));
     }

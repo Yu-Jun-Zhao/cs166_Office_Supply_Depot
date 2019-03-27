@@ -32,7 +32,7 @@ export default class LoginPage extends Component {
   componentDidMount() {
     this.signIn.renderEl(
       { el: "#sign-in-widget" },
-      () => {
+      res => {
         /**
          * In this flow, the success handler will not be called beacuse we redirect
          * to the Okta org for the authentication workflow.
@@ -43,6 +43,7 @@ export default class LoginPage extends Component {
       }
     );
   }
+
   render() {
     return (
       <div>

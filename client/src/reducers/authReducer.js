@@ -10,8 +10,8 @@ export default function(state = initialState, action) {
     case FETCH_AUTHENTICATION:
       // return the object to store
       return {
-        isAuthenticated: action.isAuthenticated,
-        userInfo: action.userInfo
+        isAuthenticated: action.payload.isAuthenticated,
+        userInfo: action.payload.userInfo
       };
     case REMOVE_AUTHENTICATION:
       return {
