@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import ItemHolder from "../common/Product";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 class Shoppingcart extends Component{
   constructor(props) {
@@ -19,14 +22,23 @@ class Shoppingcart extends Component{
   }
 
   render() {
-    const { productID, pName, price, weight, quantity } = this.props;
+    const { products, total } = this.props;
     return (
+      <React.Fragment>
+        <ul>
+          {products.map(product => {
+            return (
+              <div key={product.productID}>
+                <ItemHolder product={product} />
+              </div>
+            );
+          })}
+        </ul>
       <div className='Shoppingcart'>
-        <div>
           <h1>Shopping Cart</h1>
-        </div>
         <div>
           <table >
+          <thead>
             <tr>
               <th>Image</th>
               <th>Product</th>
@@ -35,65 +47,48 @@ class Shoppingcart extends Component{
               <th>Remove</th>
               <th>Total</th>
               </tr>
+            </thead>
+            <tbody>
               <tr>
-                <td>
-					           <div>
-                        <h3> image</h3>
-					           </div>
-				         </td>
-
-				         <td>
-					            <div >
-						                <div >Carrot</div>
-					            </div>
-				         </td>
-
-				         <td>
-				             <div >2.99</div>
-				         </td>
-
-				         <td>
-					            <input type="number" value="6" min="1">
-                      </input>
-				         </td>
-
-				         <td>
-					            <button>Remove
-                      </button>
-				         </td>
-
-				         <td>
-					            <div >17.88</div>
-				         </td>
+                <td><h3> image</h3></td>
+				        <td>Carrot</td>
+				        <td>8</td>
+				        <td><input type="number" value="4" min="1">
+                    </input></td>
+				        <td><button>Remove</button></td>
+				        <td>32.00</td>
 			        </tr>
-            </table >
-          </div>
-          <div>
-		        <h2>Order Summary</h2>
-		        <div>
-		           <div>
-			            <div >
-			               <label>Subtotal</label>
-			                  <div>17.88</div> &emsp;&emsp;&emsp;&emsp;
+            </tbody>
+          </table >
+        </div>
+      </div>
+      <div>
+		    <h2>Order Summary</h2>
+		    <div>
+		      <div>
+			       <div >
+              <label>Subtotal</label>
+			            <div>32.00</div> &emsp;&emsp;&emsp;&emsp;
 			             </div>
-			             <div >
+			             <div>
 			                <label>Tax (5%)</label>
 			                   <div  >1.60</div>
                          &emsp;&emsp;&emsp;&emsp;
 			              </div>
 			              <div>
 			                 <label>Grand Total</label>
-			                    <div >19.38</div> <br />
+			                    <div >33.60</div> <br />
                     </div>
-		            </div>
-			          <div>
-			             <button>Checkout</button>
-			          </div>
-		        </div>
-	      </div>
-
-      </div>
+		              </div>
+			            <div><button>Checkout</button></div>
+		           </div>
+	          </div>
+    </React.Fragment>
   );
 }
 }
-export default Shoppingcart;
+const mapStateToProps = state => ({
+  products: state.products.items,
+  total: state.products.total
+});
+export default withRouter(connect(mapStateToProps)(Shoppingcart));
