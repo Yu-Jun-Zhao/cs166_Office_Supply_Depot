@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "../../style/homepage.css";
 import Searchbar from "../common/Searchbar";
 
+// For Guests
 class Homepage extends Component {
   render() {
     return (
