@@ -148,7 +148,9 @@ class Navbar extends Component {
                           style={menuGrowStyle(placement)}
                         >
                           <Paper>
+                            {/*this is just a listener to listen to clicks */}
                             <ClickAwayListener onClickAway={this.handleClose}>
+                              {/* This is the Menu*/}
                               <MenuList>
                                 <MenuItem onClick={this.handleClose}>
                                   <Link
