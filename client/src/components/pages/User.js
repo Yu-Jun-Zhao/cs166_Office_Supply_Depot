@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { checkAuthentication } from "../../actions/authenticateActions";
-import Homepage from "./Homepage";
+import Searchbar from "../common/Searchbar";
 import { withAuth } from "@okta/okta-react";
 
 class User extends Component {
@@ -38,7 +38,7 @@ class User extends Component {
     return (
       <div>
         <h1>Welcome {this.state.name}</h1>
-        <Homepage />
+        <Searchbar />
       </div>
     );
   }

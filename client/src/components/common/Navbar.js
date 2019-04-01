@@ -14,6 +14,11 @@ import MenuList from "@material-ui/core/MenuList";
 import Button from "@material-ui/core/Button";
 import Link from "@material-ui/core/Link";
 
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 import {
@@ -50,12 +55,15 @@ const styles = {
   menuButton: {}
 };
 
+const menuGrowStyle = placement => ({
+  transformOrigin: placement === "bottom" ? "center top" : "center bottom"
+});
+
 class Navbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isAuthenticated: false,
-      stayEntered: false,
       anchorEl: null
     };
     //this.checkAuthentication = checkAuthentication.bind(this);
@@ -81,21 +89,16 @@ class Navbar extends Component {
   }
 
   handleMenu = event => {
-    if (!this.state.stayEntered) {
-      console.log("opening");
-      this.setState({
-        anchorEl: event.currentTarget,
-        stayEntered: true
-      });
-    }
+    //console.log("opening");
+    this.setState({
+      anchorEl: event.currentTarget
+    });
   };
 
   handleClose = () => {
-    console.log("closing");
-
+    //console.log("close");
     this.setState({
-      anchorEl: null,
-      stayEntered: false
+      anchorEl: null
     });
   };
 
@@ -131,31 +134,45 @@ class Navbar extends Component {
                     >
                       <AccountCircle />
                     </IconButton>
-
-                    <MenuList
-                      id="menu-appbar"
-                      anchorEl={this.state.anchorEl}
-                      anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right"
-                      }}
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "right"
-                      }}
+                    <Popper
                       open={open}
-                      onMouseLeave={() => {
-                        console.log("exiting");
-                      }}
+                      anchorEl={this.state.anchorEl}
+                      transition
+                      disablePortal
+                      onMouseLeave={this.handleClose}
                     >
-                      <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                      <MenuItem onClick={this.handleClose}>Logout</MenuItem>
-                    </MenuList>
+                      {({ TransitionProps, placement }) => (
+                        <Grow
+                          {...TransitionProps}
+                          id="menu-appbar"
+                          style={menuGrowStyle(placement)}
+                        >
+                          <Paper>
+                            <ClickAwayListener onClickAway={this.handleClose}>
+                              <MenuList>
+                                <MenuItem onClick={this.handleClose}>
+                                  <Link
+                                    component={RouterLink}
+                                    to="/profile"
+                                    underline="none"
+                                  >
+                                    Profile
+                                  </Link>
+                                </MenuItem>
+                                <MenuItem onClick={this.logout}>
+                                  Logout
+                                </MenuItem>
+                              </MenuList>
+                            </ClickAwayListener>
+                          </Paper>
+                        </Grow>
+                      )}
+                    </Popper>
                   </div>
                 )}
                 {!isAuthenticated && (
                   <div className={classes.menuButton}>
-                    <Button color="inherit" href="/login">
+                    <Button color="inherit" onClick={this.login}>
                       LOGIN
                     </Button>
                   </div>
