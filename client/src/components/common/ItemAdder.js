@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
+
 //import ReactPaginate from "react-paginate";
 // Mainly for Admin
 
@@ -13,46 +17,36 @@ class ItemAdder extends Component {
 
   render() {
     return (
-      <div>
-        <div className="row">
-          <div className="col s12">
-            <div className="row">
-              <div className="input-field col s8">
-                <input type="text" className="validate" id="new_item_text" />
-                <label htmlFor="new_item_text">New Item</label>
-              </div>
+      <form>
+        <Grid container spacing={24}>
+          <Grid item xs={6}>
+            <TextField
+              type="text"
+              label="New Item"
+              id="new_item_text"
+              fullWidth
+            />
+          </Grid>
 
-              <div className="input-field col s1">
-                <input
-                  type="number"
-                  className="validate"
-                  id="new_item_weight"
-                />
-                <label htmlFor="new_item_weight">weight</label>
-              </div>
+          <Grid item xs={1}>
+            <TextField type="number" label="weight" id="new_item_weight" />
+          </Grid>
 
-              <div className="input-field col s1">
-                <input type="number" className="validate" id="new_item_price" />
-                <label htmlFor="new_item_price">Price</label>
-              </div>
+          <Grid item xs={2}>
+            <TextField type="number" label="quantity" id="new_item_quantity" />
+          </Grid>
 
-              <div className="input-field col s1">
-                <input
-                  type="number"
-                  className="validate"
-                  id="new_item_quantity"
-                />
-                <label htmlFor="new_item_quantity">Quantity</label>
-              </div>
-              <div className="col s1">
-                <a className="btn-floating btn-large waves-effect waves-light light-blue accent-1">
-                  <i className="material-icons">add</i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+          <Grid item xs={2}>
+            <TextField type="number" label="price" id="new_item_price" />
+          </Grid>
+
+          <Grid item xs={1}>
+            <Button color="primary">
+              <i className="material-icons">add</i>
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
     );
   }
 }
