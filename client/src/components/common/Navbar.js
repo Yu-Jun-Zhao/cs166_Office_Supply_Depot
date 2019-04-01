@@ -188,33 +188,6 @@ class Navbar extends Component {
   }
 }
 
-/*
-<Menu fixed="top" inverted>
-          <Container>
-            <Menu.Item as="a" header href={`${userLink}`}>
-              <Image size="mini" src="/react.svg" />
-              &nbsp; OSD
-            </Menu.Item>
-
-            {isAuthenticated && (
-              <Menu.Item id="profile-button" as="a" href="/profile">
-                Profile
-              </Menu.Item>
-            )}
-            {isAuthenticated && (
-              <Menu.Item id="logout-button" as="a" onClick={this.logout}>
-                Logout
-              </Menu.Item>
-            )}
-            {!isAuthenticated && (
-              <Menu.Item as="a" onClick={this.login}>
-                Login
-              </Menu.Item>
-            )}
-          </Container>
-        </Menu>
-*/
-
 const mapStateToProps = state => ({
   authentication: state.authentication
 });
