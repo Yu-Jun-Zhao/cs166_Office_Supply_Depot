@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Security, SecureRoute, ImplicitCallback } from "@okta/okta-react";
-import { Container } from "semantic-ui-react";
+//import { Container } from "semantic-ui-react";
 import config from "./config/config";
 import store from "./store";
 import { Provider } from "react-redux";
@@ -17,7 +17,8 @@ import User from "./components/pages/User";
 
 function customAuthHandler({ history }) {
   // Redirect to the /login page that has a CustomLoginComponent
-  history.push("/login");
+  //history.push("/login");
+  window.location.href = "/login";
 }
 
 class App extends Component {
@@ -32,16 +33,15 @@ class App extends Component {
             onAuthRequired={customAuthHandler}
           >
             <Navbar />
-            <Container text style={{ marginTop: "7em" }}>
-              <Route path="/" exact component={Homepage} />
-              <Route path="/implicit/callback" component={ImplicitCallback} />
-              <Route path="/login" component={CustomLoginComponent} />
-              <Route path="/result" component={ProductList} />
-              <Route path="/checkout" exact component={Checkout} />
-              <SecureRoute path="/profile" component={Profile} />
-              <SecureRoute path="/user" component={User} />
-              <SecureRoute path="/admin" exact component={Admin} />
-            </Container>
+
+            <Route path="/" exact component={Homepage} />
+            <Route path="/implicit/callback" component={ImplicitCallback} />
+            <Route path="/login" exact component={CustomLoginComponent} />
+            <Route path="/result" component={ProductList} />
+            <Route path="/checkout" exact component={Checkout} />
+            <SecureRoute path="/profile" component={Profile} />
+            <SecureRoute path="/user" component={User} />
+            <SecureRoute path="/admin" exact component={Admin} />
           </Security>
         </Router>
       </Provider>

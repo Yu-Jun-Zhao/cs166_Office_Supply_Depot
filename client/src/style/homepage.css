@@ -1,11 +1,12 @@
+/*
 h1 {
   color: coral;
   font-family: "Comic Sans MS";
   text-align: center;
 }
-/*flex*/
+// flex
 .homepage {
-  /*parent*/
+  //parent
   display: flex;
   flex-direction: row;
 }
@@ -32,9 +33,9 @@ button {
   background-color: #e9e9e9;
 }
 
-/* style the search box */
+// style the search box 
 .navigation input[type="text"] {
-  /*float: center;*/
+  //float: center;
   float: left;
   padding: 10px;
   border: none;
@@ -55,4 +56,8 @@ li.inactive:hover {
 
 .active {
   background-color: blue;
+}
+*/
+
+.homepage {
 }
