@@ -30,7 +30,20 @@ const path = [
 const style = theme => ({
   root: {
     minWidth: "100%",
+    maxHeight: "50vh",
     flexGrow: 1
+  },
+  imageBox: {
+    width: "100%",
+    height: "40%"
+  },
+  image: {
+    width: "100%",
+    height: "100%"
+  },
+
+  view: {
+    height: "50vh"
   }
 });
 
@@ -54,10 +67,16 @@ class StepperPanel extends Component {
           index={stepIndex}
           onChangeIndex={this.handleStepChange}
           enableMouseEvents
+          style={{ maxHeight: "50vh", overflowY: "hidden" }}
+          className={classes.view}
         >
           {path.map((step, index) => (
-            <div key={index}>
-              <img src={step.imgPath} alt={step.label} />
+            <div key={index} className={classes.imageBox}>
+              <img
+                src={step.imgPath}
+                alt={step.label}
+                className={classes.image}
+              />
             </div>
           ))}
         </AutoPlayView>
