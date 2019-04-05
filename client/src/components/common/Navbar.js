@@ -30,9 +30,9 @@ import { connect } from "react-redux";
 const navbartheme = createMuiTheme({
   palette: {
     primary: {
-      main: "#29b6f6",
-      light: "#73e8ff",
-      dark: "#0086c3"
+      main: "#0d47a1",
+      light: "#5472d3",
+      dark: "#002171"
     },
     secondary: {
       main: "#8e24aa",
