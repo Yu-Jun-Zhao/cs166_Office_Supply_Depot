@@ -13,25 +13,25 @@ const AutoPlayView = autoPlay(SwipeableView);
 const path = [
   {
     label: "Item 1",
-    imgPath: "https://m.media-amazon.com/images/I/81NsL82d5vL._SR500,500_.jpg"
+    imgPath:
+      "https://z5wy01yb7154xjch3b138212-wpengine.netdna-ssl.com/wp-content/uploads/Office_Supplies_HEADER.jpg"
   },
   {
     label: "Item 2",
     imgPath:
-      "https://i.pinimg.com/originals/fe/6a/00/fe6a00f7e8d8f50bae8d33f3dd7c1937.jpg"
+      "http://ideacenter.iprint.com/wp-content/uploads/2017/01/Promotional-Products-for-2017-Desk.png"
   },
   {
     label: "Item 3",
-    imgPath:
-      "https://sep.yimg.com/ay/yhst-45286795969290/1990s-anime-stationery-lot-used-condition-3.gif"
+    imgPath: "https://momentumsol.co.uk/images/2017/06/printer-inks-681577.jpg"
   }
 ];
 
 const style = theme => ({
   root: {
-    minWidth: "100%",
-    maxHeight: "50vh",
-    flexGrow: 1
+    position: "relative",
+    width: "100%",
+    height: "100%"
   },
   imageBox: {
     width: "100%",
@@ -39,12 +39,18 @@ const style = theme => ({
   },
   image: {
     width: "100%",
-    height: "100%"
+    height: "auto"
   },
-
   view: {
     width: "100%",
     height: "100%"
+  },
+  mobileStepper: {
+    display: "flex",
+    justifyContent: "center"
+  },
+  dotActive: {
+    backgroundColor: "#26a69a"
   }
 });
 
@@ -68,13 +74,12 @@ class StepperPanel extends Component {
           index={stepIndex}
           onChangeIndex={this.handleStepChange}
           enableMouseEvents
-          style={{ height: "50vh", overflowY: "hidden" }} //for root
+          style={{ height: "100%", overflowY: "hidden" }} //for root
           containerStyle={{
             // for the container
             width: "100%",
             height: "100%"
           }}
-          animateHeight
         >
           {path.map((step, index) => (
             <div key={index} className={classes.imageBox}>
@@ -90,6 +95,9 @@ class StepperPanel extends Component {
           steps={maxSteps}
           activeStep={stepIndex}
           position="static"
+          variant="dots"
+          className={classes.mobileStepper}
+          classes={{ dotActive: classes.dotActive }}
         />
       </div>
     );
