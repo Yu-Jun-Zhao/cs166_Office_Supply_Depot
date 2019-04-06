@@ -35,7 +35,7 @@ const style = theme => ({
   },
   imageBox: {
     width: "100%",
-    height: "40%"
+    height: "100%"
   },
   image: {
     width: "100%",
@@ -43,7 +43,8 @@ const style = theme => ({
   },
 
   view: {
-    height: "50vh"
+    width: "100%",
+    height: "100%"
   }
 });
 
@@ -67,8 +68,13 @@ class StepperPanel extends Component {
           index={stepIndex}
           onChangeIndex={this.handleStepChange}
           enableMouseEvents
-          style={{ maxHeight: "50vh", overflowY: "hidden" }}
-          className={classes.view}
+          style={{ height: "50vh", overflowY: "hidden" }} //for root
+          containerStyle={{
+            // for the container
+            width: "100%",
+            height: "100%"
+          }}
+          animateHeight
         >
           {path.map((step, index) => (
             <div key={index} className={classes.imageBox}>
