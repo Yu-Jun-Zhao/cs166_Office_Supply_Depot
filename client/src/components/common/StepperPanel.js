@@ -10,11 +10,12 @@ import { autoPlay } from "react-swipeable-views-utils";
 const AutoPlayView = autoPlay(SwipeableView);
 
 // For testing
+// Use images that are 900x300
 const path = [
   {
     label: "Item 1",
     imgPath:
-      "https://z5wy01yb7154xjch3b138212-wpengine.netdna-ssl.com/wp-content/uploads/Office_Supplies_HEADER.jpg"
+      "https://cdn10.bigcommerce.com/s-mwv5u7d/product_images/uploaded_images/apartment-dorm.jpg"
   },
   {
     label: "Item 2",
@@ -24,6 +25,11 @@ const path = [
   {
     label: "Item 3",
     imgPath: "https://momentumsol.co.uk/images/2017/06/printer-inks-681577.jpg"
+  },
+  {
+    label: "Item 4",
+    imgPath:
+      "https://i0.wp.com/otakulane.com/wp-content/uploads/2016/11/23971.jpg?resize=900%2C300"
   }
 ];
 
