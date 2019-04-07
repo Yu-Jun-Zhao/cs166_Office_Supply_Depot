@@ -4,14 +4,51 @@ Create table Cart (cartID INT, date TIMESTAMP, productID INT FOREIGN KEY, quanti
 Create Order (orderID INT PRIMARY KEY AUTO_INCREMENTED, username FOREIGN KEY, cartID FOREIGN KEY, date TIMESTAMP FOREIGN KEY)
 
 
+// add a product
+app.post("/products/add", (req, res) => {
+  console.log(req.body);
+  const {pName, quantity, price, weight} = req.body;
+  console.log(pName, quantity, price, weight);
+  const insert_product = `INSERT into product (pName, quantity, price, weight) values('${pName}', '${quantity}', '${price}', '${weight}')`;
+  console.log(insert_product);
+
+  connection.query(insert_product, (error, results) => {
+    if(err)
+        return res.send(err)
+    else   
+        return res.send('successfully added product')
+  }); 
+});
+
+// update product
+app.put("/products/update/:productID", (req, res) => {
+  const { productID } = req.params;
+  console.log(req.body);
+  const {pName, quantity, price, weight} = req.body;
+  console.log(pName, quantity, price, weight);
+  const update_product = `UPDATE product set pName = '${pName}', quantity = '${quantity}', price = '${price}', weight = '${weight}' WHERE productID = '${productID}'`;
+  console.log(update_product);
+
+  connection.query(update_product, (error, results) => {
+    if(err)
+        return res.send({
+          success: false,
+          msg: String(error)
+        })
+    else   
+        return res.send({
+          success: true,
+          msg: 'Successfully updated'
+        })
+  }); 
+});
 
 
 
 
 
 
-
-
+******************* CONNECTION ****************************************
 
 
 
