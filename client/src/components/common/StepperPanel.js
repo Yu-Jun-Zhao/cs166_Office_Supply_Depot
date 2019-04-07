@@ -10,34 +10,31 @@ import { autoPlay } from "react-swipeable-views-utils";
 const AutoPlayView = autoPlay(SwipeableView);
 
 // For testing
-// Use images that are 900x300
+// Use images that are 1920 x 468
 const path = [
   {
     label: "Item 1",
-    imgPath:
-      "https://cdn10.bigcommerce.com/s-mwv5u7d/product_images/uploaded_images/apartment-dorm.jpg"
+    imgPath: "https://www.lumenfit.com/image/slide/14/3/1"
   },
   {
     label: "Item 2",
-    imgPath:
-      "http://ideacenter.iprint.com/wp-content/uploads/2017/01/Promotional-Products-for-2017-Desk.png"
+    imgPath: "http://www.ef-plastic.com/upload/2018010915140868.jpg"
   },
   {
     label: "Item 3",
-    imgPath: "https://momentumsol.co.uk/images/2017/06/printer-inks-681577.jpg"
+    imgPath: "http://newtechqatar.com/img/switchgear.jpg"
   },
   {
     label: "Item 4",
     imgPath:
-      "https://i0.wp.com/otakulane.com/wp-content/uploads/2016/11/23971.jpg?resize=900%2C300"
+      "https://i.pinimg.com/originals/ad/04/c6/ad04c673508523f9cae560aeebb5cc79.jpg"
   }
 ];
 
 const style = theme => ({
   root: {
     position: "relative",
-    width: "100%",
-    height: "100%"
+    width: "100%"
   },
   imageBox: {
     width: "100%",
@@ -80,7 +77,7 @@ class StepperPanel extends Component {
           index={stepIndex}
           onChangeIndex={this.handleStepChange}
           enableMouseEvents
-          style={{ height: "100%", overflowY: "hidden" }} //for root
+          style={{ height: "100%", overflowY: "hidden", margin: "0% 1%" }} //for root
           containerStyle={{
             // for the container
             width: "100%",

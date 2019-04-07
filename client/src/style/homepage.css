@@ -63,3 +63,8 @@ li.inactive:hover {
   background-color: #fafafa;
   height: "100%";
 }
+
+.menuBar {
+  display: flex;
+  justify-content: center;
+}
