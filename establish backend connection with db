@@ -43,7 +43,22 @@ app.put("/products/update/:productID", (req, res) => {
   }); 
 });
 
+// add items to a cart: create a cart and add each row (each item) to that cartID
+// we need to get the cartID first which is created by user
+app.post("/products/cart", (req, res) => {
+  console.log(req.body);
+  const {cartID, date, productID, quantity} = req.body;
+  console.log(cartID, date, productID, quantity);
+  const insert_cart = `INSERT into Cart (cartID, date, productID, quantity) values('${cartID}', '${date}', '${productID}', '${quantity}')`;
+  console.log(insert_cart);
 
+  connection.query(insert_cart, (error, results) => {
+    if(err)
+        return res.send(err)
+    else   
+        return res.send('successfully added an item to cart')
+  }); 
+});
 
 
 
