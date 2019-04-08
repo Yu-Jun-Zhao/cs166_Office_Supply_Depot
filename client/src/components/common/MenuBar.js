@@ -54,7 +54,11 @@ class MenuBar extends Component {
 
     return (
       <div className={classes.root}>
-        <AppBar position="relative" color="default">
+        <AppBar
+          position="relative"
+          color="default"
+          style={{ backgroundColor: "#fafafa", zIndex: 9999 }}
+        >
           <Toolbar className={classes.toobarRoot}>
             <div className={`${classes.menuLinks} container`}>
               <Tabs
@@ -72,11 +76,31 @@ class MenuBar extends Component {
                   style={{ minWidth: "30px", maxWidth: "80px" }}
                   icon={<HomeIcon />}
                 />
-                <Tab className={classes.commonPage} label="Office Supplies" />
-                <Tab className={classes.commonPage} label="Office Furnitures" />
-                <Tab className={classes.commonPage} label="Computers" />
-                <Tab className={classes.commonPage} label="Printers" />
-                <Tab className={classes.commonPage} label="Other Facilities" />
+                <Tab
+                  className={classes.commonPage}
+                  label="Office Supplies"
+                  selection="Supply"
+                />
+                <Tab
+                  className={classes.commonPage}
+                  label="Office Furnitures"
+                  selection="Furniture"
+                />
+                <Tab
+                  className={classes.commonPage}
+                  label="Computers"
+                  selection="Computer"
+                />
+                <Tab
+                  className={classes.commonPage}
+                  label="Printers"
+                  selection="Printer"
+                />
+                <Tab
+                  className={classes.commonPage}
+                  label="Other Facilities"
+                  selection="Other"
+                />
               </Tabs>
             </div>
             <div className={classes.searchBarDiv}>
@@ -85,7 +109,9 @@ class MenuBar extends Component {
           </Toolbar>
         </AppBar>
         {value === 0 && <HomeMain />}
-        {value === 1 && <CommonPage />}
+        {value === 1 && (
+          <CommonPage label="Office Supplies" selection="Supply" />
+        )}
         {value === 2 && <div />}
         {value === 3 && <div />}
         {value === 4 && <div />}
