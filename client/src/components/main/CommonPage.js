@@ -36,11 +36,16 @@ const styles = theme => ({
     position: "relative",
     boxShadow: "2px 2px 3px #888888"
   },
+  drawerArrowButton: {
+    display: "flex",
+    alignItems: "center",
+    padding: "0 8px",
+    justifyContent: "flex-end"
+  },
   content: {
     flexGrow: 1,
-    padding: theme.spacing.unit * 3
+    padding: `${theme.spacing.unit * 4}px ${theme.spacing.unit * 3}px`
   },
-  toolbar: theme.mixins.toolbar,
   fab: {
     position: "absolute",
     //flexGrow: 1,
@@ -82,10 +87,8 @@ class CommonPage extends Component {
           classes={{ paper: classes.drawerPaper }}
           elevation={6}
         >
-          <div className={classes.toolbar} />
-
           <List>
-            <div>
+            <div className={classes.drawerArrowButton}>
               <IconButton onClick={this.handleDrawerClose}>
                 <ChevronLeftIcon />
               </IconButton>
@@ -109,7 +112,6 @@ class CommonPage extends Component {
         )}
 
         <main className={classes.content}>
-          <div className={classes.toolbar} />
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt,
           qui reprehenderit minus velit a culpa aspernatur nesciunt quod et quo
           repellat facere veritatis, eius assumenda quaerat recusandae officiis
