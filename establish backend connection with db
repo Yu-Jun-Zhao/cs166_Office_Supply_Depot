@@ -83,6 +83,23 @@ app.get('/search/cart/:name/:cartID', (req, res)=>{
 });
 
 
+// add Order - when complete an order
+app.post("/Orders/add", (req, res) => {
+  console.log(req.body);
+  const {username, cartID, date} = req.body;
+  console.log(username, cartID, date);
+  const insert_order = `INSERT into product (username, cartID, date) values('${username}', ${cartID}, ${date})`;
+  console.log(insert_order);
+
+  connection.query(insert_order, (error, results) => {
+    if(error)
+        return res.send(error)
+    else   
+        return res.send('successfully added order')
+  }); 
+});
+
+
 
 ******************* CONNECTION ****************************************
 
