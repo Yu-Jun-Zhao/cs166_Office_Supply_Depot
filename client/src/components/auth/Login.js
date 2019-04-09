@@ -30,6 +30,7 @@ export default class LoginPage extends Component {
       }
     });
   }
+
   componentDidMount() {
     this.signIn.renderEl(
       { el: "#sign-in-widget" },
@@ -48,6 +49,7 @@ export default class LoginPage extends Component {
   render() {
     return (
       <div>
+        <h1>Please sign in</h1>
         <div id="sign-in-widget" />
       </div>
     );

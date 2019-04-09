@@ -69,14 +69,14 @@ app.get("/api/products/:name/:offset", (req, res) => {
   });
 });
 
-// MAy not work
-app.get("/api/products/:id", (req, res) => {
-  const { id } = req.params;
-  const select_sql = `SELECT pName FROM product WHERE id = ${id}`;
+// Returns object that contains an array of objects
+app.get("/api/products/:offset", (req, res) => {
+  const { offset } = req.params;
+  const select_sql = `SELECT * FROM product LIMIT ${offset}`;
 
   connection.query(select_sql, (error, results) => {
     if (error) res.send(error);
-    res.send({ product: results });
+    res.send({ products: results });
   });
 });
 

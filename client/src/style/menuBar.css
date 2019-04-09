@@ -1,0 +1,10 @@
+/*For the <Divider /> in menuBar*/
+hr[class^="MuiDivider"] {
+  height: 40px;
+  width: 2px;
+  margin-right: 10px;
+}
+
+h6 {
+  padding-right: 8px;
+}

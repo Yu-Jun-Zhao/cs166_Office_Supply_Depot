@@ -1,3 +1,4 @@
+@ -1,75 +0,0 @@
 import { withAuth } from "@okta/okta-react";
 import React, { Component } from "react";
 import { Container, Icon, Image, Menu } from "semantic-ui-react";

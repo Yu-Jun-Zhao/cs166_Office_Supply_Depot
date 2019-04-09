@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 import "../../style/homepage.css";
-import Searchbar from "../common/Searchbar";
+import MenuBar from "../common/MenuBar";
+//import Searchbar from "../common/Searchbar";
 
 // For Guests
 class Homepage extends Component {
   render() {
     return (
-      <div>
-        <span className="homepage" />
-        <h1> Office Supply Depot (OSD)</h1>
-        <div className="searchbar">
-          {" "}
-          <Searchbar />
+      <div className="homepage">
+        <div className="menuBar">
+          <MenuBar />
         </div>
       </div>
     );

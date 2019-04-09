@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   items: [],
-  loading: false,
+  loading: true,
   error: null,
   pageCount: 0,
   offset: 0,

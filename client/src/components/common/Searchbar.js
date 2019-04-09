@@ -4,6 +4,24 @@ import TrieSearch from "trie-search";
 import { withRouter } from "react-router-dom";
 import { Redirect } from "react-router";
 
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import InputBase from "@material-ui/core/InputBase";
+import IconButton from "@material-ui/core/IconButton";
+import SearchIcon from "@material-ui/icons/Search";
+
+const styles = {
+  input: {
+    flex: 1,
+    marginLeft: 8
+  },
+  paper: {
+    display: "flex",
+    alignSelf: "center",
+    width: "100%"
+  }
+};
+
 const createTrie = () => {
   const p = new TrieSearch("text");
   p.addAll([]);
@@ -94,6 +112,7 @@ class Searchbar extends Component {
 
   render() {
     const { searchQuery, suggestions, activeID, toResults } = this.state;
+    const { classes } = this.props;
     if (toResults)
       return (
         <Redirect
@@ -105,7 +124,36 @@ class Searchbar extends Component {
       );
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <div className="container">
+        <Paper className={classes.paper} elevation={2}>
+          <InputBase
+            className={classes.input}
+            value={searchQuery}
+            onChange={this.handleChange}
+            onKeyDown={this.handleKeyDown}
+            onKeyPress={e => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                this.handleSubmit(e);
+              }
+            }}
+            placeholder="Search Items"
+          />
+          <IconButton aria-label="Search" onClick={this.handleSubmit}>
+            <SearchIcon />
+          </IconButton>
+        </Paper>
+      </div>
+    );
+  }
+}
+
+const SearchbarWithStyle = withStyles(styles)(Searchbar);
+
+export default withRouter(SearchbarWithStyle);
+
+/*
+<form onSubmit={this.handleSubmit}>
         <div className="navigation">
           <input
             type="text"
@@ -146,8 +194,5 @@ class Searchbar extends Component {
           </ul>
         </div>
       </form>
-    );
-  }
-}
 
-export default withRouter(Searchbar);
+*/
