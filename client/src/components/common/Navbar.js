@@ -42,7 +42,10 @@ const navbartheme = createMuiTheme({
   }
 });
 
-const styles = {
+const styles = theme => ({
+  appBarRoot: {
+    zIndex: 999999
+  },
   grow: {
     flexGrow: 1
   },
@@ -55,7 +58,7 @@ const styles = {
   menuList: {
     zIndex: 999
   }
-};
+});
 
 const menuGrowStyle = placement => ({
   transformOrigin: placement === "bottom" ? "center top" : "center bottom"
@@ -113,7 +116,7 @@ class Navbar extends Component {
     return (
       <div>
         <MuiThemeProvider theme={navbartheme}>
-          <AppBar position="relative">
+          <AppBar position="relative" classes={{ root: classes.appBarRoot }}>
             <Toolbar>
               <Link component={RouterLink} to="/" underline="none">
                 <Typography
