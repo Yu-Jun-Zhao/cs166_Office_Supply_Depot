@@ -14,3 +14,9 @@ body {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+/*This general divider is horizontal*/
+hr {
+  width: 100% !important;
+  height: 1px !important;
+}

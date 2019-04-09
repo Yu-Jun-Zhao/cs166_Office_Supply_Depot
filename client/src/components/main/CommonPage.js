@@ -86,13 +86,14 @@ class CommonPage extends Component {
           className={classes.drawer}
           classes={{ paper: classes.drawerPaper }}
           elevation={6}
+          anchor="left"
         >
+          <div className={classes.drawerArrowButton}>
+            <IconButton onClick={this.handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
           <List>
-            <div className={classes.drawerArrowButton}>
-              <IconButton onClick={this.handleDrawerClose}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </div>
             <Divider />
             <ListItem>
               <ListItemText primary="hello" />
