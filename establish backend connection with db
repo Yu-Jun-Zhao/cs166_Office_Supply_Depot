@@ -1,7 +1,12 @@
-Create table User (username VARCHAR(45) PRIMARY KEY, address VARCHAR(45), cardNumber INT)
+Create table User (username VARCHAR(45) PRIMARY KEY, firstName varchar(45), lastname varchar(45), address VARCHAR(45), cardNumber VARCHAR(17))
 Create table Product (productID INT PRIMARY KEY AUTO_INCREMENT, pName VARCHAR(255), quantity INT, price DOUBLE, weight DOUBLE)
-Create table Cart (cartID INT, date TIMESTAMP, productID INT, quantity INT, PRIMARY KEY (cartID, date), FOREIGN KEY(productID) REFERENCES product(productID))
-Create Order (orderID INT PRIMARY KEY AUTO_INCREMENTED, username FOREIGN KEY, cartID FOREIGN KEY, date TIMESTAMP FOREIGN KEY)
+// EVERY ACCOUNT HAS A PRE-DEFINED CART NUMBER. EVERY TIME USER ADDS A PRODUCT TO CART, CARTID DOES NOT CHANGE
+// ONCE USER COMPLETED ORDER, CARTID WILL BE INCREMENTED FOR NEXT TIME USE
+Create table Cart (cartID INT NOT NULL, username VARCHAR(45), productID INT, quantity INT,
+FOREIGN KEY(productID) REFERENCES product(productID),FOREIGN KEY(username) REFERENCES User(username))
+
+Create table Orders (orderID INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(45), cartID INT, date TIMESTAMP,
+FOREIGN KEY(username) REFERENCES User(username), FOREIGN KEY(cartID) REFERENCES Cart(cartID))
 
 
 // add a product
