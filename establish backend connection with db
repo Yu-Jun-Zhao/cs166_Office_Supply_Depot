@@ -68,6 +68,19 @@ app.post("/products/cart", (req, res) => {
   }); 
 });
 
+// search_ show items in cart.
+app.get('/search/cart/:name/:cartID', (req, res)=>{
+  const { name, cartID } = req.params;
+  const show_cart = `SELECT * FROM cart where username = '%${name}%', cartID = %${cartID}`;
+  connection.query(show_cart, (err, results)=>{
+      if(err)
+          return res.send(err)
+      else {
+          return res.json({
+              data: results})
+      }
+  });
+});
 
 
 
