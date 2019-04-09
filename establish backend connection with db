@@ -1,3 +1,5 @@
+***************************** DATABASE ******************************
+
 Create table User (username VARCHAR(45) PRIMARY KEY, firstName varchar(45), lastname varchar(45), address VARCHAR(45), cardNumber VARCHAR(17))
 Create table Product (productID INT PRIMARY KEY AUTO_INCREMENT, pName VARCHAR(255), quantity INT, price DOUBLE, weight DOUBLE)
 // EVERY ACCOUNT HAS A PRE-DEFINED CART NUMBER. EVERY TIME USER ADDS A PRODUCT TO CART, CARTID DOES NOT CHANGE
@@ -9,6 +11,8 @@ Create table Orders (orderID INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(45
 FOREIGN KEY(username) REFERENCES User(username), FOREIGN KEY(cartID) REFERENCES Cart(cartID))
 
 
+
+********************************* CODE ***********************************
 // add a product
 app.post("/products/add", (req, res) => {
   console.log(req.body);
