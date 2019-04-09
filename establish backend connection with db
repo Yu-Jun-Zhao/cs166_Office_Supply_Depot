@@ -1,6 +1,6 @@
 Create table User (username VARCHAR(45) PRIMARY KEY, address VARCHAR(45), cardNumber INT)
 Create table Product (productID INT PRIMARY KEY AUTO_INCREMENT, pName VARCHAR(255), quantity INT, price DOUBLE, weight DOUBLE)
-Create table Cart (cartID INT, date TIMESTAMP, productID INT FOREIGN KEY, quantity INT, PRIMARY KEY (cartID, date))
+Create table Cart (cartID INT, date TIMESTAMP, productID INT, quantity INT, PRIMARY KEY (cartID, date), FOREIGN KEY(productID) REFERENCES product(productID))
 Create Order (orderID INT PRIMARY KEY AUTO_INCREMENTED, username FOREIGN KEY, cartID FOREIGN KEY, date TIMESTAMP FOREIGN KEY)
 
 
