@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import {
-  AppBar,
-  Toolbar,
   IconButton,
   Drawer,
   List,
@@ -9,7 +7,9 @@ import {
   ListItem,
   ListItemText,
   Fab,
-  Divider
+  Divider,
+  ListItemSecondaryAction,
+  Switch
 } from "@material-ui/core/";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -62,7 +62,8 @@ class CommonPage extends Component {
       drawerOpen: true,
       selection: props.selection,
       color: props.color,
-      label: props.label
+      label: props.label,
+      filterApply: ["price"]
     };
   }
 
@@ -74,8 +75,25 @@ class CommonPage extends Component {
     this.setState({ drawerOpen: false });
   };
 
+  // A function that takes in a value and returns a function
+  handleSwitchChange = value => () => {
+    const { filterApply } = this.state;
+    const index = filterApply.indexOf(value);
+
+    // Not in array
+    if (index === -1) {
+      filterApply.push(value);
+    } else {
+      filterApply.splice(index, 1);
+    }
+
+    this.setState({
+      filterApply
+    });
+  };
+
   render() {
-    const { drawerOpen, color, label } = this.state;
+    const { drawerOpen, color, label, filterApply } = this.state;
     const { classes } = this.props;
 
     return (
@@ -93,10 +111,16 @@ class CommonPage extends Component {
               <ChevronLeftIcon />
             </IconButton>
           </div>
+          <Divider />
           <List>
-            <Divider />
             <ListItem>
-              <ListItemText primary="hello" />
+              <ListItemText primary="Price Range " />
+              <ListItemSecondaryAction>
+                <Switch
+                  onChange={this.handleSwitchChange("price")}
+                  checked={filterApply.indexOf("price") !== -1}
+                />
+              </ListItemSecondaryAction>
             </ListItem>
           </List>
         </Drawer>
