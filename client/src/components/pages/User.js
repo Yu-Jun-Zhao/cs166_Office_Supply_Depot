@@ -1,14 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { checkAuthentication } from "../../actions/authenticateActions";
-import Searchbar from "../common/Searchbar";
+import Homepage from "../pages/Homepage";
 import { withAuth } from "@okta/okta-react";
+import { Redirect } from "react-router-dom";
+
+// For displaying recent purchases
+
+// For now
+// The rendered state is used for redirecting to '/'
+// The login will first route to this page to check authentication
 
 class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isAuthenticated: false,
+      isAuthenticated: props.authentication.isAuthenticated,
       name: ""
     };
   }
@@ -35,10 +42,13 @@ class User extends Component {
   }
 
   render() {
+    if (!this.state.isAuthenticated) {
+      return <Redirect to="/" />;
+    }
     return (
       <div>
-        <h1>Welcome {this.state.name}</h1>
-        <Searchbar />
+        <h1>Welcome {this.state.name} To User Page</h1>
+        <h1>Working in progress</h1>
       </div>
     );
   }

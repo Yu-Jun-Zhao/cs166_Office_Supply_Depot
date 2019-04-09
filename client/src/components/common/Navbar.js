@@ -30,9 +30,9 @@ import { connect } from "react-redux";
 const navbartheme = createMuiTheme({
   palette: {
     primary: {
-      main: "#29b6f6",
-      light: "#73e8ff",
-      dark: "#0086c3"
+      main: "#0d47a1",
+      light: "#5472d3",
+      dark: "#002171"
     },
     secondary: {
       main: "#8e24aa",
@@ -52,7 +52,9 @@ const styles = {
   left: {
     paddingRight: "80%"
   },
-  menuButton: {}
+  menuList: {
+    zIndex: 999
+  }
 };
 
 const menuGrowStyle = placement => ({
@@ -105,14 +107,15 @@ class Navbar extends Component {
   render() {
     const { classes } = this.props;
     const { isAuthenticated } = this.props.authentication;
-    const userLink = isAuthenticated ? "/user" : "/";
+    const userLink = "/";
+
     const open = Boolean(this.state.anchorEl);
     return (
       <div>
         <MuiThemeProvider theme={navbartheme}>
-          <AppBar position="static">
+          <AppBar position="relative">
             <Toolbar>
-              <Link component={RouterLink} to={userLink} underline="none">
+              <Link component={RouterLink} to="/" underline="none">
                 <Typography
                   variant="h5"
                   color="inherit"
@@ -131,6 +134,8 @@ class Navbar extends Component {
                       aria-owns={open ? "menu-appbar" : undefined}
                       aria-haspopup="true"
                       onMouseEnter={this.handleMenu}
+                      component={RouterLink}
+                      to="/user"
                     >
                       <AccountCircle />
                     </IconButton>
@@ -147,7 +152,7 @@ class Navbar extends Component {
                           id="menu-appbar"
                           style={menuGrowStyle(placement)}
                         >
-                          <Paper>
+                          <Paper elevation={8}>
                             {/*this is just a listener to listen to clicks */}
                             <ClickAwayListener onClickAway={this.handleClose}>
                               {/* This is the Menu*/}
@@ -175,7 +180,7 @@ class Navbar extends Component {
                 {!isAuthenticated && (
                   <div className={classes.menuButton}>
                     <Button color="inherit" onClick={this.login}>
-                      LOGIN
+                      Login
                     </Button>
                   </div>
                 )}
@@ -187,33 +192,6 @@ class Navbar extends Component {
     );
   }
 }
-
-/*
-<Menu fixed="top" inverted>
-          <Container>
-            <Menu.Item as="a" header href={`${userLink}`}>
-              <Image size="mini" src="/react.svg" />
-              &nbsp; OSD
-            </Menu.Item>
-
-            {isAuthenticated && (
-              <Menu.Item id="profile-button" as="a" href="/profile">
-                Profile
-              </Menu.Item>
-            )}
-            {isAuthenticated && (
-              <Menu.Item id="logout-button" as="a" onClick={this.logout}>
-                Logout
-              </Menu.Item>
-            )}
-            {!isAuthenticated && (
-              <Menu.Item as="a" onClick={this.login}>
-                Login
-              </Menu.Item>
-            )}
-          </Container>
-        </Menu>
-*/
 
 const mapStateToProps = state => ({
   authentication: state.authentication
