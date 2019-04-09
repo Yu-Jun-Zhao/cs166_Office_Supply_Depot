@@ -7,8 +7,7 @@ Create table Product (productID INT PRIMARY KEY AUTO_INCREMENT, pName VARCHAR(25
 Create table Cart (cartID INT NOT NULL, username VARCHAR(45), productID INT, quantity INT,
 FOREIGN KEY(productID) REFERENCES product(productID),FOREIGN KEY(username) REFERENCES User(username))
 
-Create table Orders (orderID INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(45), cartID INT, date TIMESTAMP,
-FOREIGN KEY(username) REFERENCES User(username), FOREIGN KEY(cartID) REFERENCES Cart(cartID))
+Create table Orders (orderID INT PRIMARY KEY AUTO_INCREMENT, username VARCHAR(45), cartID INT, date TIMESTAMP, FOREIGN KEY(username) REFERENCES User(username))
 
 
 
