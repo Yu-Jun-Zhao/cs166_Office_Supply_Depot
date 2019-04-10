@@ -1,209 +1,126 @@
 import React, { Component } from 'react';
-import './App.css';
+import ItemHolder from "../common/Product";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-
-class App extends Component {
-
+class Shoppingcart   extends Component{
   constructor(props) {
     super(props);
-    this.state = {value: ''};
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = { value: "" };
   }
 
-  handleChange(event) {
-    this.setState({[event.target.name]:event.target.value});
+    /* construct a boolean to make a condition to decide the delivery method
+      this.state = { over100dollar: false; over15lbs: false}
+    */  
+
+  handleChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value });
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
-    alert('Order is placed' + this.state.value);
+    alert("Added" + this.state.value);
   }
-
+  /* printSomething = () => {
+    code here } */
   render() {
+    const { products, total } = this.props;
+    
     return (
-      <div className="App">
-        <div> 
-          <h3>Order Summary</h3>
-
-        </div>
-        <div>         
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <h3 className="header">Your Information</h3>               
-                <input 
-                  type="text" 
-                  name="firstname" 
-                  placeholder="First Name" 
-                  value={this.state.firstname}
-                  onChange={this.handleChange}
-                  autoFocus/>&nbsp;            
-                
-                <input 
-                  type="text" 
-                  name="lastname" 
-                  placeholder="Last Name" 
-                  value={this.state.lastname}
-                  onChange={this.handleChange}/><br/>             
-                
-                <input 
-                  type="text" 
-                  name="email" 
-                  placeholder="Email" 
-                  className="textbox"
-                  value={this.state.email}
-                  onChange={this.handleChange} /><br/>
-                
-                <input 
-                  type="text" 
-                  name="phone" 
-                  placeholder="Phone Number" 
-                  className="textbox"
-                  value={this.state.phone}
-                  onChange={this.handleChange}
-                  maxLength= "10" />
-              
-                <h3>Shipping Address</h3>
-                <input 
-                  type="text" 
-                  name="Street" 
-                  placeholder="Street" 
-                  className="textbox"
-                  value={this.state.Street}
-                  onChange={this.handleChange}/><br/>
-
-                <input 
-                  type="text" 
-                  name="Unit" 
-                  placeholder="Apt, Unit" 
-                  className="textbox"
-                  value={this.state.Unit}
-                  onChange={this.handleChange}/><br/>
-
-                <input 
-                  type="text" 
-                  name="City" 
-                  placeholder="City" 
-                  className="textbox2"
-                  value={this.state.City}
-                  onChange={this.handleChange}/>&nbsp;
-
-                <input 
-                  type="text" 
-                  name="State" 
-                  placeholder="State" 
-                  className="textbox4" 
-                  value={this.state.State}
-                  onChange={this.handleChange}/>&nbsp;
-                  
-
-                <input 
-                  type="text" 
-                  name="zipcode" 
-                  placeholder="Zip code" 
-                  className="textbox3"
-                  maxLength= "5"
-                  minLength= "5"
-                  value={this.state.zipcode}
-                  onChange={this.handleChange}/><br/>
-
-              <h3>Billing Address</h3>
-              <input 
-                  type="text" 
-                  name="billStreet" 
-                  placeholder="Street" 
-                  className="textbox"
-                  value={this.state.billStreet}
-                  onChange={this.handleChange}/><br/>
-
-                <input 
-                  type="text" 
-                  name="billUnit" 
-                  placeholder="Apt, Unit" 
-                  className="textbox"
-                  value={this.state.billUnit}
-                  onChange={this.handleChange}/><br/>
-
-                <input 
-                  type="text" 
-                  name="billCity" 
-                  placeholder="City" 
-                  className="textbox2"
-                  value={this.state.billCity}
-                  onChange={this.handleChange}/>&nbsp;
-
-                <input 
-                  type="text" 
-                  name="billState" 
-                  placeholder="State" 
-                  className="textbox4" 
-                  value={this.state.billState}
-                  onChange={this.handleChange}/>&nbsp;
-                  
-
-                <input 
-                  type="text" 
-                  name="billzipcode" 
-                  placeholder="Zip code" 
-                  className="textbox3"
-                  maxLength= "5"
-                  minLength= "5"
-                  value={this.state.billzipcode}
-                  onChange={this.handleChange}/><br/>
-
-              <h3>Credit Card Information</h3>
-              <img src='./media/visa.jpg' alt="Visa" className="iconsize"/>
-              <img src='./media/mastercard.png' alt="Master" className="iconsize"/>
-              <img src='./media/maestro.jpg' alt="Maestro" className="iconsize"/>
-              <img src='./media/discover.png' alt="Discover" className="iconsize"/>
-              <img src='./media/americanexpress.jpg' alt="AmericanExpress" className="iconsize"/> <br/>   
-
-              <input 
-                type="text" 
-                name="cardnumber" 
-                placeholder="Card Number" 
-                className="textbox"
-                maxLength= "16"
-                minLength= "16"
-                value={this.state.cardnumber}
-                onChange={this.handleChange}
-              /><br/> 
-
-              <input 
-                type="text" 
-                name="expmonth" 
-                placeholder="Expired Month"
-                maxLength= "2"
-                minLength= "2"
-                value={this.state.expmonth}
-                onChange={this.handleChange} />&nbsp; 
-
-              <input 
-                type="text" 
-                name="expyear" 
-                placeholder="Expired Year"
-                maxLength= "2"
-                minLength= "2"
-                value={this.state.expyear}
-                onChange={this.handleChange}/><br/>      
-
-              <input 
-                type="text" 
-                name="cvv" 
-                placeholder="CVV"
-                className="textbox"
-                maxLength= "3"
-                minLength= "3"
-                value={this.state.cvv}
-                onChange={this.handleChange}/> &nbsp;              
-            </div> <br/>
-            <button id="buttons" type="submit">Place Order </button>
-        </form>
+      <React.Fragment>
+        <ul>
+          {products.map(product => {
+            return (
+              <div key={product.productID}>
+                <ItemHolder product={product} />
+              </div>
+            );
+          })}
+        </ul>
+      <div className='Shoppingcart'>
+          <h1>Shopping Cart</h1>
+        <div>
+          <table >
+          <thead>
+            <tr>
+              <th>Image</th>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Remove</th>
+              <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><h3> image</h3></td>
+				        <td>Office Chair</td>
+				        <td>$25.00</td>
+				        <td><input type="number" value="3" min="1">
+                    </input></td>
+				        <td><button>Remove</button></td>
+				        <td>$75.00</td>
+			        </tr>
+            </tbody>
+          </table >
         </div>
       </div>
-    );
-  }
-}
 
-export default App;
+      <div>
+          <h2>About Delivery Services</h2>
+          <p>We offer a free delivery services for any the order that over $100.00 <br/>  
+          For any order that are less than 15 lbs, the delevery will be done by a drone on the same day during business hours. <br/> 
+          For any order that equal or heavier than 15 lbs, the orders will be delivered by delivery truck within 2 business days. <br/>
+          For any order that are under $100, customer can request deliveries (drone or truck) by paying a surcharge of $20. <br/>
+          For same day truck delivery of orders over $100, customer can pay a surcharge of $25.  
+          </p>
+
+          <div>
+            {/* This will construct an if else function to decide the delivery method for 
+            customer based on the order's subtotal and weight and the print out the option for the customer to see */
+            
+            
+            }
+          </div>
+      </div>
+
+          {/* This is for demo only. The if else in the render will print out something like this */}
+      <div> 
+          Based on the grand total and the weight of your order. Your delivery method will be: <br/>
+          Delivery truck within 2 business days: $20.
+      </div>
+
+      <div>        
+		    <h2>Order Summary</h2>
+		    <div>
+		      <div>
+			       <div >
+              <label>Subtotal</label>
+			            <div>75.00</div> &emsp;&emsp;&emsp;&emsp;
+			             </div>
+			             <div>
+			                <label>Tax (5%)</label>
+			                   <div  >3.75</div>
+                         &emsp;&emsp;&emsp;&emsp;
+			              </div>
+                    <div> 
+                      <label>Shipping Fee</label>
+                        <div>$20</div> 
+                    </div>
+			              <div>
+			                 <label>Grand Total</label>
+			                    <div >98.75</div> <br />
+                    </div>
+		              </div>
+			            <div><button>Checkout</button></div>
+		           </div>
+	    </div>
+    </React.Fragment>
+  );
+}
+}
+const mapStateToProps = state => ({
+  products: state.products.items,
+  total: state.products.total
+});
+export default withRouter(connect(mapStateToProps)(Shoppingcart));
