@@ -110,13 +110,18 @@ class MenuBar extends Component {
         </AppBar>
         {value === 0 && <HomeMain />}
         {value === 1 && (
-          <CommonPage label="Office Supplies" selection="Supply" />
+          <CommonPage label="Office Supplies" selection="supply" />
         )}
-        {value === 2 && <div />}
-        {value === 3 && <div />}
-        {value === 4 && <div />}
-        {value === 5 && <div />}
-        {value === 6 && <div />}
+        {value === 2 && (
+          <CommonPage label="Office Furnitures" selection="furniture" />
+        )}
+        {value === 3 && (
+          <CommonPage label="Technologies" selection="technology" />
+        )}
+        {value === 4 && <CommonPage label="Printers" selection="printer" />}
+        {value === 5 && (
+          <CommonPage label="Other Facilities" selection="other" />
+        )}
       </div>
     );
   }

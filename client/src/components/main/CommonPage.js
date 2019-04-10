@@ -3,7 +3,6 @@ import {
   IconButton,
   Drawer,
   List,
-  Typography,
   ListItem,
   ListItemText,
   Fab,
@@ -12,10 +11,8 @@ import {
   Switch,
   ListItemIcon,
   Collapse,
-  InputAdornment,
-  Input,
-  FormControl,
-  TextField
+  TextField,
+  Grid
 } from "@material-ui/core/";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
@@ -25,7 +22,12 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import { withStyles } from "@material-ui/core/styles";
 
+import ItemCard from "../common/ItemCard";
+
 const drawerWidth = "230px";
+
+// for testing
+const arrayLoop = [...new Array(16)];
 
 const styles = theme => ({
   root: {
@@ -80,6 +82,9 @@ const styles = theme => ({
   listItemTextRoot: {
     padding: "0px 4px",
     flex: "none"
+  },
+  gridRoot: {
+    flexGrow: 1
   }
 });
 
@@ -125,6 +130,16 @@ class CommonPage extends Component {
     });
   };
 
+  handlePriceChange = name => event => {
+    const value = event.target.value;
+    this.setState(prevState => ({
+      priceRange: {
+        ...prevState.priceRange,
+        [name]: value
+      }
+    }));
+  };
+
   render() {
     const { drawerOpen, color, label, filterExpand, filterApply } = this.state;
     const { classes } = this.props;
@@ -132,6 +147,7 @@ class CommonPage extends Component {
       ? classes.drawerRootBig
       : classes.drawerRootSmall;
 
+    //console.log(this.state.priceRange);
     return (
       <div className={classes.root}>
         <Drawer
@@ -181,6 +197,7 @@ class CommonPage extends Component {
                     className={classes.textField}
                     placeholder="$"
                     disabled={filterApply.indexOf("price") === -1}
+                    onChange={this.handlePriceChange("min")}
                   />
                   <ListItemText
                     primary="to"
@@ -192,6 +209,7 @@ class CommonPage extends Component {
                     className={classes.textField}
                     placeholder="$"
                     disabled={filterApply.indexOf("price") === -1}
+                    onChange={this.handlePriceChange("max")}
                   />
                   <ListItemSecondaryAction>
                     <Switch
@@ -217,10 +235,18 @@ class CommonPage extends Component {
         )}
 
         <main className={classes.content}>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Deserunt,
-          qui reprehenderit minus velit a culpa aspernatur nesciunt quod et quo
-          repellat facere veritatis, eius assumenda quaerat recusandae officiis
-          optio similique?
+          <Grid container spacing={24}>
+            {arrayLoop.map((item, index) => (
+              <Grid item xs={3} key={index}>
+                <ItemCard
+                  title="Office Supply"
+                  price="3.14"
+                  weight={1}
+                  quantity={12}
+                />
+              </Grid>
+            ))}
+          </Grid>
         </main>
       </div>
     );
