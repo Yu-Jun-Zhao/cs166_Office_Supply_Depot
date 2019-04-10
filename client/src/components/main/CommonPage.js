@@ -36,6 +36,12 @@ const styles = theme => ({
     position: "relative",
     boxShadow: "2px 2px 3px #888888"
   },
+  drawerRootSmall: {
+    width: "8%"
+  },
+  drawerRootBig: {
+    width: drawerWidth
+  },
   drawerArrowButton: {
     display: "flex",
     alignItems: "center",
@@ -95,14 +101,16 @@ class CommonPage extends Component {
   render() {
     const { drawerOpen, color, label, filterApply } = this.state;
     const { classes } = this.props;
-
+    const rootDrawer = drawerOpen
+      ? classes.drawerRootBig
+      : classes.drawerRootSmall;
     return (
       <div className={classes.root}>
         <Drawer
           open={drawerOpen}
           variant="persistent"
           className={classes.drawer}
-          classes={{ paper: classes.drawerPaper }}
+          classes={{ paper: classes.drawerPaper, root: rootDrawer }}
           elevation={6}
           anchor="left"
         >
