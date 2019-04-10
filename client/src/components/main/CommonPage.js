@@ -9,10 +9,19 @@ import {
   Fab,
   Divider,
   ListItemSecondaryAction,
-  Switch
+  Switch,
+  ListItemIcon,
+  Collapse,
+  InputAdornment,
+  Input,
+  FormControl,
+  TextField
 } from "@material-ui/core/";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -58,6 +67,19 @@ const styles = theme => ({
     margin: "1% 1%",
     top: theme.spacing.unit * 2,
     left: theme.spacing.unit * 2
+  },
+  textField: {
+    width: "35%"
+  },
+  listRoot: {
+    paddingBottom: "0px"
+  },
+  listItemRoot: {
+    paddingTop: "0px"
+  },
+  listItemTextRoot: {
+    padding: "0px 4px",
+    flex: "none"
   }
 });
 
@@ -69,7 +91,12 @@ class CommonPage extends Component {
       selection: props.selection,
       color: props.color,
       label: props.label,
-      filterApply: ["price"]
+      filterExpand: ["price"], //expand by default
+      filterApply: [],
+      priceRange: {
+        min: 0,
+        max: 99999
+      }
     };
   }
 
@@ -81,29 +108,30 @@ class CommonPage extends Component {
     this.setState({ drawerOpen: false });
   };
 
-  // A function that takes in a value and returns a function
-  handleSwitchChange = value => () => {
-    const { filterApply } = this.state;
-    const index = filterApply.indexOf(value);
+  // A function that takes in an array (filterExpand or filterApply) and a value and returns a function
+  // To keep track of what filter is applied
+  handleArrayChange = (array, value) => () => {
+    const index = array.indexOf(value);
 
     // Not in array
     if (index === -1) {
-      filterApply.push(value);
+      array.push(value);
     } else {
-      filterApply.splice(index, 1);
+      array.splice(index, 1);
     }
 
     this.setState({
-      filterApply
+      array
     });
   };
 
   render() {
-    const { drawerOpen, color, label, filterApply } = this.state;
+    const { drawerOpen, color, label, filterExpand, filterApply } = this.state;
     const { classes } = this.props;
     const rootDrawer = drawerOpen
       ? classes.drawerRootBig
       : classes.drawerRootSmall;
+
     return (
       <div className={classes.root}>
         <Drawer
@@ -120,16 +148,60 @@ class CommonPage extends Component {
             </IconButton>
           </div>
           <Divider />
-          <List>
-            <ListItem>
-              <ListItemText primary="Price Range " />
-              <ListItemSecondaryAction>
-                <Switch
-                  onChange={this.handleSwitchChange("price")}
-                  checked={filterApply.indexOf("price") !== -1}
-                />
-              </ListItemSecondaryAction>
+          <List classes={{ root: classes.listRoot }}>
+            <ListItem
+              button
+              onClick={this.handleArrayChange(filterExpand, "price")}
+            >
+              <ListItemIcon style={{ marginRight: "0px" }}>
+                <AttachMoneyIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary="Price Range"
+                classes={{ root: classes.listItemTextRoot }}
+              />
+              <ListItemIcon style={{ marginLeft: "15%" }}>
+                {filterExpand.indexOf("price") !== -1 ? (
+                  <ExpandLessIcon />
+                ) : (
+                  <ExpandMoreIcon />
+                )}
+              </ListItemIcon>
             </ListItem>
+            <Collapse
+              in={filterExpand.indexOf("price") !== -1}
+              timeout="auto"
+              unmountOnExit
+            >
+              <List disablePadding>
+                <ListItem className={classes.listItemRoot}>
+                  <TextField
+                    type="number"
+                    margin="normal"
+                    className={classes.textField}
+                    placeholder="$"
+                    disabled={filterApply.indexOf("price") === -1}
+                  />
+                  <ListItemText
+                    primary="to"
+                    classes={{ root: classes.listItemTextRoot }}
+                  />
+                  <TextField
+                    type="number"
+                    margin="normal"
+                    className={classes.textField}
+                    placeholder="$"
+                    disabled={filterApply.indexOf("price") === -1}
+                  />
+                  <ListItemSecondaryAction>
+                    <Switch
+                      onChange={this.handleArrayChange(filterApply, "price")}
+                      checked={filterApply.indexOf("price") !== -1}
+                    />
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </List>
+            </Collapse>
           </List>
         </Drawer>
         {!drawerOpen && (
