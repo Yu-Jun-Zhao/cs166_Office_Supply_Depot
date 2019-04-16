@@ -7,10 +7,14 @@ import {
 } from "./AuthenticationMiddleware/AuthenticationMiddleware";
 import bodyparser from "body-parser";
 
+const googleMapsClient = require('@google/maps').createClient({
+    key: 'AIzaSyB6bOePa__5vSd4Ri5ogaaN8Dw-k_plH-M'
+});
+
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "user",
-  password: "1234@bcd",
+  user: "root",
+  password: "",
   database: "osd",
   port: 3306
 });
@@ -69,15 +73,19 @@ app.get("/api/products/:name/:offset", (req, res) => {
   });
 });
 
-// Returns object that contains an array of objects
-app.get("/api/products/:offset", (req, res) => {
-  const { offset } = req.params;
-  const select_sql = `SELECT * FROM product LIMIT ${offset}`;
-
-  connection.query(select_sql, (error, results) => {
-    if (error) res.send(error);
-    res.send({ products: results });
-  });
+app.post("/api/route", (req, res) => {
+    const { origin, destination } = req.body
+    googleMapsClient.directions({
+        origin: origin,
+        destination: destination,
+        departure_time: new Date(),
+        traffic_model: 'pessimistic'
+    }, function(err, response) {
+        const x = response.json.routes[0].legs[0]
+        if (!err) {
+            res.send({distance: x.distance.text});
+        }
+    });
 });
 
 app.get("/", (req, res) => {
