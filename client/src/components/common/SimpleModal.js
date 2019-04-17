@@ -38,7 +38,7 @@ class SimpleModal extends React.Component {
     };
 
     render() {
-        const { classes, isModalOpen } = this.props;
+        const { classes, isModalOpen, modalType } = this.props;
 
         return (
             <div>
@@ -50,10 +50,14 @@ class SimpleModal extends React.Component {
                 >
                     <div style={getModalStyle()} className={classes.paper}>
                         <Typography variant="h6" id="modal-title">
-                            SUCCESS
+                            {
+                                modalType === 'success' ? <div> SUCCESS </div> : <div> FAIL </div>
+                            }
                         </Typography>
                         <Typography variant="subtitle1" id="simple-modal-description">
-                            Product successfully added
+                            {
+                                modalType === 'success' ? <div>Successfully added product</div> : <div>Failed to add product</div>
+                            }
                         </Typography>
                     </div>
                 </Modal>
