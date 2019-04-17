@@ -5,7 +5,7 @@ import {
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILURE,
   CHANGE_OFFSET,
-  CHANGE_PAGE
+  CHANGE_PAGE, CREATE_PRODUCT_BEGIN, CREATE_PRODUCT_FAILURE, CREATE_PRODUCT_SUCCESS
 } from "./types";
 
 export const fetchProductsBegin = () => ({
@@ -32,15 +32,23 @@ export const changePage = page => ({
   payload: { page }
 });
 
+export const createProductsBegin = () => ({
+  type: CREATE_PRODUCT_BEGIN
+});
+
+export const createProductsSuccess = () => ({
+  type: CREATE_PRODUCT_SUCCESS
+});
+
+export const createProductsFailure = error => ({
+  type: CREATE_PRODUCT_FAILURE
+});
+
 export function fetchProducts(name, offset) {
   return dispatch => {
     dispatch(fetchProductsBegin());
-    return fetch(`/api/products/${name}/${offset}`)
-      .then(res => res.json())
-      .then(json => {
-        dispatch(fetchProductsSuccess(json.products, json.total));
-        return json;
-      })
+    return axios.get(`/api/products/${name}/${offset}`)
+      .then(res => dispatch(fetchProductsSuccess(res.data.products, res.data.total)))
       .catch(error => dispatch(fetchProductsFailure(error)));
   };
 }
@@ -53,4 +61,21 @@ export function fetchProductsByOffset(offset) {
       .then(res => dispatch(fetchProductsSuccess(res.data, offset)))
       .catch(error => dispatch(fetchProductsFailure(error)));
   };
+}
+
+export function createProduct(pName, quantity, price, weight) {
+  return dispatch => {
+    dispatch(fetchProductsBegin());
+    return axios.post(`/api/product/add`, {
+      pName: pName,
+      quantity: quantity,
+      price: price,
+      weight: weight
+    })
+    .then(res => {
+      console.log(res)
+      dispatch(createProductsSuccess())
+    })
+    .catch(error => dispatch(createProductsFailure()));
+  }
 }
