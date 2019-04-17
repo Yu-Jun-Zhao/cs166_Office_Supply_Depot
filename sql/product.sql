@@ -1,0 +1,4 @@
+
+INSERT INTO `product` (`product_id`,`p_name`,`quantity`,`price`,`weight`,`description`,`imgPath`,`type`) VALUES (1,'Ticonderoga The World Best Pencils',20,3.50,0.7500,'Ten pencils per pack. Worlds best pencils','https://i5.walmartimages.com/asr/f7cb71ca-7753-4ce2-a42e-098593fa5f0c_1.5d7544ede3facfb6f45d1445b36c2512.jpeg','supply');
+INSERT INTO `product` (`product_id`,`p_name`,`quantity`,`price`,`weight`,`description`,`imgPath`,`type`) VALUES (2,'BIC Pencil XTra Life',82,5.50,0.8900,'40 per pack','https://smedia.webcollage.net/rwvfp/wc/cp/1536151245233_b8922b1d-b5b0-41de-b755-73dab84c96fc/module/bic/_cp/products/1536072499946/tab-bf7eefdb-b9f5-4c6d-9375-6af5ea50ee43/1d8c422a-81ca-4ff6-84c0-56fd821711e9.jpg.w1920.jpg','supply');
+INSERT INTO `product` (`product_id`,`p_name`,`quantity`,`price`,`weight`,`description`,`imgPath`,`type`) VALUES (3,'Allary Eraser Combo Pack',12,2.50,0.6300,'7 erasers per pack','http://www.studentsupply.com/images/761.jpg','supply');

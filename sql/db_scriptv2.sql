@@ -1,7 +1,7 @@
 
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=1;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
@@ -35,10 +35,10 @@ DROP TABLE IF EXISTS `osd`.`Cart` ;
 
 CREATE TABLE IF NOT EXISTS `osd`.`Cart` (
   `cart_id` INT NOT NULL AUTO_INCREMENT,
-  `Customer_user_id` VARCHAR(30) NOT NULL UNIQUE,
-  PRIMARY KEY (`cart_id`, `Customer_user_id`),
+  `user_id` VARCHAR(30) NOT NULL UNIQUE,
+  PRIMARY KEY (`cart_id`, `user_id`),
   CONSTRAINT `fk_Cart_Customer1`
-    FOREIGN KEY (`Customer_user_id`)
+    FOREIGN KEY (`user_id`)
     REFERENCES `osd`.`Customer` (`user_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
@@ -53,9 +53,12 @@ DROP TABLE IF EXISTS `osd`.`Product` ;
 CREATE TABLE IF NOT EXISTS `osd`.`Product` (
   `product_id` INT NOT NULL AUTO_INCREMENT,
   `p_name` VARCHAR(80) NOT NULL,
-  `quantity` INT NOT NULL,
-  `price` DECIMAL(6,2) NOT NULL,
-  `weight` DECIMAL(8,4) NOT NULL,
+  `quantity` INT UNSIGNED NOT NULL,
+  `price` DECIMAL(6,2) UNSIGNED NOT NULL,
+  `weight` DECIMAL(8,4) UNSIGNED NOT NULL,
+  `description` VARCHAR(3000) NOT NULL,
+  `imgPath` VARCHAR(1000),
+  `type` VARCHAR(25),
   PRIMARY KEY (`product_id`),
   UNIQUE INDEX `p_name_UNIQUE` (`p_name` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -64,21 +67,20 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `osd`.`Item`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `osd`.`Item` ;
+DROP TABLE IF EXISTS `osd`.`Cart_Item` ;
 
-CREATE TABLE IF NOT EXISTS `osd`.`Item` (
+CREATE TABLE IF NOT EXISTS `osd`.`Cart_Item` (
   `item_id` INT NOT NULL AUTO_INCREMENT,
-  `Cart_cart_id` INT NOT NULL,
-  `Product_product_id` INT NOT NULL,
+  `cart_id` INT NOT NULL,
+  `product_id` INT NOT NULL,
   PRIMARY KEY (`item_id`),
-  UNIQUE INDEX `Product_product_id_UNIQUE` (`Product_product_id` ASC) VISIBLE,
   CONSTRAINT `fk_Item_Cart1`
-    FOREIGN KEY (`Cart_cart_id`)
+    FOREIGN KEY (`cart_id`)
     REFERENCES `osd`.`Cart` (`cart_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Item_Product1`
-    FOREIGN KEY (`Product_product_id`)
+    FOREIGN KEY (`product_id`)
     REFERENCES `osd`.`Product` (`product_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -108,14 +110,14 @@ DROP TABLE IF EXISTS `osd`.`Order` ;
 CREATE TABLE IF NOT EXISTS `osd`.`Order` (
   `order_id` INT NOT NULL AUTO_INCREMENT,
   `order_date` DATE NOT NULL,
-  `Customer_user_id` VARCHAR(30) NOT NULL,
+  `user_id` VARCHAR(30) NOT NULL,
   `s_address_id` INT NOT NULL,
   `weight` DECIMAL(8,4) NOT NULL,
   `price` DECIMAL(8,2) NOT NULL,
   PRIMARY KEY (`order_id`),
-  UNIQUE INDEX `Customer_user_id_UNIQUE` (`Customer_user_id` ASC) VISIBLE,
+  UNIQUE INDEX `Customer_user_id_UNIQUE` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_Order_Customer1`
-    FOREIGN KEY (`Customer_user_id`)
+    FOREIGN KEY (`user_id`)
     REFERENCES `osd`.`Customer` (`user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -133,18 +135,18 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `osd`.`OrderItem` ;
 
 CREATE TABLE IF NOT EXISTS `osd`.`OrderItem` (
-  `order_id` INT NOT NULL AUTO_INCREMENT,
-  `Order_order_id` INT NOT NULL,
-  `Product_product_id` INT NOT NULL,
-  PRIMARY KEY (`order_id`, `Order_order_id`),
-  UNIQUE INDEX `Product_product_id_UNIQUE` (`Product_product_id` ASC) VISIBLE,
+  `order_item_id` INT NOT NULL AUTO_INCREMENT,
+  `order_id` INT NOT NULL,
+  `product_id` INT NOT NULL,
+  PRIMARY KEY (`order_item_id`, `order_id`),
+  UNIQUE INDEX `Product_product_id_UNIQUE` (`product_id` ASC) VISIBLE,
   CONSTRAINT `fk_OrderItems_Order1`
-    FOREIGN KEY (`Order_order_id`)
+    FOREIGN KEY (`order_id`)
     REFERENCES `osd`.`Order` (`order_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_OrderItem_Product1`
-    FOREIGN KEY (`Product_product_id`)
+    FOREIGN KEY (`product_id`)
     REFERENCES `osd`.`Product` (`product_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

@@ -1,0 +1,27 @@
+
+DELIMITER $$
+DROP TRIGGER IF EXISTS AFTER_CREATE_USER$$
+CREATE TRIGGER AFTER_CREATE_USER 
+	AFTER INSERT ON customer
+    FOR EACH ROW
+	BEGIN
+		INSERT INTO cart(user_id) VALUES (NEW.user_id);
+    END$$
+    
+DROP TRIGGER IF EXISTS BEFORE_INSERT_CARTITEM$$
+CREATE TRIGGER BEFORE_INSERT_CARTITEM
+	BEFORE INSERT ON cart_item
+    FOR EACH ROW
+    BEGIN
+		UPDATE product SET product.quantity = product.quantity - 1 WHERE product.product_id = NEW.product_id;
+    END$$
+
+DROP TRIGGER IF EXISTS AFTER_DELETE_CARTITEM$$
+CREATE TRIGGER AFTER_DELETE_CARTITEM
+	AFTER DELETE ON cart_item
+    FOR EACH ROW
+    BEGIN 
+		UPDATE product SET product.quantity = product.quantity + 1 WHERE product.product_id = OLD.product_id;
+    END$$
+
+DELIMITER ;
