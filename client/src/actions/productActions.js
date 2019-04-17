@@ -5,7 +5,7 @@ import {
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILURE,
   CHANGE_OFFSET,
-  CHANGE_PAGE, CREATE_PRODUCT_BEGIN, CREATE_PRODUCT_FAILURE, CREATE_PRODUCT_SUCCESS
+  CHANGE_PAGE, CREATE_PRODUCT_BEGIN, CREATE_PRODUCT_FAILURE, CREATE_PRODUCT_SUCCESS, CLOSE_MODAL
 } from "./types";
 
 export const fetchProductsBegin = () => ({
@@ -65,17 +65,19 @@ export function fetchProductsByOffset(offset) {
 
 export function createProduct(pName, quantity, price, weight) {
   return dispatch => {
-    dispatch(fetchProductsBegin());
+    dispatch(createProductsBegin());
     return axios.post(`/api/product/add`, {
       pName: pName,
       quantity: quantity,
       price: price,
       weight: weight
     })
-    .then(res => {
-      console.log(res)
-      dispatch(createProductsSuccess())
-    })
+    .then(res => dispatch(createProductsSuccess()))
     .catch(error => dispatch(createProductsFailure()));
   }
 }
+
+export const closeModal = () => ({
+  type: CLOSE_MODAL
+});
+
