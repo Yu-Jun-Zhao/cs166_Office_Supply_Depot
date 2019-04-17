@@ -41,6 +41,12 @@ const styles = theme => ({
   table: {
     minWidth: 700,
   },
+  ordertable:{
+    width:70,
+    height: 70,
+    margin: 'right',
+    right: 30,
+  },
   center: {
     margin: 'auto',
     top: 0,
@@ -127,30 +133,34 @@ class Shoppingcart extends Component{
           </Table>
         </Paper>
       </div>
-
       <div>
 		    <h2>Order Summary</h2>
-			     <Table >
-            <TableHead><TableRow>Subtotal</TableRow></TableHead>
-            </Table>
-			         <div><h4>{formatter.format(subtotal)}</h4></div> &emsp;&emsp;&emsp;&emsp;
-			      <div>
-			       <label>Tax(5%)</label>
-			          <div>{formatter.format(tax*subtotal)}</div> &emsp;&emsp;&emsp;&emsp;
-			       </div>
-			       <div>
-			          <label>Grand Total</label>
-			              <div>{formatter.format(grandtotal)}</div> <br />
-              </div>
-		       </div>
-			     <div><Button component={Link} to="/checkout" variant="contained" color="blue">Checkout</Button></div>
-		   </div>
+      </div>
+			     <Table className={classes.ordertable}>
+            <TableBody>
+              <TableRow>
+                <TableCell>Subtotal</TableCell>
+                <TableCell>{formatter.format(subtotal)}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Tax({tax}%)</TableCell>
+                <TableCell>{formatter.format(tax*subtotal)}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>Grand Total</TableCell>
+                <TableCell>{formatter.format(grandtotal)}</TableCell>
+              </TableRow>
+            </TableBody>
+		       </Table>
+           <Button component={Link} to="/checkout" variant="contained" color="blue">
+            Checkout</Button>
+           </div>
     );
   }
 }
 
 const ItemsDisplay = ({ product }) => {
-  /*const { classes, pName, price, weight, quantity } = product*/
+  {/*const { classes, pName, price, weight, quantity } = product*/}
   const { pName, price, weight, quantity } = product
   return (
       <TableRow key = {product.id}>
