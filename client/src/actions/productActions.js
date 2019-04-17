@@ -40,7 +40,7 @@ export const createProductsSuccess = () => ({
   type: CREATE_PRODUCT_SUCCESS
 });
 
-export const createProductsFailure = error => ({
+export const createProductsFailure = () => ({
   type: CREATE_PRODUCT_FAILURE
 });
 
