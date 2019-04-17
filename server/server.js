@@ -73,8 +73,16 @@ app.get("/api/products/:name/:offset", (req, res) => {
   });
 });
 
+/* Might need this later
 app.post("/api/route", (req, res) => {
     const { origin, destination } = req.body
+    googleMapsClient.geocode({
+        address: origin
+    }, function(err, response) {
+        if (!err) {
+            console.log(response.json.results[0]["geometry"]["location"]);
+        }
+    });
     googleMapsClient.directions({
         origin: origin,
         destination: destination,
@@ -85,6 +93,18 @@ app.post("/api/route", (req, res) => {
         if (!err) {
             res.send({distance: x.distance.text});
         }
+    });
+
+});
+*/
+
+app.post("/api/product/add", (req, res) => {
+    const { pName, weight, quantity, price } = req.body
+    const insert_sql = `INSERT INTO product (pName, quantity, price, weight) values ('${pName}', '${weight}', '${quantity}', '${price}')`;
+
+    connection.query(insert_sql, (error, results) => {
+        if (error) res.send({ success: 0 });
+        res.send({ success: 1 })
     });
 });
 
