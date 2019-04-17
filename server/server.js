@@ -103,7 +103,11 @@ app.post("/api/product/add", (req, res) => {
     const insert_sql = `INSERT INTO product (pName, quantity, price, weight) values ('${pName}', '${weight}', '${quantity}', '${price}')`;
 
     connection.query(insert_sql, (error, results) => {
-        if (error) res.send({ success: 0 });
+        if (error) {
+            console.log(error)
+            res.send({ success: 0 });
+            return;
+        }
         res.send({ success: 1 })
     });
 });
