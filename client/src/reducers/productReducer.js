@@ -6,7 +6,8 @@ import {
   CHANGE_PAGE,
   CREATE_PRODUCT_BEGIN,
   CREATE_PRODUCT_SUCCESS,
-  CREATE_PRODUCT_FAILURE
+  CREATE_PRODUCT_FAILURE,
+  CLOSE_MODAL
 } from "../actions/types";
 
 const initialState = {
@@ -16,8 +17,8 @@ const initialState = {
   pageCount: 0,
   offset: 0,
   page: 0,
-  successModal: false,
-  failureModal: false
+  isModalOpen: false,
+  modalType: null
 };
 
 export default function productReducer(state = initialState, action) {
@@ -63,13 +64,20 @@ export default function productReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        successModal: true
+        isModalOpen: true,
+        modalType: 'success'
       }
     case CREATE_PRODUCT_FAILURE:
       return {
         ...state,
         loading: false,
-        failureModal: true
+        isModalOpen: true,
+        modalType: 'fail'
+      }
+    case CLOSE_MODAL:
+      return {
+        ...state,
+        isModalOpen: false
       }
     default:
       return state;
