@@ -5,6 +5,7 @@ import { withAuth } from "@okta/okta-react";
 import { checkAuthentication } from "../../actions/authenticateActions";
 import TableItemsList from "../common/TableItemsList";
 import ItemAdder from "../common/ItemAdder";
+import SimpleModal from "../common/SimpleModal"
 
 class Admin extends Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class Admin extends Component {
       <div>
         <h1>Admin</h1>
         <ItemAdder />
+        <SimpleModal/>
       </div>
     );
   }
