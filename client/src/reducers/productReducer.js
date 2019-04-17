@@ -3,7 +3,10 @@ import {
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILURE,
   CHANGE_OFFSET,
-  CHANGE_PAGE
+  CHANGE_PAGE,
+  CREATE_PRODUCT_BEGIN,
+  CREATE_PRODUCT_SUCCESS,
+  CREATE_PRODUCT_FAILURE
 } from "../actions/types";
 
 const initialState = {
@@ -12,7 +15,9 @@ const initialState = {
   error: null,
   pageCount: 0,
   offset: 0,
-  page: 0
+  page: 0,
+  successModal: false,
+  failureModal: false
 };
 
 export default function productReducer(state = initialState, action) {
@@ -49,6 +54,23 @@ export default function productReducer(state = initialState, action) {
         ...state,
         page: action.payload.page
       };
+    case CREATE_PRODUCT_BEGIN:
+      return {
+        ...state,
+        loading: true
+      }
+    case CREATE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        successModal: true
+      }
+    case CREATE_PRODUCT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        failureModal: true
+      }
     default:
       return state;
   }
