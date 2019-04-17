@@ -9,6 +9,8 @@ import { withStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/
 import blue from '@material-ui/core/colors/blue';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
+import ButtonBase from '@material-ui/core/ButtonBase';
+
 
 const color = blue[50];
 const theme = createMuiTheme({
@@ -48,7 +50,11 @@ const styles = theme => ({
     display: 'block',
     maxWidth: '100%',
     maxHeight: '100%',
-  }
+  },
+  imgsize:{
+    width: 468,
+    height: 468,
+  },
 });
 
 /* test data */
@@ -58,8 +64,8 @@ function createData(pName, price, weight, desc, quantity) {
   return { pName, price, weight, desc, quantity };
 }
 
-const product1 = createData('Orange Pencil Case', 1, 3.0,
-  'A darling orange pencil case! Store your pens, pencils, highlighters in this for organization', 15)
+const product1 = createData('Monster Pencil Case', 1, 3.0,
+  'A zipped monster pencil case! Store your pens, pencils, highlighters in this for organization', 15)
 
 
 class ItemTemplate extends React.Component{
@@ -78,8 +84,10 @@ class ItemTemplate extends React.Component{
             <Grid item xs={12}>
               <Typography variant='h4'>{product1.pName}</Typography>
             </Grid>
-            <Grid item xs={6}>
-              <Paper>image</Paper>
+            <Grid item xs={6} >
+              <ButtonBase className={classes.imgsize}>
+                <img className={classes.image} alt="image" src='https://upload.wikimedia.org/wikipedia/commons/f/fe/ZIPIT_pencil_case.jpg'></img>
+              </ButtonBase>
             </Grid>
             <Grid item xs={6}>
               <Paper className={classes.paper}>
