@@ -41,7 +41,6 @@ class Admin extends Component {
       <div>
         <h1>Admin</h1>
         <ItemAdder />
-        <TableItemsList isAuthenticated={this.state.isAuthenticated} />
       </div>
     );
   }
