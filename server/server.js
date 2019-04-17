@@ -105,10 +105,11 @@ app.post("/api/product/add", (req, res) => {
     connection.query(insert_sql, (error, results) => {
         if (error) {
             console.log(error)
-            res.send({ success: 0 });
-            return;
+            return res.status(400).send({
+                message: 'Error'
+            })
         }
-        res.send({ success: 1 })
+        res.sendStatus(200)
     });
 });
 
