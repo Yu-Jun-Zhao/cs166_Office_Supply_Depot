@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import connection from "./db";
+
 import {
   authenticationRequired,
   adminAuthenticationRequired
@@ -8,6 +9,7 @@ import {
 //import bodyparser from "body-parser";
 
 import products from "./routes/product";
+import user from "./routes/user";
 
 // Create database on the fly
 // For Development only
@@ -34,7 +36,9 @@ app.use(cors());
   }
  */
 
+// ADD ROUTES
 app.use("/api/products", products);
+app.use("/api/user", user);
 
 /// TODO
 /**
