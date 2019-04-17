@@ -98,7 +98,9 @@ CREATE TABLE IF NOT EXISTS `osd`.`Shipping_Address` (
   `city` VARCHAR(45) NOT NULL,
   `state` CHAR(2) NOT NULL,
   `zip` DECIMAL(5) NOT NULL,
-  PRIMARY KEY (`s_address_id`))
+  PRIMARY KEY (`s_address_id`),
+  UNIQUE KEY(`address`, `city`, `state`, `zip`)
+  )
 ENGINE = InnoDB;
 
 
