@@ -100,7 +100,6 @@ class Shoppingcart extends Component{
           <Table className={classes.table}>
             <TableHead>
               <TableRow>
-                <TableCell>Image</TableCell>
                 <TableCell>Item</TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Quantity</TableCell>
@@ -117,7 +116,6 @@ class Shoppingcart extends Component{
                 subtotal += t;
                 return(
                 <TableRow key = {row.id}>
-                    <TableCell><h3> image</h3></TableCell>
           				  <TableCell>{row.pName}</TableCell>
           			    <TableCell>{row.price}</TableCell>
           	        <TableCell><input type="number" default value={row.quantity} min="1">
@@ -152,6 +150,7 @@ class Shoppingcart extends Component{
               </TableRow>
             </TableBody>
 		       </Table>
+           <br />
            <Button component={Link} to="/checkout" variant="contained" color="blue">
             Checkout</Button>
            </div>
@@ -164,7 +163,6 @@ const ItemsDisplay = ({ product }) => {
   const { pName, price, weight, quantity } = product
   return (
       <TableRow key = {product.id}>
-          <TableCell><h3> image</h3></TableCell>
 				  <TableCell>name{pName}</TableCell>
 			    <TableCell>price{product.price}</TableCell>
 	        <TableCell><input type="number" value={product.quantity} min="1">

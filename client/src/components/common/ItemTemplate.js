@@ -52,8 +52,9 @@ const styles = theme => ({
     maxHeight: '100%',
   },
   imgsize:{
-    width: 468,
-    height: 468,
+    color: theme.palette.common.white,
+    width: 480,
+    height: 300,
   },
 });
 
@@ -85,9 +86,9 @@ class ItemTemplate extends React.Component{
               <Typography variant='h4'>{product1.pName}</Typography>
             </Grid>
             <Grid item xs={6} >
-              <ButtonBase className={classes.imgsize}>
+              <Paper className={classes.imgsize}>
                 <img className={classes.image} alt="image" src='https://upload.wikimedia.org/wikipedia/commons/f/fe/ZIPIT_pencil_case.jpg'></img>
-              </ButtonBase>
+              </Paper>
             </Grid>
             <Grid item xs={6}>
               <Paper className={classes.paper}>
