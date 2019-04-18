@@ -30,8 +30,14 @@ DROP PROCEDURE IF EXISTS createOrder$$
 CREATE PROCEDURE createOrder(IN user_id VARCHAR(30), IN order_date DATE, IN s_address VARCHAR(100), 
 								IN s_city VARCHAR(45), IN s_state CHAR(2), IN s_zip DECIMAL(5,0))
 BEGIN
+	DECLARE b_rollback TINYINT DEFAULT FALSE;
+    
 	DECLARE shipping_id INT;
     DECLARE new_order_id INT;
+    DECLARE EXIT HANDLER FOR sqlexception SET b_rollback = true;
+
+    START TRANSACTION; 
+    
     INSERT IGNORE INTO `shipping_address` (address, city, state, zip) VALUES(s_address, s_city, s_state, s_zip); 
     SET shipping_id = (SELECT s_address_id FROM shipping_address 
 		WHERE address = s_address AND city = s_city AND state = s_state AND zip = s_zip LIMIT 1);
@@ -39,6 +45,11 @@ BEGIN
 		VALUES (order_date, user_id, shipping_id, 0, 0);
     SET new_order_id = last_insert_id();
     CALL insertToOrderItems(user_id, new_order_id);
+    
+    IF b_rollback THEN ROLLBACK;
+    ELSE COMMIT;
+    END IF;
+    
 END$$
 
 DELIMITER ;
