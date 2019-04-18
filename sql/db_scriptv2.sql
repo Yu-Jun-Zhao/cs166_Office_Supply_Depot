@@ -117,7 +117,6 @@ CREATE TABLE IF NOT EXISTS `osd`.`Order` (
   `weight` DECIMAL(8,4) NOT NULL,
   `price` DECIMAL(8,2) NOT NULL,
   PRIMARY KEY (`order_id`),
-  UNIQUE INDEX `Customer_user_id_UNIQUE` (`user_id` ASC) VISIBLE,
   CONSTRAINT `fk_Order_Customer1`
     FOREIGN KEY (`user_id`)
     REFERENCES `osd`.`Customer` (`user_id`)
@@ -134,14 +133,13 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `osd`.`OrderItem`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `osd`.`OrderItem` ;
+DROP TABLE IF EXISTS `osd`.`Order_Item` ;
 
-CREATE TABLE IF NOT EXISTS `osd`.`OrderItem` (
+CREATE TABLE IF NOT EXISTS `osd`.`Order_Item` (
   `order_item_id` INT NOT NULL AUTO_INCREMENT,
   `order_id` INT NOT NULL,
   `product_id` INT NOT NULL,
   PRIMARY KEY (`order_item_id`, `order_id`),
-  UNIQUE INDEX `Product_product_id_UNIQUE` (`product_id` ASC) VISIBLE,
   CONSTRAINT `fk_OrderItems_Order1`
     FOREIGN KEY (`order_id`)
     REFERENCES `osd`.`Order` (`order_id`)
