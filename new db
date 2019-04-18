@@ -1,0 +1,37 @@
+insert into item values (${item_id}, ${cart_id}, ${product_id})
+
+// ADD AN ORDER
+
+app.post("/Orders/add", (req, res) => {
+  console.log(req.body);
+  const {order_date, user_id, s_address_id, weight, price} = req.body;
+  console.log(order_date, user_id, s_address_id, weight, price);
+  const insert_order = `CALL procedure ...`;
+  console.log(insert_order);
+
+  connection.query(insert_order, (error, results) => {
+    if(error)
+        return res.send(error)
+    else   
+        return res.send('successfully added order')
+  }); 
+});
+
+// GET SHIPPING ADDRESS from an order
+
+app.get('/search/:s_addy', (req, res)=>{
+  const { order_id } = req.params;
+  const s_addy = `select * from Shipping_Address where 
+                      s_address_id = (select s_address_id from Order where order_id = %${order_id})`;
+  connection.query(s_addy, (err, results)=>{
+      if(err)
+          return res.send(err)
+      else {
+          return res.json({
+              data: results})
+      }
+  });
+});
+
+// INSERT TO A CART
+insert into cart values (
