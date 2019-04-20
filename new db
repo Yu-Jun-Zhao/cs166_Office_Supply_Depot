@@ -4,9 +4,9 @@ insert into item values (${item_id}, ${cart_id}, ${product_id})
 
 app.post("/Orders/add", (req, res) => {
   console.log(req.body);
-  const {order_date, user_id, s_address_id, weight, price} = req.body;
-  console.log(order_date, user_id, s_address_id, weight, price);
-  const insert_order = `CALL new_student(?, ?, ?, ?, ?, ?, ?)", [order_date, user_id, s_address_id, weight, price]`;
+  const {user_id, order_date, s_address, s_city, s_state, s_zip} = req.body;
+  console.log(user_id, order_date, s_address, s_city, s_state, s_zip);
+  const insert_order = `CALL createOrder(?, ?, ?, ?, ?, ?)", [user_id, order_date, s_address, s_city, s_state, s_zip]`;
   console.log(insert_order);
 
   connection.query(insert_order, (error, results) => {
