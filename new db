@@ -6,7 +6,7 @@ app.post("/Orders/add", (req, res) => {
   console.log(req.body);
   const {order_date, user_id, s_address_id, weight, price} = req.body;
   console.log(order_date, user_id, s_address_id, weight, price);
-  const insert_order = `CALL procedure ...`;
+  const insert_order = `CALL new_student(?, ?, ?, ?, ?, ?, ?)", [order_date, user_id, s_address_id, weight, price]`;
   console.log(insert_order);
 
   connection.query(insert_order, (error, results) => {
