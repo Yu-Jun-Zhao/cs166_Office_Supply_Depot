@@ -1,5 +1,6 @@
 DELIMITER $$
 
+## for order
 DROP PROCEDURE IF EXISTS insertToOrderItems$$
 CREATE PROCEDURE insertToOrderItems(IN in_user_id VARCHAR(30), IN in_order_id INT)
 BEGIN
@@ -34,7 +35,7 @@ BEGIN
     
 	DECLARE shipping_id INT;
     DECLARE new_order_id INT;
-    DECLARE EXIT HANDLER FOR sqlexception SET b_rollback = true;
+    DECLARE CONTINUE HANDLER FOR sqlexception SET b_rollback = true;
 
     START TRANSACTION; 
     
@@ -52,5 +53,54 @@ BEGIN
     
 END$$
 
+## for cart
+## WILL REMOVE ALL ITEMS FROM CART THEN ADD ITEMS BACK AGAIN
+DROP PROCEDURE IF EXISTS addItemsToCart$$
+CREATE PROCEDURE addItemsToCart(IN in_cart_id INT, IN in_product_id INT, IN in_quantity INT UNSIGNED)
+BEGIN
+	
+	DECLARE i INT DEFAULT in_quantity;
+	DECLARE stock INT DEFAULT (SELECT quantity FROM product WHERE product_id = in_product_id); 
+    DECLARE b_rollback TINYINT DEFAULT FALSE;
+
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET b_rollback = true; 
+    START TRANSACTION;
+    
+    CALL removeAllItemsFromCart(in_cart_id, in_product_id);
+    
+    IF in_quantity <= stock THEN
+		WHILE i > 0 DO
+			INSERT INTO cart_item (cart_id, product_id) VALUES (in_cart_id, in_product_id);
+			SET i = i - 1;
+		END WHILE;
+    
+	UPDATE product SET product.quantity = product.quantity - in_quantity WHERE product_id = in_product_id;
+    END IF;
+    
+    IF b_rollback THEN rollback;
+    ELSE commit;
+    END IF;
+    
+END$$ 
+
+
+## REMOVE ALL FROM CART AND ADD THEM BACK TO PRODUCT
+DROP PROCEDURE IF EXISTS removeAllItemsFromCart$$
+CREATE PROCEDURE removeAllItemsFromCart(IN in_cart_id INT, IN in_product_id INT)
+BEGIN
+	DECLARE quantity INT;
+    DECLARE b_rollback TINYINT DEFAULT FALSE;
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET b_rollback = true;
+    START TRANSACTION;
+    
+    SET quantity = (SELECT count(*) FROM cart_item WHERE cart_id = in_cart_id AND product_id = in_product_id);
+    DELETE FROM cart_item WHERE cart_id = in_cart_id AND product_id = in_product_id;
+	UPDATE product SET product.quantity = product.quantity + quantity WHERE product_id = in_product_id;
+    
+	IF b_rollback THEN rollback;
+    ELSE commit;
+    END IF;
+    
+END$$
 DELIMITER ;
 

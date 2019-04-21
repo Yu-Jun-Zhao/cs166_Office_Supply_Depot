@@ -10,6 +10,7 @@ DROP DATABASE osd;
 INSERT INTO Cart_Item (cart_id, product_id) VALUES (13213,12313);
 DELETE FROM Cart_Item WHERE item_id = 2313213;
 CALL createOrder("testing","1 Washington", "San Jose", "CA", 9222202);
+CALL removeAllItemsFromCart(3,3);
 
 
 ## EXAMPLE QUERIES FOR DB
@@ -17,7 +18,21 @@ INSERT INTO customer (user_id, first_name, last_name) VALUES ("aaa356", "test2",
 INSERT INTO customer (user_id, first_name, last_name) VALUES ("bbb356", "test2", "test") ON DUPLICATE KEY UPDATE user_id = user_id;
 INSERT INTO customer (user_id, first_name, last_name) VALUES ("ccc356", "test2", "test") ON DUPLICATE KEY UPDATE user_id = user_id;
 
-INSERT INTO Cart_Item (cart_id, product_id) VALUES (1,2);
+##INSERT INTO Cart_Item (cart_id, product_id) VALUES (1,2);
+##INSERT INTO Cart_Item (cart_id, product_id) VALUES (2,1);
+##INSERT INTO Cart_Item (cart_id, product_id) VALUES (3,1);
+
+CALL addItemsToCart(1,2,5);
+CALL addItemsToCart(2,1,7);
+CALL addItemsToCart(3,1,15);
+CALL addItemsToCart(3,3,12);
+
+CALL removeAllItemsFromCart(1,2);
+CALL removeAllItemsFromCart(2,1);
+CALL removeAllItemsFromCart(3,1);
+CALL removeAllItemsFromCart(3,3);
+
+
 DELETE FROM Cart_Item WHERE item_id = 2;
 
 CALL createOrder("aaa356",CURDATE(),"1 Washington", "San Jose", "CA", 92202);
