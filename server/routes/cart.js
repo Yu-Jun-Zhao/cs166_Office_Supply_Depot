@@ -4,6 +4,7 @@ import connection from "../db";
 
 // TODO: Cart route should be protected
 
+/*
 // @router GET /api/cart/
 // @desc   Retrieve the cartId
 // @access private
@@ -16,6 +17,7 @@ router.get("/", (req, res) => {
     res.json(results);
   });
 });
+*/
 
 //  @router POST /api/cart/add
 //  @desc   Add items to cartItems
@@ -24,8 +26,13 @@ router.post("/add", (req, res) => {
   const { cartId, productId, quantity } = req.body;
   const sql = `CALL addItemsToCart(${cartId}, ${productId}, ${quantity})`;
   connection.query(sql, (err, results) => {
-    if (err) return res.send(err);
-    res.json({ success: true });
+    if (err) return res.send({ error: "Fail to add items to cart" });
+    const nestedSQL = `SELECT product_id, COUNT(*) AS quantity FROM cart_item WHERE cart_id = ${cartId} AND product_id = ${productId}`;
+    connection.query(nestedSQL, (err, results) => {
+      const quantity = results[0].quantity;
+      const product = results[0].product_id;
+      return res.json({ product, quantity });
+    });
   });
 });
 

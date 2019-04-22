@@ -12,8 +12,12 @@ router.put("/", (req, res) => {
                 ON DUPLICATE KEY UPDATE user_id = user_id`;
 
   connection.query(sql, (error, results) => {
-    if (error) res.send(error);
-    res.json(results);
+    if (error) res.send({ error: "Unable to login" });
+    const sql = `SELECT cart_id FROM cart WHERE user_id = "${userId}"`;
+    connection.query(sql, (err, results) => {
+      if (err) res.send({ error: "Unable to retrieve cart id" });
+      res.json(results);
+    });
   });
 });
 
