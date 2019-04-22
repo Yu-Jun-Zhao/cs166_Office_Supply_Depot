@@ -1,12 +1,40 @@
 DELIMITER $$
 
 ## for order
+## order is completed after 2 days; for simulation purpose it will be 2 minutes
+## order status:  0 == in progress, 1 == delivered
+DROP PROCEDURE IF EXISTS checkOrderStatus$$
+CREATE PROCEDURE checkOrderStatus(IN in_order_id INT)
+BEGIN
+	DECLARE s_orderStatus TINYINT;
+	DECLARE s_orderDate DATE;
+    DECLARE dateDiff INT;
+    DECLARE b_rollback TINYINT DEFAULT FALSE;
+    DECLARE CONTINUE HANDLER FOR sqlexception SET b_rollback = TRUE;
+    SELECT `status`, order_date INTO s_orderStatus, s_orderDate FROM `order` WHERE order_id = in_order_id;
+    
+    START TRANSACTION;
+    ## If Order in progress
+    IF s_orderStatus = 0 THEN
+		SET dateDiff = timestampdiff(MINUTE, s_orderDate, now());
+		IF dateDiff > 2 THEN
+			UPDATE `order` SET `status` = 1 WHERE order_id = in_order_id;
+        END IF;
+    END IF;
+    IF b_rollback THEN rollback;
+    ELSE commit;
+    END IF;
+    
+END$$
+
 DROP PROCEDURE IF EXISTS insertToOrderItems$$
 CREATE PROCEDURE insertToOrderItems(IN in_user_id VARCHAR(30), IN in_order_id INT)
 BEGIN
 	DECLARE done TINYINT DEFAULT FALSE;
 	DECLARE p_id INT;
     DECLARE c_id INT DEFAULT (SELECT cart_id FROM cart WHERE user_id = in_user_id);
+    DECLARE totalItems INT DEFAULT 0;
+
     DECLARE items_cursor CURSOR FOR SELECT product_id FROM cart_item WHERE cart_id = c_id;
     
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
@@ -19,12 +47,19 @@ BEGIN
 	END IF;
     
     INSERT INTO order_item (order_id, product_id) VALUES (in_order_id,p_id);
+    SET totalItems = totalItems + 1;
     
     END LOOP;
     CLOSE items_cursor;
-
-	DELETE FROM cart_item WHERE cart_id = c_id;
-
+    
+    ## If there are items delete from cart
+    ## Else delete the order from order;
+	IF totalItems > 0 
+    THEN
+		DELETE FROM cart_item WHERE cart_id = c_id;
+    ELSE 
+		DELETE FROM `order` WHERE order_id = in_order_id;
+	END IF;
 END$$
 
 DROP PROCEDURE IF EXISTS createOrder$$
@@ -42,8 +77,8 @@ BEGIN
     INSERT IGNORE INTO `shipping_address` (address, city, state, zip) VALUES(s_address, s_city, s_state, s_zip); 
     SET shipping_id = (SELECT s_address_id FROM shipping_address 
 		WHERE address = s_address AND city = s_city AND state = s_state AND zip = s_zip LIMIT 1);
-	INSERT INTO `order` (order_date, user_id, s_address_id, weight, price) 
-		VALUES (order_date, user_id, shipping_id, 0, 0);
+	INSERT INTO `order` (order_date, user_id, s_address_id, weight, price, `status`) 
+		VALUES (order_date, user_id, shipping_id, 0, 0, 0);
     SET new_order_id = last_insert_id();
     CALL insertToOrderItems(user_id, new_order_id);
     

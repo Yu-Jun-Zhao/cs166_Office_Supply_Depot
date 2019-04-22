@@ -116,6 +116,7 @@ CREATE TABLE IF NOT EXISTS `osd`.`Order` (
   `s_address_id` INT NOT NULL,
   `weight` DECIMAL(8,4) NOT NULL,
   `price` DECIMAL(8,2) NOT NULL,
+  `status` TINYINT(1) NOT NULL,
   PRIMARY KEY (`order_id`),
   CONSTRAINT `fk_Order_Customer1`
     FOREIGN KEY (`user_id`)

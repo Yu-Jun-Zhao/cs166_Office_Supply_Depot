@@ -40,4 +40,4 @@ CALL createOrder("bbb356", CURDATE(),"testing at testing", "San Jose", "CA", 922
 CALL createOrder("ccc356",CURDATE(),"testing at testing2", "San Jose", "CA", 92202);
 CALL createOrder("aaa356",CURDATE(),"testing at testing3", "San Jose", "CA", 92202);
 
-
+CALL checkOrderStatus(3);
