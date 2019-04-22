@@ -47,4 +47,44 @@ router.get("/1/id/:id", (req, res) => {
   });
 });
 
+// FOR ADMIN
+// @router  POST api/products/add
+// @desc    Add new item to products list
+// @access private
+router.post("/add", (req, res) => {
+  const {
+    pName,
+    weight,
+    quantity,
+    price,
+    description,
+    imgPath,
+    type
+  } = req.body;
+  const insert_sql = `INSERT INTO product (p_name, quantity, price, weight, description, imgPath, type) values ('${pName}', '${quantity}', '${price}', '${weight}', '${description}', '${imgPath}', '${type}')`;
+
+  connection.query(insert_sql, (error, results) => {
+    if (error) {
+      return res.status(400).send({
+        message: "Error"
+      });
+    }
+    res.sendStatus(200);
+  });
+});
+
+router.delete("/delete", (req, res) => {
+  const { listOfProductId } = req.body;
+  for (var i = 0; i < listOfProductId.length; i++) {
+    const sql = `DELETE FROM product WHERE product_id = ${listOfProductId[i]}`;
+    connection.query(sql, (error, results) => {
+      if (error)
+        return res.status(400).send({
+          error: "Bad Request"
+        });
+      res.sendStatus(200);
+    });
+  }
+});
+
 export default router;
