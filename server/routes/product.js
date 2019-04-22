@@ -35,4 +35,16 @@ router.get("/:offset", (req, res) => {
   });
 });
 
+// @router PUT api/products/1/id/:id
+// @desc   Retrieve the product based on id
+// @access Public
+router.get("/1/id/:id", (req, res) => {
+  const { id } = req.params;
+  const sql = `SELECT * FROM product WHERE product_id = ${id}`;
+  connection.query(sql, (error, results) => {
+    if (error) res.send(error);
+    res.json({ product: results });
+  });
+});
+
 export default router;

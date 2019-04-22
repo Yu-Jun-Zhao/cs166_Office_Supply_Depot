@@ -10,6 +10,8 @@ import {
 
 import products from "./routes/product";
 import user from "./routes/user";
+import cart from "./routes/cart";
+import order from "./routes/order";
 
 // Create database on the fly
 // For Development only
@@ -39,7 +41,8 @@ app.use(cors());
 // ADD ROUTES
 app.use("/api/products", products);
 app.use("/api/user", user);
-
+app.use("/api/cart", cart);
+app.use("/api/order", order);
 /// TODO
 /**
  * An example route that requires a valid access token for authentication, it
