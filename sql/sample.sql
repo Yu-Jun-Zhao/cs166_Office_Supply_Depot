@@ -23,21 +23,20 @@ INSERT INTO customer (user_id, first_name, last_name) VALUES ("ccc356", "test2",
 ##INSERT INTO Cart_Item (cart_id, product_id) VALUES (3,1);
 
 CALL addItemsToCart(1,2,5);
-CALL addItemsToCart(2,1,7);
+CALL addItemsToCart(2,2,7);
 CALL addItemsToCart(3,1,15);
-CALL addItemsToCart(3,3,12);
+CALL addItemsToCart(3,1,3);
 
 CALL removeAllItemsFromCart(1,2);
 CALL removeAllItemsFromCart(2,1);
 CALL removeAllItemsFromCart(3,1);
 CALL removeAllItemsFromCart(3,3);
 
-
-DELETE FROM Cart_Item WHERE item_id = 2;
+SELECT cart_id, product_id, COUNT(*) AS quantity FROM cart_item WHERE cart_id = 1 GROUP BY product_id;
 
 CALL createOrder("aaa356",CURDATE(),"1 Washington", "San Jose", "CA", 92202);
 CALL createOrder("bbb356", CURDATE(),"testing at testing", "San Jose", "CA", 92202);
 CALL createOrder("ccc356",CURDATE(),"testing at testing2", "San Jose", "CA", 92202);
 CALL createOrder("aaa356",CURDATE(),"testing at testing3", "San Jose", "CA", 92202);
 
-CALL checkOrderStatus(3);
+CALL checkAllOrderStatus("bbb356");
