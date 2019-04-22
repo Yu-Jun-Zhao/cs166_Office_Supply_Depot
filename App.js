@@ -1,126 +1,257 @@
 import React, { Component } from 'react';
-import ItemHolder from "../common/Product";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import './App.css';
+import 'typeface-roboto';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import visa from './visa.jpg';
+import master from './mastercard.png';
+import maestro from './maestro.jpg';
+import discover from './discover.png';
+import americanexpress from './americanexpress.jpg';
 
-class Shoppingcart   extends Component{
+
+class App extends Component {
+
   constructor(props) {
     super(props);
-    this.state = { value: "" };
+    this.state = {value: ''};
   }
 
-    /* construct a boolean to make a condition to decide the delivery method
-      this.state = { over100dollar: false; over15lbs: false}
-    */  
 
-  handleChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
-  }
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
 
-  handleSubmit = (event) => {
+  handleSubmit(event) {
     event.preventDefault();
-    alert("Added" + this.state.value);
+    alert('Order is placed' + this.state.value);
   }
-  /* printSomething = () => {
-    code here } */
+
+  
   render() {
-    const { products, total } = this.props;
-    
+
+    const { classes } = this.props;
+    const marg = {
+      margin: "2% 10% 2% 33%"
+    }
+
+    const tField = {
+      width: "60%"
+    }
+
+    const iconsize = {
+      width: "7%",
+      height: "7%"
+    }
+
     return (
-      <React.Fragment>
-        <ul>
-          {products.map(product => {
-            return (
-              <div key={product.productID}>
-                <ItemHolder product={product} />
-              </div>
-            );
-          })}
-        </ul>
-      <div className='Shoppingcart'>
-          <h1>Shopping Cart</h1>
-        <div>
-          <table >
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Product</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Remove</th>
-              <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><h3> image</h3></td>
-				        <td>Office Chair</td>
-				        <td>$25.00</td>
-				        <td><input type="number" value="3" min="1">
-                    </input></td>
-				        <td><button>Remove</button></td>
-				        <td>$75.00</td>
-			        </tr>
-            </tbody>
-          </table >
+      <div>        
+        
+        <div>         
+          <form style={marg} onSubmit={this.handleSubmit}>
+            <div>
+              <h4 >Your Information</h4>            
+  
+                <TextField 
+                  id="firstname"
+                  label = "First name"              
+                  value={this.state.firstname}
+                  onChange={this.handleChange('firstname')}
+                  placeholder="First Name"
+                  margin="normal"
+                  variant="outlined"
+                  style={tField}
+                /> <br/>
+                <TextField
+                  id="lastname"
+                  label="Last name"               
+                  value={this.state.lastname}
+                  onChange={this.handleChange('lastname')}
+                  placeholder="Last Name"
+                  margin="normal"
+                  variant="outlined"
+                  style={tField}
+                  /> <br/>
+                        
+                
+                <TextField
+                  id="email"
+                  label="Email"              
+                  value={this.state.email}
+                  onChange={this.handleChange('email')}
+                  placeholder="Email"
+                  margin="normal"
+                  variant="outlined"
+                  style={tField}
+                /> <br/>
+                
+                <TextField
+                  id="phone"
+                  label="Phone number"              
+                  value={this.state.email}
+                  onChange={this.handleChange('phone')}
+                  placeholder="Phone number"
+                  margin="normal"
+                  variant="outlined"
+                  style={tField}
+                /> <br/>
+              
+                <h4>Shipping Address</h4>
+                <TextField
+                  id="street"
+                  label="Street"              
+                  value={this.state.street}
+                  onChange={this.handleChange('street')}
+                  placeholder="Street"
+                  margin="normal"
+                  variant="outlined"
+                  style={tField}
+                /> <br/>
+
+              
+
+                <TextField
+                  id="city"
+                  label="City"              
+                  value={this.state.city}
+                  onChange={this.handleChange('city')}
+                  placeholder="City"
+                  margin="normal"
+                  variant="outlined"
+                  style={tField}
+                /> <br/>
+
+                <TextField
+                  id="State"
+                  label="State"           
+                  value={this.state.state}
+                  onChange={this.handleChange('state')}
+                  placeholder="State"
+                  margin="normal"
+                  variant="outlined"
+                  style={tField}
+                /> <br/>
+                  
+
+                  <TextField
+                  id="zipcode"
+                  label="Zipcode"          
+                  value={this.state.zipcode}
+                  onChange={this.handleChange('zipcode')}
+                  placeholder="Zip code"
+                  margin="normal"
+                  variant="outlined" 
+                  style={tField}                 
+                /> <br/>
+
+              <h4>Billing Address</h4>
+              <TextField
+                  id="Billing street"
+                  label="Billing street"             
+                  value={this.state.bstreet}
+                  onChange={this.handleChange('bstreet')}
+                  placeholder="Street"
+                  margin="normal"
+                  variant="outlined"
+                  style={tField}
+                /> <br/>
+
+              
+
+                <TextField
+                  id="Billing city"
+                  label="Billing city"              
+                  value={this.state.bcity}
+                  onChange={this.handleChange('bcity')}
+                  placeholder="City"
+                  margin="normal"
+                  variant="outlined"
+                  style={tField}
+                /> <br/>
+
+                <TextField
+                  id="Billing State"
+                  label="Billing State"        
+                  value={this.state.bstate}
+                  onChange={this.handleChange('bstate')}
+                  placeholder="State"
+                  margin="normal"
+                  variant="outlined"
+                  style={tField}
+                /> <br/>
+                  
+
+                  <TextField
+                  id="Billing zipcode" 
+                  label="Billing zipcode"                                       
+                  value={this.state.bzipcode}
+                  onChange={this.handleChange('bzipcode')}
+                  placeholder="Zip code"
+                  margin="normal"
+                  variant="outlined"       
+                  style={tField}           
+                /> <br/>
+
+              <h4>Credit Card Information</h4>
+              <img src={visa} alt="Visa" style={iconsize}/>
+              <img src={master} alt="Master" style={iconsize}/>
+              <img src={maestro} alt="Maestro" style={iconsize}/>
+              <img src={discover} alt="Discover" style={iconsize}/>
+              <img src={americanexpress} alt="AmericanExpress" style={iconsize}/> <br/>
+
+              <TextField
+                  id="Card number" 
+                  label="Card number"                               
+                  value={this.state.cardnumber}
+                  onChange={this.handleChange('cardnumber')}
+                  placeholder="Card number"
+                  margin="normal"
+                  variant="outlined"    
+                  style={tField}     
+               /> <br/>
+
+               <TextField
+                  id="Expired Month"     
+                  label="Expired Month"                           
+                  value={this.state.exmonth}
+                  onChange={this.handleChange('exmonth')}
+                  placeholder="Expired Month"
+                  margin="normal"
+                  variant="outlined" 
+                  style={tField}       
+               /> <br/>
+
+                <TextField
+                  id="Expired Year"     
+                  label="Expired Year"                           
+                  value={this.state.exyear}
+                  onChange={this.handleChange('exyear')}
+                  placeholder="Expired Year"
+                  margin="normal"
+                  variant="outlined"   
+                  style={tField}      
+               /> <br/>
+
+                <TextField
+                  id="cvv"     
+                  label="CVV"                           
+                  value={this.state.cvv}
+                  onChange={this.handleChange('cvv')}
+                  placeholder="CVV"
+                  margin="normal"
+                  variant="outlined"   
+                  style={tField} 
+                  
+               /> <br/>              
+            </div> <br/>
+            <Button style={{marginLeft:"22.5%"}} variant="contained" color="primary">
+              Place Order
+            </Button>
+        </form>
         </div>
       </div>
-
-      <div>
-          <h2>About Delivery Services</h2>
-          <p>We offer a free delivery services for any the order that over $100.00 <br/>  
-          For any order that are less than 15 lbs, the delevery will be done by a drone on the same day during business hours. <br/> 
-          For any order that equal or heavier than 15 lbs, the orders will be delivered by delivery truck within 2 business days. <br/>
-          For any order that are under $100, customer can request deliveries (drone or truck) by paying a surcharge of $20. <br/>
-          For same day truck delivery of orders over $100, customer can pay a surcharge of $25.  
-          </p>
-
-          <div>
-            {/* This will construct an if else function to decide the delivery method for 
-            customer based on the order's subtotal and weight and the print out the option for the customer to see */
-            
-            
-            }
-          </div>
-      </div>
-
-          {/* This is for demo only. The if else in the render will print out something like this */}
-      <div> 
-          Based on the grand total and the weight of your order. Your delivery method will be: <br/>
-          Delivery truck within 2 business days: $20.
-      </div>
-
-      <div>        
-		    <h2>Order Summary</h2>
-		    <div>
-		      <div>
-			       <div >
-              <label>Subtotal</label>
-			            <div>75.00</div> &emsp;&emsp;&emsp;&emsp;
-			             </div>
-			             <div>
-			                <label>Tax (5%)</label>
-			                   <div  >3.75</div>
-                         &emsp;&emsp;&emsp;&emsp;
-			              </div>
-                    <div> 
-                      <label>Shipping Fee</label>
-                        <div>$20</div> 
-                    </div>
-			              <div>
-			                 <label>Grand Total</label>
-			                    <div >98.75</div> <br />
-                    </div>
-		              </div>
-			            <div><button>Checkout</button></div>
-		           </div>
-	    </div>
-    </React.Fragment>
-  );
+    );
+  }
 }
-}
-const mapStateToProps = state => ({
-  products: state.products.items,
-  total: state.products.total
-});
-export default withRouter(connect(mapStateToProps)(Shoppingcart));
+
+export default App;
