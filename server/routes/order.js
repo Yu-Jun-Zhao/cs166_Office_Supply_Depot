@@ -22,11 +22,14 @@ router.get("/all/:userId", (req, res) => {
 // @desc   Create order
 // @private
 router.post("/add", (req, res) => {
-  const { userId, address, city, state, zip } = req.body;
+  const { userId, address, city, state, zip, f_address } = req.body;
   const today = new Date();
+  const orderDate =
+    new Date(`${today} GMT`).toISOString().split("T")[0] +
+    " " +
+    today.toTimeString().split(" ")[0];
   const sql = `CALL createOrder(
-    "${userId}", "${today.getFullYear()}-${today.getMonth() +
-    1}-${today.getDate()}", "${address}", "${city}", "${state}", "${zip}")`;
+    "${userId}","${orderDate}", "${address}", "${city}", "${state}", "${zip}", ${f_address})`;
 
   connection.query(sql, (err, results) => {
     if (err) return res.send(err);

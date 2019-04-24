@@ -35,7 +35,7 @@ DROP PROCEDURE IF EXISTS checkAllOrderStatus$$
 CREATE PROCEDURE checkAllOrderStatus(IN in_user_id VARCHAR(30))
 BEGIN
 	DECLARE s_orderStatus TINYINT;
-	DECLARE s_orderDate DATE;
+	DECLARE s_orderDate DATETIME;
     DECLARE s_orderID INT;
     DECLARE dateDiff INT;
     
@@ -110,8 +110,8 @@ BEGIN
 END$$
 
 DROP PROCEDURE IF EXISTS createOrder$$
-CREATE PROCEDURE createOrder(IN user_id VARCHAR(30), IN order_date DATE, IN s_address VARCHAR(100), 
-								IN s_city VARCHAR(45), IN s_state CHAR(2), IN s_zip DECIMAL(5,0))
+CREATE PROCEDURE createOrder(IN user_id VARCHAR(30), IN order_date DATETIME, IN s_address VARCHAR(100), 
+								IN s_city VARCHAR(45), IN s_state CHAR(2), IN s_zip DECIMAL(5,0), IN from_address TINYINT(1))
 BEGIN
 	DECLARE b_rollback TINYINT DEFAULT FALSE;
     
@@ -124,8 +124,8 @@ BEGIN
     INSERT IGNORE INTO `shipping_address` (address, city, state, zip) VALUES(s_address, s_city, s_state, s_zip); 
     SET shipping_id = (SELECT s_address_id FROM shipping_address 
 		WHERE address = s_address AND city = s_city AND state = s_state AND zip = s_zip LIMIT 1);
-	INSERT INTO `order` (order_date, user_id, s_address_id, weight, price, `status`) 
-		VALUES (order_date, user_id, shipping_id, 0, 0, 0);
+	INSERT INTO `order` (order_date, user_id, s_address_id, from_address_id, weight, price, `status`) 
+		VALUES (order_date, user_id, shipping_id, from_address, 0, 0, 0);
     SET new_order_id = last_insert_id();
     CALL insertToOrderItems(user_id, new_order_id);
     

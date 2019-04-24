@@ -16,7 +16,7 @@ router.put("/", (req, res) => {
     const sql = `SELECT cart_id FROM cart WHERE user_id = "${userId}"`;
     connection.query(sql, (err, results) => {
       if (err) res.send({ error: "Unable to retrieve cart id" });
-      res.json(results);
+      res.json({ cartId: results[0].cart_id });
     });
   });
 });

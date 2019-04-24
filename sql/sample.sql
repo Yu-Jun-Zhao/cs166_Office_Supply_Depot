@@ -34,9 +34,9 @@ CALL removeAllItemsFromCart(3,3);
 
 SELECT cart_id, product_id, COUNT(*) AS quantity FROM cart_item WHERE cart_id = 1 GROUP BY product_id;
 
-CALL createOrder("aaa356",CURDATE(),"1 Washington", "San Jose", "CA", 92202);
-CALL createOrder("bbb356", CURDATE(),"testing at testing", "San Jose", "CA", 92202);
-CALL createOrder("ccc356",CURDATE(),"testing at testing2", "San Jose", "CA", 92202);
-CALL createOrder("aaa356",CURDATE(),"testing at testing3", "San Jose", "CA", 92202);
+CALL createOrder("aaa356",CURDATE(),"1 Washington", "San Jose", "CA", 92202, 1);
+CALL createOrder("bbb356", CURDATE(),"testing at testing", "San Jose", "CA", 92202, 1);
+CALL createOrder("ccc356",CURDATE(),"testing at testing2", "San Jose", "CA", 92202, 2);
+CALL createOrder("aaa356",CURDATE(),"testing at testing3", "San Jose", "CA", 92202, 2);
 
 CALL checkAllOrderStatus("bbb356");

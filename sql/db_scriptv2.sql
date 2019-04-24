@@ -111,9 +111,10 @@ DROP TABLE IF EXISTS `osd`.`Order` ;
 
 CREATE TABLE IF NOT EXISTS `osd`.`Order` (
   `order_id` INT NOT NULL AUTO_INCREMENT,
-  `order_date` DATE NOT NULL,
+  `order_date` DATETIME NOT NULL,
   `user_id` VARCHAR(30) NOT NULL,
   `s_address_id` INT NOT NULL,
+  `from_address_id` TINYINT(1) NOT NULL,
   `weight` DECIMAL(8,4) NOT NULL,
   `price` DECIMAL(8,2) NOT NULL,
   `status` TINYINT(1) NOT NULL,
