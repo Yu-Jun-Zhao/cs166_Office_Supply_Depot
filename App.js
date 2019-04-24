@@ -8,6 +8,7 @@ import master from './mastercard.png';
 import maestro from './maestro.jpg';
 import discover from './discover.png';
 import americanexpress from './americanexpress.jpg';
+import Grid from '@material-ui/core/Grid';
 
 
 class App extends Component {
@@ -22,7 +23,7 @@ class App extends Component {
     this.setState({ [name]: event.target.value });
   };
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     event.preventDefault();
     alert('Order is placed' + this.state.value);
   }
@@ -30,7 +31,7 @@ class App extends Component {
   
   render() {
 
-    const { classes } = this.props;
+    
     const marg = {
       margin: "2% 10% 2% 33%"
     }
@@ -45,15 +46,18 @@ class App extends Component {
     }
 
     return (
+      <React.Fragment>
       <div>        
         
-        <div>         
+        <div>     
+          
           <form style={marg} onSubmit={this.handleSubmit}>
             <div>
               <h4 >Your Information</h4>            
   
                 <TextField 
                   id="firstname"
+                  name="firstname"
                   label = "First name"              
                   value={this.state.firstname}
                   onChange={this.handleChange('firstname')}
@@ -61,9 +65,12 @@ class App extends Component {
                   margin="normal"
                   variant="outlined"
                   style={tField}
+                  required
+                  autoComplete="fname"
                 /> <br/>
                 <TextField
                   id="lastname"
+                  name="lastname"
                   label="Last name"               
                   value={this.state.lastname}
                   onChange={this.handleChange('lastname')}
@@ -71,11 +78,13 @@ class App extends Component {
                   margin="normal"
                   variant="outlined"
                   style={tField}
+                  required
                   /> <br/>
                         
                 
                 <TextField
                   id="email"
+                  name="email"
                   label="Email"              
                   value={this.state.email}
                   onChange={this.handleChange('email')}
@@ -83,22 +92,26 @@ class App extends Component {
                   margin="normal"
                   variant="outlined"
                   style={tField}
+                  required
                 /> <br/>
                 
                 <TextField
                   id="phone"
+                  name="phone"
                   label="Phone number"              
-                  value={this.state.email}
+                  value={this.state.phone}
                   onChange={this.handleChange('phone')}
                   placeholder="Phone number"
                   margin="normal"
                   variant="outlined"
                   style={tField}
+                  required
                 /> <br/>
               
                 <h4>Shipping Address</h4>
                 <TextField
                   id="street"
+                  name="stree"
                   label="Street"              
                   value={this.state.street}
                   onChange={this.handleChange('street')}
@@ -106,12 +119,14 @@ class App extends Component {
                   margin="normal"
                   variant="outlined"
                   style={tField}
+                  required
                 /> <br/>
 
               
 
                 <TextField
                   id="city"
+                  name="city"
                   label="City"              
                   value={this.state.city}
                   onChange={this.handleChange('city')}
@@ -119,10 +134,12 @@ class App extends Component {
                   margin="normal"
                   variant="outlined"
                   style={tField}
+                  required
                 /> <br/>
 
                 <TextField
                   id="State"
+                  name="State"
                   label="State"           
                   value={this.state.state}
                   onChange={this.handleChange('state')}
@@ -130,23 +147,29 @@ class App extends Component {
                   margin="normal"
                   variant="outlined"
                   style={tField}
+                  required
                 /> <br/>
                   
 
                   <TextField
                   id="zipcode"
+                  name="zipcode"
                   label="Zipcode"          
                   value={this.state.zipcode}
                   onChange={this.handleChange('zipcode')}
                   placeholder="Zip code"
                   margin="normal"
                   variant="outlined" 
-                  style={tField}                 
+                  style={tField} 
+                  required                
                 /> <br/>
+
+                
 
               <h4>Billing Address</h4>
               <TextField
                   id="Billing street"
+                  name="bstreet"
                   label="Billing street"             
                   value={this.state.bstreet}
                   onChange={this.handleChange('bstreet')}
@@ -154,12 +177,14 @@ class App extends Component {
                   margin="normal"
                   variant="outlined"
                   style={tField}
+                  required
                 /> <br/>
 
               
 
                 <TextField
                   id="Billing city"
+                  name="bcity"
                   label="Billing city"              
                   value={this.state.bcity}
                   onChange={this.handleChange('bcity')}
@@ -167,10 +192,12 @@ class App extends Component {
                   margin="normal"
                   variant="outlined"
                   style={tField}
+                  required
                 /> <br/>
 
                 <TextField
                   id="Billing State"
+                  name="bstate"
                   label="Billing State"        
                   value={this.state.bstate}
                   onChange={this.handleChange('bstate')}
@@ -178,21 +205,24 @@ class App extends Component {
                   margin="normal"
                   variant="outlined"
                   style={tField}
+                  required
                 /> <br/>
                   
 
                   <TextField
                   id="Billing zipcode" 
+                  name="bzipcode"
                   label="Billing zipcode"                                       
                   value={this.state.bzipcode}
                   onChange={this.handleChange('bzipcode')}
                   placeholder="Zip code"
                   margin="normal"
                   variant="outlined"       
-                  style={tField}           
+                  style={tField}  
+                  required         
                 /> <br/>
 
-              <h4>Credit Card Information</h4>
+              <h4>Payment details</h4>
               <img src={visa} alt="Visa" style={iconsize}/>
               <img src={master} alt="Master" style={iconsize}/>
               <img src={maestro} alt="Maestro" style={iconsize}/>
@@ -207,7 +237,8 @@ class App extends Component {
                   placeholder="Card number"
                   margin="normal"
                   variant="outlined"    
-                  style={tField}     
+                  style={tField}  
+                  required   
                /> <br/>
 
                <TextField
@@ -218,7 +249,8 @@ class App extends Component {
                   placeholder="Expired Month"
                   margin="normal"
                   variant="outlined" 
-                  style={tField}       
+                  style={tField}  
+                  required     
                /> <br/>
 
                 <TextField
@@ -229,7 +261,8 @@ class App extends Component {
                   placeholder="Expired Year"
                   margin="normal"
                   variant="outlined"   
-                  style={tField}      
+                  style={tField}  
+                  required    
                /> <br/>
 
                 <TextField
@@ -241,15 +274,20 @@ class App extends Component {
                   margin="normal"
                   variant="outlined"   
                   style={tField} 
-                  
-               /> <br/>              
+                  helperText="Last three digits on signature strip"
+                  required
+               /> <br/>  
+               
+                       
             </div> <br/>
-            <Button style={{marginLeft:"22.5%"}} variant="contained" color="primary">
+            <Button style={{marginLeft:"22.5%"}} size="large" variant="contained" color="primary" id="buttons" type="submit">
               Place Order
             </Button>
         </form>
+        
         </div>
       </div>
+      </React.Fragment>
     );
   }
 }
