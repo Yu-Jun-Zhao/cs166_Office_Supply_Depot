@@ -1,6 +1,7 @@
 import mysql from "mysql";
 
-const connection = mysql.createConnection({
+const pool = mysql.createPool({
+  connectionLimit: 10,
   host: "localhost",
   user: "user",
   password: "1234@bcd",
@@ -8,4 +9,4 @@ const connection = mysql.createConnection({
   port: 3306
 });
 
-export default connection;
+export default pool;

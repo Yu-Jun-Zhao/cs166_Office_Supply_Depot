@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import connection from "../db";
+import pool from "../db";
 
 // Order routes will be protected
 
@@ -11,7 +11,7 @@ import connection from "../db";
 router.get("/all/:userId", (req, res) => {
   const { userId } = req.params;
   const sql = `SELECT * FROM \`order\` WHERE user_id = "${userId}"`;
-  connection.query(sql, (err, results) => {
+  pool.query(sql, (err, results) => {
     if (err) res.send(err);
     res.json(results);
   });
@@ -31,7 +31,7 @@ router.post("/add", (req, res) => {
   const sql = `CALL createOrder(
     "${userId}","${orderDate}", "${address}", "${city}", "${state}", "${zip}", ${f_address})`;
 
-  connection.query(sql, (err, results) => {
+  pool.query(sql, (err, results) => {
     if (err) return res.send(err);
     return res.send({ success: true });
   });
@@ -43,10 +43,10 @@ router.post("/add", (req, res) => {
 router.put("/check/:userId", (req, res) => {
   const { userId } = req.params;
   const sql = `CALL checkAllOrderStatus("${userId}")`;
-  connection.query(sql, (err, results) => {
+  pool.query(sql, (err, results) => {
     if (err) return res.send(err);
     const nestedSql = `SELECT * FROM \`order\` WHERE user_id = "${userId}"`;
-    connection.query(nestedSql, (err, results) => {
+    pool.query(nestedSql, (err, results) => {
       if (err) res.send(err);
       return res.json(results);
     });

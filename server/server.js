@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import connection from "./db";
+import pool from "./db";
 
 import {
   authenticationRequired,
@@ -12,15 +12,6 @@ import products from "./routes/product";
 import user from "./routes/user";
 import cart from "./routes/cart";
 import order from "./routes/order";
-
-// Create database on the fly
-// For Development only
-connection.connect(err => {
-  if (err) throw err;
-  connection.query("CREATE DATABASE IF NOT EXISTS osd", (err, result) => {
-    if (err) throw err;
-  });
-});
 
 const app = express();
 app.use(express.json());

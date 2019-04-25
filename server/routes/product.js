@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import connection from "../db";
+import pool from "../db";
 
 router.get("/:name/:offset", (req, res) => {
   const { name, offset } = req.params;
@@ -8,19 +8,27 @@ router.get("/:name/:offset", (req, res) => {
   const select_sql = `SELECT * FROM product WHERE pName LIKE '%${name}%' LIMIT 10 OFFSET ${offset}`;
 
   let json = {};
-  connection.query(select_sql, (error, results) => {
-    if (error) res.send(error);
-    let arr = [];
-    for (let i = 0; i < results.length; i++) {
-      arr.push(results[i]);
-    }
-    json = { products: arr };
-  });
-  connection.query(count_sql, (error, results) => {
-    if (error) res.send(error);
 
-    json["total"] = results[0].total;
-    res.json(json);
+  pool.getConnection((err, connection) => {
+    if (err) res.send({ error: "Cannot fetch product data" });
+
+    connection.query(select_sql, (error, results) => {
+      if (error) res.send(error);
+      let arr = [];
+      for (let i = 0; i < results.length; i++) {
+        arr.push(results[i]);
+      }
+      json = { products: arr };
+    });
+    connection.query(count_sql, (error, results) => {
+      json["total"] = results[0].total;
+
+      connection.release();
+
+      if (error) return res.send({ error: "problem getting products" });
+
+      return res.json(json);
+    });
   });
 });
 
@@ -29,7 +37,7 @@ router.get("/:offset", (req, res) => {
   const { offset } = req.params;
   const select_sql = `SELECT * FROM product LIMIT ${offset}`;
 
-  connection.query(select_sql, (error, results) => {
+  pool.query(select_sql, (error, results) => {
     if (error) res.send(error);
     res.send({ products: results });
   });
@@ -41,7 +49,7 @@ router.get("/:offset", (req, res) => {
 router.get("/1/id/:id", (req, res) => {
   const { id } = req.params;
   const sql = `SELECT * FROM product WHERE product_id = ${id}`;
-  connection.query(sql, (error, results) => {
+  pool.query(sql, (error, results) => {
     if (error) res.send(error);
     res.json({ product: results });
   });
@@ -63,7 +71,7 @@ router.post("/add", (req, res) => {
   } = req.body;
   const insert_sql = `INSERT INTO product (p_name, quantity, price, weight, description, imgPath, type) values ('${pName}', '${quantity}', '${price}', '${weight}', '${description}', '${imgPath}', '${type}')`;
 
-  connection.query(insert_sql, (error, results) => {
+  pool.query(insert_sql, (error, results) => {
     if (error) {
       return res.status(400).send({
         message: "Error"
@@ -77,7 +85,7 @@ router.delete("/delete", (req, res) => {
   const { listOfProductId } = req.body;
   for (var i = 0; i < listOfProductId.length; i++) {
     const sql = `DELETE FROM product WHERE product_id = ${listOfProductId[i]}`;
-    connection.query(sql, (error, results) => {
+    pool.query(sql, (error, results) => {
       if (error)
         return res.status(400).send({
           error: "Bad Request"
