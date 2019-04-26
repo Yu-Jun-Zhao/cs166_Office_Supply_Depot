@@ -65,11 +65,12 @@ function createData(pName, price, weight, quantity) {
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 1,),
-  createData('Ice cream sandwich', 237, 9.0, 37),
-  createData('Eclair', 262, 16.0, 24),
-  createData('Cupcake', 305, 3.7, 67),
-  createData('Gingerbread', 356, 16.0, 49),
+  createData('Frozen yoghurt', 15.9, 6.0, 1,),
+  createData('Ice cream sandwich', 2.37, 9.0, 37),
+  createData('Eclair', 2.62, 16.0, 24),
+  createData('Cupcake', 3.05, 3.7, 67),
+  createData('Gingerbread', 3.56, 16.0, 49),
+  createData('Monster Pencil Case', 1, 3.0, 1),
 ];
 
 class Shoppingcart extends Component{
@@ -117,11 +118,11 @@ class Shoppingcart extends Component{
                 return(
                 <TableRow key = {row.id}>
           				  <TableCell>{row.pName}</TableCell>
-          			    <TableCell>{row.price}</TableCell>
+          			    <TableCell>{formatter.format(row.price)}</TableCell>
           	        <TableCell><input type="number" default value={row.quantity} min="1">
                       </input></TableCell>
                     <TableCell>{row.weight}</TableCell>
-          				  <TableCell><Button>Remove</Button></TableCell>
+          				  <TableCell><Button variant="outlined">Remove</Button></TableCell>
           				  <TableCell>{total}</TableCell>
           			 </TableRow>
                );
@@ -146,7 +147,7 @@ class Shoppingcart extends Component{
               </TableRow>
               <TableRow>
                 <TableCell>Grand Total</TableCell>
-                <TableCell>{formatter.format(grandtotal)}</TableCell>
+                <TableCell>{formatter.format(tax+subtotal)}</TableCell>
               </TableRow>
             </TableBody>
 		       </Table>

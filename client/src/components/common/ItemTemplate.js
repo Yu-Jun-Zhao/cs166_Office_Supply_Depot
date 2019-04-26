@@ -11,6 +11,11 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+
 
 const color = blue[50];
 const theme = createMuiTheme({
@@ -38,9 +43,9 @@ const styles = theme => ({
   },
   paper: {
     padding: theme.spacing.unit * 2,
-    textAlign: 'center',
+    textAlign: 'left',
     color: theme.palette.text.secondary,
-    backgroundColor: color,
+    backgroundColor: theme.palette.common.white,
     margin: 'auto',
     width: '70%',
     height: '70%',
@@ -56,6 +61,9 @@ const styles = theme => ({
     width: 480,
     height: 300,
   },
+  textField:{
+    flexBasis: 200,
+  },
 });
 
 /* test data */
@@ -70,6 +78,23 @@ const product1 = createData('Monster Pencil Case', 1, 3.0,
 
 
 class ItemTemplate extends React.Component{
+  state = {
+    quantity: 0,
+    open: false, /* for quantity selection */
+  }
+
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+  handleOpen = () => {
+    this.setState({ open: true });
+  };
+
   render() {
     const { classes, product } = this.props;
     var formatter = new Intl.NumberFormat('en-US', {
@@ -82,21 +107,36 @@ class ItemTemplate extends React.Component{
       <ul>
         <div>
         <Grid container spacing={24} alignItems='center'>
-            <Grid item xs={12}>
-              <Typography variant='h4'>{product1.pName}</Typography>
-            </Grid>
-            <Grid item xs={6} >
+            <Grid item xs={6}>
               <Paper className={classes.imgsize}>
                 <img className={classes.image} alt="image" src='https://upload.wikimedia.org/wikipedia/commons/f/fe/ZIPIT_pencil_case.jpg'></img>
               </Paper>
             </Grid>
-            <Grid item xs={6}>
-              <Paper className={classes.paper}>
-              <Typography variant='subtitle1'>Price: {formatter.format(product1.price)}</Typography>
+            <Grid item>
+              <Paper elevation='0' className={classes.paper}>
+              <Typography variant='h3'>{product1.pName}</Typography>
+              <Typography variant='h4'>{formatter.format(product1.price)}</Typography>
               <Typography variant='subtitle1'>Weight: {product1.weight}</Typography>
-              <Grid><Typography variant='subtitle1'>Description</Typography>
-              <Typography variant='subtitle2'>{product1.desc} </Typography>
-              </Grid>
+              <form autoComplete="off">
+                <TextField
+                  margin="normal"
+                  id="outlined-number"
+                  label="Quantity"
+                  value={this.state.quantity}
+                  onChange={this.handleChange('quantity')}
+                  type="number"
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  margin="normal"
+                  variant="outlined"
+                  />
+              </form>
+
+              <Button onClick={this.aname} component={Link} to="/shopping-cart" variant="contained" color="blue">
+                Add to cart
+              </Button>
               </Paper>
             </Grid>
         </Grid>
@@ -105,9 +145,7 @@ class ItemTemplate extends React.Component{
       <Divider variant="middle" />
       <br />
       <div align="center">
-        <Button component={Link} to="/shopping-cart" variant="contained" color="blue">
-          Add to cart
-        </Button>
+        <Typography variant='subtitle2'>{product1.desc} </Typography>
       </div>
       <br /><br />
       </div>
