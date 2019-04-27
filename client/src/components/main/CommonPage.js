@@ -14,12 +14,15 @@ import {
   TextField,
   Grid
 } from "@material-ui/core/";
+
+import ReactPaginate from "react-paginate";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
+import "../../index.css";
 import { withStyles } from "@material-ui/core/styles";
 
 import ItemCard from "../common/ItemCard";
@@ -48,7 +51,7 @@ const styles = theme => ({
     boxShadow: "2px 2px 3px #888888"
   },
   drawerRootSmall: {
-    width: "8%"
+    width: "0%" // FOR NOW until drawopen is used again // orginally 8 %
   },
   drawerRootBig: {
     width: drawerWidth
@@ -143,7 +146,7 @@ class CommonPage extends Component {
   render() {
     const { drawerOpen, color, label, filterExpand, filterApply } = this.state;
     const { classes } = this.props;
-    const rootDrawer = drawerOpen
+    const rootDrawer = false // drawerOpen === false
       ? classes.drawerRootBig
       : classes.drawerRootSmall;
 
@@ -151,7 +154,7 @@ class CommonPage extends Component {
     return (
       <div className={classes.root}>
         <Drawer
-          open={drawerOpen}
+          open={false} // TODO: for now it will stay false
           variant="persistent"
           className={classes.drawer}
           classes={{ paper: classes.drawerPaper, root: rootDrawer }}
@@ -222,7 +225,9 @@ class CommonPage extends Component {
             </Collapse>
           </List>
         </Drawer>
-        {!drawerOpen && (
+
+        {/*(drawerOpen) True for now but Function not supported*/}
+        {false && (
           <Fab
             classes={{ root: classes.fab }}
             color="secondary"
@@ -247,6 +252,22 @@ class CommonPage extends Component {
               </Grid>
             ))}
           </Grid>
+          <div className="paginator">
+            <ReactPaginate
+              previousLabel={"previous"}
+              nextLabel={"next"}
+              breakLabel={"..."}
+              breakClassName={"break-me"}
+              pageCount={10} // 10
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              forcePage={1} // 1
+              onPageChange={this.handlePageClick}
+              containerClassName={"pagination"}
+              subContainerClassName={"pages pagination"}
+              activeClassName={"active"}
+            />
+          </div>
         </main>
       </div>
     );

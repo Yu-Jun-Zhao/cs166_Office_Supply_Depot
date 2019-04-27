@@ -27,17 +27,18 @@ class ItemCard extends Component {
     price: this.props.price,
     weight: this.props.weight,
     quantity: this.props.quantity,
+    image: this.props.image,
     description: "this is an office supply"
   };
   render() {
-    const { title, price, weight, quantity, description } = this.state;
+    const { title, price, weight, quantity, image, description } = this.state;
     const { classes } = this.props;
     return (
       <Card className={classes.card}>
         <CardActionArea>
           <CardMedia
             className={classes.media}
-            image="https://v5resources.britlink.com/customresourcesview/_GreggOfficeMachines/images/office%20supplies.jpg"
+            image={image}
             title="testing image"
           />
           <CardContent>

@@ -65,18 +65,6 @@ function getProduct(query, outerSqlResult) {
   });
 }
 
-/*
-router.get("/all", (req, res) => {
-  const { cartId } = req.body;
-  const sql = `SELECT cart_id, product_id, COUNT(*) AS quantity FROM cart_item WHERE cart_id = ${cartId} GROUP BY product_id`;
-  pool.query(sql, (err, results) => {
-    if (err) res.send({ error: "Cannot fetch items from cart" });
-
-    return res.send({ cart: results });
-  });
-});
-*/
-
 //  @router DELETE /api/cart/
 //  @desc   Remove all items with the same product id from cart
 //  @access private

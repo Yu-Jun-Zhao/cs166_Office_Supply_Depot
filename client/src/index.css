@@ -20,3 +20,13 @@ hr {
   width: 100% !important;
   height: 1px !important;
 }
+
+.paginator ul {
+  display: inline-block;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.paginator li {
+  display: inline-block;
+}
