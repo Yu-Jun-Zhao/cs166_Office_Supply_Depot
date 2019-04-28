@@ -16,6 +16,12 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 const color = blue[50];
 const theme = createMuiTheme({
@@ -47,7 +53,7 @@ const styles = theme => ({
     color: theme.palette.text.secondary,
     backgroundColor: theme.palette.common.white,
     margin: 'auto',
-    width: '70%',
+    width: '100%',
     height: '70%',
   },
   image:{
@@ -64,6 +70,11 @@ const styles = theme => ({
   textField:{
     flexBasis: 200,
   },
+  formControl: {
+    margin: theme.spacing.unit,
+    minWidth: 50,
+    textAlign: 'center'
+  },
 });
 
 /* test data */
@@ -79,12 +90,13 @@ const product1 = createData('Monster Pencil Case', 1, 3.0,
 
 class ItemTemplate extends React.Component{
   state = {
-    quantity: 0,
+    quantity: 1,
     open: false, /* for quantity selection */
+    dialogOpen: false,
   }
 
-  handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
+  handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   handleClose = () => {
@@ -93,6 +105,13 @@ class ItemTemplate extends React.Component{
 
   handleOpen = () => {
     this.setState({ open: true });
+  };
+
+  handleDialogOpen = () => {
+    this.setState({ dialogOpen: true });
+  };
+  handleDialogClose = () => {
+    this.setState({ dialogOpen: false });
   };
 
   render() {
@@ -114,29 +133,65 @@ class ItemTemplate extends React.Component{
             </Grid>
             <Grid item>
               <Paper elevation='0' className={classes.paper}>
-              <Typography variant='h3'>{product1.pName}</Typography>
-              <Typography variant='h4'>{formatter.format(product1.price)}</Typography>
-              <Typography variant='subtitle1'>Weight: {product1.weight}</Typography>
+              <Typography variant='h4'>{product1.pName}</Typography>
+              <Typography variant='h5'>{formatter.format(product1.price)}</Typography>
+              <Typography variant='subtitle1'>Weight: {product1.weight}lbs</Typography>
               <form autoComplete="off">
-                <TextField
-                  margin="normal"
-                  id="outlined-number"
-                  label="Quantity"
-                  value={this.state.quantity}
-                  onChange={this.handleChange('quantity')}
-                  type="number"
-                  className={classes.textField}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  margin="normal"
-                  variant="outlined"
-                  />
-              </form>
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="select-quantity">Qty</InputLabel>
+                <Select
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    onOpen={this.handleOpen}
+                    value={this.state.quantity}
+                    onChange={this.handleChange}
+                    inputProps={{
+                      name: 'quantity',
+                      id: 'select-quantity',
+                    }}
+                    >
+                  <MenuItem value={1}>1</MenuItem>
+                  <MenuItem value={2}>2</MenuItem>
+                  <MenuItem value={3}>3</MenuItem>
+                  <MenuItem value={4}>4</MenuItem>
+                  <MenuItem value={5}>5</MenuItem>
+                  <MenuItem value={6}>6</MenuItem>
+                  <MenuItem value={7}>7</MenuItem>
+                  <MenuItem value={8}>8</MenuItem>
+                  <MenuItem value={9}>9</MenuItem>
+                  <MenuItem value={10}>10</MenuItem>
+                  <MenuItem value={11}>11</MenuItem>
+                  <MenuItem value={12}>12</MenuItem>
 
-              <Button onClick={this.aname} component={Link} to="/shopping-cart" variant="contained" color="blue">
-                Add to cart
+              </Select>
+            </FormControl>
+            </form>
+            <br />
+              {/*<Button component={Link} to="/shopping-cart" variant="contained" color="blue">*/}
+              <Button onClick={this.handleDialogOpen} variant="contained" color="blue">
+                Add to cart!
               </Button>
+              <Dialog
+              open={this.state.dialogOpen}
+              onClose={this.handleDialogClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+              >
+                <DialogTitle id="alert-dialog-title">{"Added to Cart"}</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                    Continue shopping or go to shopping cart
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={this.handleDialogClose} color="blue">
+                    Continue Shopping
+                  </Button>
+                  <Button component={Link} to="/shopping-cart" variant="contained" color="blue" autoFocus>
+                    Go to Shopping Cart
+                  </Button>
+                </DialogActions>
+              </Dialog>
               </Paper>
             </Grid>
         </Grid>
@@ -145,7 +200,7 @@ class ItemTemplate extends React.Component{
       <Divider variant="middle" />
       <br />
       <div align="center">
-        <Typography variant='subtitle2'>{product1.desc} </Typography>
+        <Typography variant='h5'>{product1.desc} </Typography>
       </div>
       <br /><br />
       </div>
