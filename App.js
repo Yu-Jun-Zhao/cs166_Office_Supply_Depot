@@ -8,13 +8,18 @@ import master from './mastercard.png';
 import maestro from './maestro.jpg';
 import discover from './discover.png';
 import americanexpress from './americanexpress.jpg';
-import Grid from '@material-ui/core/Grid';
-
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import Table from '@material-ui/core/Table';
+import { withStyles } from '@material-ui/core/styles';
 
 class App extends Component {
 
   constructor(props) {
-    super(props);
+    super(props); 
     this.state = {value: ''};
   }
 
@@ -31,30 +36,101 @@ class App extends Component {
   
   render() {
 
-    
-    const marg = {
-      margin: "2% 10% 2% 33%"
-    }
-
-    const tField = {
-      width: "60%"
-    }
-
     const iconsize = {
-      width: "7%",
-      height: "7%"
+      width: "5%",
+      height: "5%",
+      marginLeft:"6.5%"
     }
 
+    const hder = {
+      padding: "0.5% 0% 0% 45%"
+    }
+
+    const subhder = {
+      background: "black",
+      margin: "2% 10% 0% 10%",
+      paddingLeft:"30px",
+      paddingTop:"10px",
+      height:"50px",
+      color:"white"
+    }
+
+    const table = {
+      margin: "0% 10% 0% 10%",
+    }
+    
     return (
       <React.Fragment>
-      <div>        
-        
-        <div>     
+      <div style={{alignItems:"flex-inline"}}>
+        <div>        
+             
+          <div><h2 style={hder}>CHECKOUT</h2></div>  
+
+          <h4 style={subhder}>1. REVIEW ORDER</h4>  
+          <div style={table}>
+          <Paper>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{background:'#f5f5f5',color:'black'}}>Item</TableCell>
+                  <TableCell style={{background:'#f5f5f5',color:'black'}} align="right">Price</TableCell>
+                  <TableCell style={{background:'#f5f5f5',color:'black'}} align="right">Quantity</TableCell>
+                  <TableCell style={{background:'#f5f5f5',color:'black'}} align="right">Total</TableCell>
+              </TableRow>
+              </TableHead>
+
+              <TableBody>
+                {/* For mapping list of item
+                {rows.map(row => (
+                  <TableRow key={row.id}>
+                    <TableCell>{row.desc}</TableCell>
+                    <TableCell align="right">{row.qty}</TableCell>
+                    <TableCell align="right">{row.unit}</TableCell>
+                    <TableCell align="right">{ccyFormat(row.price)}</TableCell>
+                  </TableRow>
+                ))}
+                 */}
+
+                 {/* Delete <br/><br/><br/><br/> after mapping for item -->*/} <br/><br/><br/><br/>
+                <TableRow>
+                  <TableCell rowSpan={4} />
+                  <TableCell colSpan={2}>Subtotal:</TableCell>
+                  <TableCell align="right"></TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell>Tax:</TableCell>
+                  <TableCell align="right"></TableCell>
+                  
+                </TableRow>
+
+                <TableRow>
+                  <TableCell>Shipping fee:</TableCell>
+                  <TableCell align="right"></TableCell>
+                  
+                </TableRow>
+
+                <TableRow>
+                  <TableCell colSpan={2}>Total:</TableCell>
+                  <TableCell align="right"></TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Paper>
+          </div>
+          <form  onSubmit={this.handleSubmit}>
           
-          <form style={marg} onSubmit={this.handleSubmit}>
-            <div>
-              <h4 >Your Information</h4>            
-  
+          <h4 style={subhder}>2. SHIPPING</h4>  
+          
+            <div style={
+                {
+                border: '2px solid #f5f5f5',
+                margin: "0% 10% 2% 10%", 
+                paddingBottom:"20px"
+                
+                }
+              }>
+                <Paper>      
                 <TextField 
                   id="firstname"
                   name="firstname"
@@ -64,10 +140,9 @@ class App extends Component {
                   placeholder="First Name"
                   margin="normal"
                   variant="outlined"
-                  style={tField}
                   required
-                  autoComplete="fname"
-                /> <br/>
+                  style = {{width:'42%',marginLeft:"6.5%"}}
+                /> &nbsp;&nbsp;&nbsp;
                 <TextField
                   id="lastname"
                   name="lastname"
@@ -77,8 +152,9 @@ class App extends Component {
                   placeholder="Last Name"
                   margin="normal"
                   variant="outlined"
-                  style={tField}
+                  
                   required
+                  style = {{width:'42%',marginLeft:"1%"}}
                   /> <br/>
                         
                 
@@ -91,9 +167,10 @@ class App extends Component {
                   placeholder="Email"
                   margin="normal"
                   variant="outlined"
-                  style={tField}
+                  
                   required
-                /> <br/>
+                  style = {{width:'42%',marginLeft:"6.5%"}}
+                /> &nbsp;&nbsp;&nbsp;
                 
                 <TextField
                   id="phone"
@@ -104,25 +181,26 @@ class App extends Component {
                   placeholder="Phone number"
                   margin="normal"
                   variant="outlined"
-                  style={tField}
+                 
                   required
+                  style = {{width:'42%',marginLeft:"1%"}}
                 /> <br/>
+
+                 
               
-                <h4>Shipping Address</h4>
+                
                 <TextField
                   id="street"
-                  name="stree"
+                  name="street"
                   label="Street"              
                   value={this.state.street}
                   onChange={this.handleChange('street')}
                   placeholder="Street"
                   margin="normal"
-                  variant="outlined"
-                  style={tField}
+                  variant="outlined"                 
                   required
-                /> <br/>
-
-              
+                  style = {{width:'86.5%',marginLeft:"6.5%"}}
+                /> &nbsp;&nbsp;&nbsp;
 
                 <TextField
                   id="city"
@@ -133,9 +211,9 @@ class App extends Component {
                   placeholder="City"
                   margin="normal"
                   variant="outlined"
-                  style={tField}
-                  required
-                /> <br/>
+                  style = {{width:'29.2%',marginLeft:"6.5%"}}
+                  required                 
+                /> &nbsp;&nbsp;&nbsp;
 
                 <TextField
                   id="State"
@@ -146,54 +224,63 @@ class App extends Component {
                   placeholder="State"
                   margin="normal"
                   variant="outlined"
-                  style={tField}
+                  style = {{width:'29.5%'}}
                   required
-                /> <br/>
+                /> &nbsp;&nbsp;&nbsp;
                   
 
                   <TextField
                   id="zipcode"
                   name="zipcode"
-                  label="Zipcode"          
+                  label="Zip Code"          
                   value={this.state.zipcode}
                   onChange={this.handleChange('zipcode')}
-                  placeholder="Zip code"
+                  placeholder="Zip Code"
                   margin="normal"
                   variant="outlined" 
-                  style={tField} 
+                  style = {{width:'24.6%'}}
                   required                
                 /> <br/>
-
-                
-
-              <h4>Billing Address</h4>
+                <p style={{paddingLeft:"6.5%"}}>*Note: Your privacy is important to us. We will only contacy you if there is an issue with your order.</p><br/>
+               </Paper>
+                  </div>
+                 
+              <h4 style={subhder}>3. PAYMENT</h4>
+              <div style={
+                {
+                border: '1px solid #f5f5f5',
+                margin: "0% 10% 2% 10%",
+                paddingBottom:"80px"
+                }
+              }>  
+              <Paper>
               <TextField
                   id="Billing street"
                   name="bstreet"
-                  label="Billing street"             
+                  label="Billing Street"             
                   value={this.state.bstreet}
                   onChange={this.handleChange('bstreet')}
                   placeholder="Street"
                   margin="normal"
                   variant="outlined"
-                  style={tField}
+                  style = {{width:'86.5%',marginLeft:"6.5%"}}
                   required
-                /> <br/>
+                /> &nbsp;&nbsp;&nbsp;
 
               
 
                 <TextField
                   id="Billing city"
                   name="bcity"
-                  label="Billing city"              
+                  label="Billing City"              
                   value={this.state.bcity}
                   onChange={this.handleChange('bcity')}
                   placeholder="City"
                   margin="normal"
                   variant="outlined"
-                  style={tField}
+                  style = {{width:'29.2%',marginLeft:"6.5%"}}
                   required
-                /> <br/>
+                /> &nbsp;&nbsp;&nbsp;
 
                 <TextField
                   id="Billing State"
@@ -204,25 +291,25 @@ class App extends Component {
                   placeholder="State"
                   margin="normal"
                   variant="outlined"
-                  style={tField}
+                  style = {{width:'29.5%'}}
                   required
-                /> <br/>
+                /> &nbsp;&nbsp;&nbsp;
                   
 
                   <TextField
                   id="Billing zipcode" 
                   name="bzipcode"
-                  label="Billing zipcode"                                       
+                  label="Billing Zip Code"                                       
                   value={this.state.bzipcode}
                   onChange={this.handleChange('bzipcode')}
                   placeholder="Zip code"
                   margin="normal"
                   variant="outlined"       
-                  style={tField}  
+                  style = {{width:'24.6%'}}
                   required         
                 /> <br/>
 
-              <h4>Payment details</h4>
+              
               <img src={visa} alt="Visa" style={iconsize}/>
               <img src={master} alt="Master" style={iconsize}/>
               <img src={maestro} alt="Maestro" style={iconsize}/>
@@ -237,56 +324,50 @@ class App extends Component {
                   placeholder="Card number"
                   margin="normal"
                   variant="outlined"    
-                  style={tField}  
+                  style = {{width:'38%',marginLeft:"6.5%"}}
                   required   
-               /> <br/>
+               /> &nbsp;&nbsp;&nbsp;
 
                <TextField
-                  id="Expired Month"     
-                  label="Expired Month"                           
-                  value={this.state.exmonth}
-                  onChange={this.handleChange('exmonth')}
-                  placeholder="Expired Month"
+                  id="Expired Date"     
+                  label="MM/YY"                           
+                  value={this.state.exdate}
+                  onChange={this.handleChange('exdate')}
+                  placeholder="Expired Date"
                   margin="normal"
                   variant="outlined" 
-                  style={tField}  
+                  style = {{width:'22.5%'}}
                   required     
-               /> <br/>
+               /> &nbsp;&nbsp;&nbsp;
 
-                <TextField
-                  id="Expired Year"     
-                  label="Expired Year"                           
-                  value={this.state.exyear}
-                  onChange={this.handleChange('exyear')}
-                  placeholder="Expired Year"
-                  margin="normal"
-                  variant="outlined"   
-                  style={tField}  
-                  required    
-               /> <br/>
-
+                
                 <TextField
                   id="cvv"     
-                  label="CVV"                           
+                  label="XXX"                           
                   value={this.state.cvv}
                   onChange={this.handleChange('cvv')}
                   placeholder="CVV"
                   margin="normal"
                   variant="outlined"   
-                  style={tField} 
+                  style = {{width:'22.5%'}}
                   helperText="Last three digits on signature strip"
                   required
                /> <br/>  
                
-                       
+               </Paper>          
             </div> <br/>
-            <Button style={{marginLeft:"22.5%"}} size="large" variant="contained" color="primary" id="buttons" type="submit">
+            <Button style={{marginLeft:"45%"}} size="large" variant="contained" color="primary" id="buttons" type="submit">
               Place Order
             </Button>
         </form>
         
+        
+          </div>
+
+          {/* Order summary*/}
+          
+
         </div>
-      </div>
       </React.Fragment>
     );
   }
