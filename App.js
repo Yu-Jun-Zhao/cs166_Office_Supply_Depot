@@ -125,8 +125,7 @@ class App extends Component {
             <div style={
                 {
                 border: '2px solid #f5f5f5',
-                margin: "0% 10% 2% 10%", 
-                paddingBottom:"20px"
+                margin: "0% 10% 2% 10%"             
                 
                 }
               }>
@@ -249,8 +248,7 @@ class App extends Component {
               <div style={
                 {
                 border: '1px solid #f5f5f5',
-                margin: "0% 10% 2% 10%",
-                paddingBottom:"80px"
+                margin: "0% 10% 2% 10%"
                 }
               }>  
               <Paper>
@@ -356,9 +354,10 @@ class App extends Component {
                
                </Paper>          
             </div> <br/>
-            <Button style={{marginLeft:"45%"}} size="large" variant="contained" color="primary" id="buttons" type="submit">
+            <Button style={{marginLeft:"45%", marginBottom:"1%"}} size="large" variant="contained" color="primary" id="buttons" type="submit">
               Place Order
             </Button>
+            <p style={{textAlign:"center"}}>By clicking the Place Order button, you confirm that you have read and underestood, and accept our Terms and Conditions, Return Policy, and Privacy Policy.</p>
         </form>
         
         
