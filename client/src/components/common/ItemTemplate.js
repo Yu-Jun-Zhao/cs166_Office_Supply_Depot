@@ -162,14 +162,14 @@ class ItemTemplate extends React.Component{
                   <MenuItem value={10}>10</MenuItem>
                   <MenuItem value={11}>11</MenuItem>
                   <MenuItem value={12}>12</MenuItem>
-
+                  <MenuItem value={13}>13</MenuItem>
               </Select>
             </FormControl>
             </form>
             <br />
               {/*<Button component={Link} to="/shopping-cart" variant="contained" color="blue">*/}
               <Button onClick={this.handleDialogOpen} variant="contained" color="blue">
-                Add to cart!
+                Add to cart
               </Button>
               <Dialog
               open={this.state.dialogOpen}

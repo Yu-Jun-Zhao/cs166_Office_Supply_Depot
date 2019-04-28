@@ -18,6 +18,11 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import red from '@material-ui/core/colors/red';
 
+import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+
+
 
 /* try this */
 import axios from 'axios';
@@ -35,27 +40,35 @@ const CustomTableCell = withStyles(theme => ({
 const styles = theme => ({
   root: {
     width: '100%',
+  },
+  paper: {
+    width: '100%',
     marginTop: theme.spacing.unit * 3,
+    marginBottom: theme.spacing.unit * 3,
     overflowX: 'auto',
   },
   table: {
-    minWidth: 700,
+    minWidth: 15,
   },
   ordertable:{
-    width:70,
-    height: 70,
-    margin: 'right',
-    right: 30,
+    boxShadow: '10px 10px 5px #CCC',
+    borderRadius: '25px',
+    width:20,
+    height: 20,
+    left: 10,
+  },
+  noborder:{
+    border: theme.palette.common.white,
   },
   center: {
     margin: 'auto',
-    top: 0,
-    right: 0,
-    bottom: 0,
-    left: 0,
-    width: '70%',
-    height: '70%',
-  }
+    width: '80%',
+    height: '100%',
+  },
+  textField: {
+   marginLeft: theme.spacing.unit,
+   marginRight: theme.spacing.unit,
+ },
 });
 /* test data */
 let id = 0;
@@ -72,10 +85,13 @@ const rows = [
   createData('Gingerbread', 3.56, 16.0, 49),
   createData('Monster Pencil Case', 1, 3.0, 1),
 ];
+/* end of test data */
+
 
 class Shoppingcart extends Component{
   state = {
-    items: []
+    items: [],
+    quantity: 1,
   }
   componentDidMount(){
     axios.get('https://jsonplaceholder.typicode.com/users')
@@ -84,6 +100,14 @@ class Shoppingcart extends Component{
         this.setState({items: res.data});
       })
   }
+
+  handleChange = event => {
+    this.setState({ [event.target.quantity]: event.target.value });
+  };
+  handleQtyChange = name => event => {
+   this.setState({[name]: event.target.value });
+ };
+
   render() {
     const { classes, products } = this.props;
     var formatter = new Intl.NumberFormat('en-US', {
@@ -91,50 +115,79 @@ class Shoppingcart extends Component{
       currency: 'USD',
     });
     var subtotal = 0;
-    var tax = 0;
+    var tax = 0.095;
     var grandtotal = 0;
+    var totalWeight = 0;
+    var totalQuantity = 0;
     return (
+      <div className={classes.root}>
       <div className={classes.center}>
-        <div><h1>Here's your shopping cart!</h1></div>
-        <div>
-          <Paper className={classes.root}>
+        <br />
+        <div><Typography variant='h3'>Here's your shopping cart!</Typography></div>
+        <Grid container spacing={24}>
+          <Grid item xs={9}>
+          <Paper className={classes.paper}>
           <Table className={classes.table}>
             <TableHead>
-              <TableRow>
+              <TableRow className={classes.noborder}>
                 <TableCell>Item</TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Quantity</TableCell>
                 <TableCell>Weight</TableCell>
-                <TableCell>Remove</TableCell>
+                <TableCell></TableCell>
                 <TableCell>Item Total</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              <React.Fragment>
               {rows.map(row =>{
                 const t = row.price * row.quantity;
                 const total = formatter.format(t);
                 subtotal += t;
+                totalQuantity += row.quantity;
+                totalWeight += row.weight;
                 return(
                 <TableRow key = {row.id}>
           				  <TableCell>{row.pName}</TableCell>
           			    <TableCell>{formatter.format(row.price)}</TableCell>
-          	        <TableCell><input type="number" default value={row.quantity} min="1">
-                      </input></TableCell>
-                    <TableCell>{row.weight}</TableCell>
+          	        <TableCell>
+                      <FormControl>
+                      <TextField
+                        id="standard-number"
+                        label="Qty"
+                        value={row.quantity}
+                        onChange={this.handleQtyChange('row.quantity')}
+                        type="number"
+                        fontSize="16"
+                        className={classes.textField}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        inputProps={{
+                          style: {fontSize: 13}
+                        }}
+                      />
+                      </FormControl>
+                    </TableCell>
+                    <TableCell>{row.weight} lbs</TableCell>
           				  <TableCell><Button variant="outlined">Remove</Button></TableCell>
           				  <TableCell>{total}</TableCell>
           			 </TableRow>
                );
               })}
-              </React.Fragment>
+              <TableRow>
+                <TableCell></TableCell>
+                <TableCell>{formatter.format(subtotal)}</TableCell>
+                <TableCell></TableCell>
+                <TableCell>{totalWeight} lbs</TableCell>
+                <TableCell> </TableCell>
+                <TableCell>{subtotal}</TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </Paper>
-      </div>
-      <div>
-		    <h2>Order Summary</h2>
-      </div>
+        </Grid>
+        <Grid xs={3} direction="column" justify='flex-start' alignItems='stretch'>
+          <Grid xs={3}>
 			     <Table className={classes.ordertable}>
             <TableBody>
               <TableRow>
@@ -142,37 +195,29 @@ class Shoppingcart extends Component{
                 <TableCell>{formatter.format(subtotal)}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell>Tax({tax}%)</TableCell>
+                <TableCell>Tax({tax*100}%)</TableCell>
                 <TableCell>{formatter.format(tax*subtotal)}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell>Grand Total</TableCell>
-                <TableCell>{formatter.format(tax+subtotal)}</TableCell>
+                <TableCell>{formatter.format((subtotal*tax)+subtotal)}</TableCell>
               </TableRow>
             </TableBody>
 		       </Table>
+           </Grid>
            <br />
-           <Button component={Link} to="/checkout" variant="contained" color="blue">
-            Checkout</Button>
-           </div>
+           <Button component={Link} to="/checkout" variant="contained" color="primary">
+            Checkout
+          </Button>
+        </Grid>
+        </Grid>
+        <br />
+        </div>
+        </div>
     );
   }
 }
 
-const ItemsDisplay = ({ product }) => {
-  {/*const { classes, pName, price, weight, quantity } = product*/}
-  const { pName, price, weight, quantity } = product
-  return (
-      <TableRow key = {product.id}>
-				  <TableCell>name{pName}</TableCell>
-			    <TableCell>price{product.price}</TableCell>
-	        <TableCell><input type="number" value={product.quantity} min="1">
-            </input></TableCell>
-				  <TableCell><Button>Remove</Button></TableCell>
-				  <TableCell>total</TableCell>
-			 </TableRow>
-  );
-}
 
 const mapStateToProps = state => ({
   products: state.products.items
