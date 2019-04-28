@@ -49,6 +49,7 @@ const styles = theme => ({
   },
   table: {
     minWidth: 15,
+    tableLayout: 'fixed',
   },
   ordertable:{
     boxShadow: '10px 10px 5px #CCC',
@@ -59,6 +60,8 @@ const styles = theme => ({
   },
   noborder:{
     border: theme.palette.common.white,
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
   },
   center: {
     margin: 'auto',
@@ -133,7 +136,7 @@ class Shoppingcart extends Component{
                 <TableCell>Item</TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Quantity</TableCell>
-                <TableCell>Weight</TableCell>
+                <TableCell>Total Item Weight</TableCell>
                 <TableCell></TableCell>
                 <TableCell>Item Total</TableCell>
               </TableRow>
@@ -144,7 +147,7 @@ class Shoppingcart extends Component{
                 const total = formatter.format(t);
                 subtotal += t;
                 totalQuantity += row.quantity;
-                totalWeight += row.weight;
+                totalWeight += row.weight * row.quantity;
                 return(
                 <TableRow key = {row.id}>
           				  <TableCell>{row.pName}</TableCell>
@@ -168,7 +171,7 @@ class Shoppingcart extends Component{
                       />
                       </FormControl>
                     </TableCell>
-                    <TableCell>{row.weight} lbs</TableCell>
+                    <TableCell>{row.weight * row.quantity} lbs</TableCell>
           				  <TableCell><Button variant="outlined">Remove</Button></TableCell>
           				  <TableCell>{total}</TableCell>
           			 </TableRow>
@@ -176,11 +179,11 @@ class Shoppingcart extends Component{
               })}
               <TableRow>
                 <TableCell></TableCell>
-                <TableCell>{formatter.format(subtotal)}</TableCell>
+                <TableCell></TableCell>
                 <TableCell></TableCell>
                 <TableCell>{totalWeight} lbs</TableCell>
                 <TableCell> </TableCell>
-                <TableCell>{subtotal}</TableCell>
+                <TableCell>{formatter.format(subtotal)}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
