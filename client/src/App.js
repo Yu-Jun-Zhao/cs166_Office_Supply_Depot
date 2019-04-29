@@ -17,6 +17,7 @@ import User from "./components/pages/User";
 import Footer from "./components/common/Footer";
 import ShoppingCart from "./components/pages/ShoppingCart";
 import ItemPage from "./components/pages/ItemPage";
+import OrderPage from "./components/pages/OrderPage";
 
 function customAuthHandler({ history }) {
   // Redirect to the /login page that has a CustomLoginComponent
@@ -47,6 +48,7 @@ class App extends Component {
             <SecureRoute path="/admin" exact component={Admin} />
             <SecureRoute path="/cart" exact component={ShoppingCart} />
             <SecureRoute path="/checkout" exact component={Checkout} />
+            <SecureRoute path="/orders" exact component={OrderPage} />
 
             <Footer />
           </Security>
