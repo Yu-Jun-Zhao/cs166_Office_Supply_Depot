@@ -135,3 +135,22 @@ export const updateProductsSuccess = () => ({
 export const updateProductsFailure = () => ({
   type: UPDATE_PRODUCT_FAILURE
 });
+
+export function updateProduct(product_id, p_name, quantity, price, weight, description, imgPath, type) {
+  return dispatch => {
+    dispatch(updateProductsBegin());
+    return axios.post(`/api/products/delete`, {
+      product_id: product_id,
+      p_name: p_name,
+      quantity: quantity,
+      price: price,
+      weight: weight,
+      description: description,
+      imgPath: imgPath,
+      type: type
+    })
+        .then(res => dispatch(updateProductsSuccess()))
+        .then(res => dispatch(fetchProductsByOffset(100)))
+        .catch(error => dispatch(updateProductsFailure()));
+  }
+}
