@@ -35,13 +35,9 @@ export const changePage = page => ({
 export function fetchProducts(name, offset) {
   return dispatch => {
     dispatch(fetchProductsBegin());
-    return fetch(`/api/products/${name}/${offset}`)
-      .then(res => res.json())
-      .then(json => {
-        dispatch(fetchProductsSuccess(json.products, json.total));
-        return json;
-      })
-      .catch(error => dispatch(fetchProductsFailure(error)));
+    return axios.get(`/api/products/${name}/${offset}`)
+        .then(res => dispatch(fetchProductsSuccess(res.data.products, res.data.total)))
+        .catch(error => dispatch(fetchProductsFailure(error)));
   };
 }
 
