@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import "../../style/homepage.css";
 import TrieSearch from "trie-search";
 import { withRouter } from "react-router-dom";
-import { Redirect } from "react-router";
-
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import InputBase from "@material-ui/core/InputBase";
@@ -22,20 +20,9 @@ const styles = {
   }
 };
 
-const createTrie = () => {
-  const p = new TrieSearch("text");
-  p.addAll([]);
-  return p;
-};
-
 class Searchbar extends Component {
   state = {
     searchQuery: "",
-    tempQuery: "",
-    options: createTrie(),
-    suggestions: [],
-    activeID: null,
-    activeIdx: null,
   };
 
   handleSubmit = (e) => {
