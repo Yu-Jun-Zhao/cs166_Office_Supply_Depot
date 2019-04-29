@@ -14,7 +14,12 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
-import { withStyles } from '@material-ui/core/styles';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+import FormControl from '@material-ui/core/FormControl';
+
 
 class App extends Component {
 
@@ -62,65 +67,14 @@ class App extends Component {
     return (
       <React.Fragment>
       <div style={{alignItems:"flex-inline"}}>
+
+      <div><h2 style={hder}>CHECKOUT</h2></div>  
         <div>        
              
-          <div><h2 style={hder}>CHECKOUT</h2></div>  
-
-          <h4 style={subhder}>1. REVIEW ORDER</h4>  
-          <div style={table}>
-          <Paper>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell style={{background:'#f5f5f5',color:'black'}}>Item</TableCell>
-                  <TableCell style={{background:'#f5f5f5',color:'black'}} align="right">Price</TableCell>
-                  <TableCell style={{background:'#f5f5f5',color:'black'}} align="right">Quantity</TableCell>
-                  <TableCell style={{background:'#f5f5f5',color:'black'}} align="right">Total</TableCell>
-              </TableRow>
-              </TableHead>
-
-              <TableBody>
-                {/* For mapping list of item
-                {rows.map(row => (
-                  <TableRow key={row.id}>
-                    <TableCell>{row.desc}</TableCell>
-                    <TableCell align="right">{row.qty}</TableCell>
-                    <TableCell align="right">{row.unit}</TableCell>
-                    <TableCell align="right">{ccyFormat(row.price)}</TableCell>
-                  </TableRow>
-                ))}
-                 */}
-
-                 {/* Delete <br/><br/><br/><br/> after mapping for item -->*/} <br/><br/><br/><br/>
-                <TableRow>
-                  <TableCell rowSpan={4} />
-                  <TableCell colSpan={2}>Subtotal:</TableCell>
-                  <TableCell align="right"></TableCell>
-                </TableRow>
-
-                <TableRow>
-                  <TableCell>Tax:</TableCell>
-                  <TableCell align="right"></TableCell>
-                  
-                </TableRow>
-
-                <TableRow>
-                  <TableCell>Shipping fee:</TableCell>
-                  <TableCell align="right"></TableCell>
-                  
-                </TableRow>
-
-                <TableRow>
-                  <TableCell colSpan={2}>Total:</TableCell>
-                  <TableCell align="right"></TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Paper>
-          </div>
+          
           <form  onSubmit={this.handleSubmit}>
           
-          <h4 style={subhder}>2. SHIPPING</h4>  
+          <h4 style={subhder}>1. SHIPPING</h4>  
           
             <div style={
                 {
@@ -243,7 +197,116 @@ class App extends Component {
                 <p style={{paddingLeft:"6.5%"}}>*Note: Your privacy is important to us. We will only contacy you if there is an issue with your order.</p><br/>
                </Paper>
                   </div>
-                 
+
+
+
+
+
+             <h4 style={subhder}>2. DELIVERY METHOD</h4>
+                <div style={
+                {
+                border: '1px solid #f5f5f5',
+                margin: "0% 10% 2% 10%"
+                }
+              }>
+              <Paper>
+                <p style={{paddingLeft:"6.5%", paddingTop:"2%", paddingBottom:"1%"}}> &nbsp;&nbsp;&nbsp;*Note: Depending on you order's total weights and prices, our office will provide
+                different delivery method: <br/> <br/>
+               1) If Grand Total is over $100 and Total weight is over 14 lbs : Free services by truck (2 business days) or $25 service fees by truck (same day) <br/>
+               2) If Grand Total is over $100 and Total weight is less than 15 lbs : Free services by drone (same day during business hours) <br/>
+               3) If Grand Total is less than $100 and Total weight is over 14 lbs: $20 services fee by truck (2 business days) <br/>
+               4) If Grand Total is less than $100 and Total weight is less than 15 lbs: $20 services by drone (same day during business hours) <br/>
+                </p>
+
+              {/*This is for #1 from above*/}
+                <div style={{paddingLeft:"6.5%", paddingBottom:"3%"}}>
+                  <FormControl style={{width:"30%"}}>
+                    <InputLabel shrink htmlFor="delivery-label-placeholder">
+                    Please select your delivery method:
+                    </InputLabel>
+                    <Select                      
+                      input={<Input name="delivery" id="delivery-label-placeholder" />}
+                      displayEmpty
+                      name="dmethod"    
+                    >
+                      <MenuItem value="">
+                        <em>Please select...</em>
+                      </MenuItem>
+                      <MenuItem value={1}>Free services by truck (2 business days)</MenuItem>
+                      <MenuItem value={2}>$25 service fees by truck (same day)</MenuItem>
+                      
+                    </Select>
+                  </FormControl>
+                </div>
+
+                 {/*This is for #2 from above*/}
+                 <div style={{paddingLeft:"6.5%", paddingBottom:"3%"}}>
+                    <FormControl style={{width:"30%"}}>
+                      <InputLabel shrink htmlFor="delivery-label-placeholder">
+                      Please select your delivery method:
+                      </InputLabel>
+                      <Select                      
+                        input={<Input name="delivery" id="delivery-label-placeholder" />}
+                        displayEmpty
+                        name="dmethod"    
+                      >
+                        <MenuItem value="">
+                          <em>Please select...</em>
+                        </MenuItem>
+                        <MenuItem value={1}>Free services by drone</MenuItem>                     
+                        
+                      </Select>
+                    </FormControl>
+                  </div>
+
+                  {/*This is for #3 from above*/}
+                 <div style={{paddingLeft:"6.5%", paddingBottom:"3%"}}>
+                  <FormControl style={{width:"30%"}}>
+                    <InputLabel shrink htmlFor="delivery-label-placeholder">
+                    Please select your delivery method:
+                    </InputLabel>
+                    <Select                      
+                      input={<Input name="delivery" id="delivery-label-placeholder" />}
+                      displayEmpty
+                      name="dmethod"    
+                    >
+                      <MenuItem value="">
+                        <em>Please select...</em>
+                      </MenuItem>
+                      <MenuItem value={1}>$20 services fee by truck (2 business days) </MenuItem>                     
+                      
+                    </Select>
+                  </FormControl>
+                </div>
+
+                {/*This is for #4 from above*/}
+                <div style={{paddingLeft:"6.5%", paddingBottom:"3%"}}>
+                  <FormControl style={{width:"30%"}}>
+                    <InputLabel shrink htmlFor="delivery-label-placeholder">
+                    Please select your delivery method:
+                    </InputLabel>
+                    <Select                      
+                      input={<Input name="delivery" id="delivery-label-placeholder" />}
+                      displayEmpty
+                      name="dmethod"    
+                    >
+                      <MenuItem value="">
+                        <em>Please select...</em>
+                      </MenuItem>
+                      <MenuItem value={1}>$20 services by drone (same day during business hours)</MenuItem>                     
+                      
+                    </Select>
+                  </FormControl>
+                </div>
+
+              </Paper>
+                </div>
+
+
+
+
+
+
               <h4 style={subhder}>3. PAYMENT</h4>
               <div style={
                 {
@@ -353,7 +416,64 @@ class App extends Component {
                /> <br/>  
                
                </Paper>          
-            </div> <br/>
+            </div>
+            
+            
+
+          <h4 style={subhder}>4. REVIEW ORDER</h4>  
+          <div style={table}>
+          <Paper>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{background:'#f5f5f5',color:'black'}}>Item</TableCell>
+                  <TableCell style={{background:'#f5f5f5',color:'black'}} align="right">Price</TableCell>
+                  <TableCell style={{background:'#f5f5f5',color:'black'}} align="right">Quantity</TableCell>
+                  <TableCell style={{background:'#f5f5f5',color:'black'}} align="right">Total</TableCell>
+              </TableRow>
+              </TableHead>
+
+              <TableBody>
+                {/* For mapping list of item
+                {rows.map(row => (
+                  <TableRow key={row.id}>
+                    <TableCell>{row.desc}</TableCell>
+                    <TableCell align="right">{row.qty}</TableCell>
+                    <TableCell align="right">{row.unit}</TableCell>
+                    <TableCell align="right">{ccyFormat(row.price)}</TableCell>
+                  </TableRow>
+                ))}
+                 */}
+
+                 {/* Delete <br/><br/><br/><br/> after mapping for item -->*/} <br/><br/><br/><br/>
+                <TableRow>
+                  <TableCell rowSpan={4} />
+                  <TableCell colSpan={2}>Subtotal:</TableCell>
+                  <TableCell align="right"></TableCell>
+                </TableRow>
+
+                <TableRow>
+                  <TableCell>Tax:</TableCell>
+                  <TableCell align="right"></TableCell>
+                  
+                </TableRow>
+
+                <TableRow>
+                  <TableCell>Shipping fee:</TableCell>
+                  <TableCell align="right"></TableCell>
+                  
+                </TableRow>
+
+                <TableRow>
+                  <TableCell colSpan={2}>Total:</TableCell>
+                  <TableCell align="right"></TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Paper>
+          </div>
+            
+             <br/>
             <Button style={{marginLeft:"45%", marginBottom:"1%"}} size="large" variant="contained" color="primary" id="buttons" type="submit">
               Place Order
             </Button>
