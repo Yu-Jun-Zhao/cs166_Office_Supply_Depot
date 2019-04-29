@@ -7,6 +7,9 @@ import {
   CREATE_PRODUCT_BEGIN,
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAILURE,
+  DELETE_PRODUCT_BEGIN,
+  DELETE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_FAILURE,
   CLOSE_MODAL
 } from "../actions/types";
 
@@ -60,26 +63,41 @@ export default function productReducer(state = initialState, action) {
       return {
         ...state,
         loading: true
-      }
+      };
     case CREATE_PRODUCT_SUCCESS:
       return {
         ...state,
         loading: false,
         isModalOpen: true,
         modalType: 'success'
-      }
+      };
     case CREATE_PRODUCT_FAILURE:
       return {
         ...state,
         loading: false,
         isModalOpen: true,
         modalType: 'fail'
-      }
+      };
+    case DELETE_PRODUCT_BEGIN:
+      return {
+        ...state,
+        loading: true
+      };
+    case DELETE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case DELETE_PRODUCT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+      };
     case CLOSE_MODAL:
       return {
         ...state,
         isModalOpen: false
-      }
+      };
     default:
       return state;
   }
