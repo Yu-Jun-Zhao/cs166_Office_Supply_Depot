@@ -91,16 +91,17 @@ router.post("/add", (req, res) => {
   });
 });
 
-router.delete("/delete", (req, res) => {
+router.post("/delete", (req, res) => {
   const { product_id } = req.body;
-    const sql = `DELETE FROM product WHERE product_id = ${product_id}`;
-    pool.query(sql, (error, results) => {
+  console.log(product_id)
+  const sql = `DELETE FROM product WHERE product_id = ${product_id}`;
+  pool.query(sql, (error, results) => {
       if (error)
         return res.status(400).send({
           error: "Bad Request"
         });
       res.sendStatus(200);
-    });
+  });
 });
 
 export default router;
