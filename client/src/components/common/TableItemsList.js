@@ -8,6 +8,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 
 //import ReactPaginate from "react-paginate";
 // Mainly for Admin
@@ -47,6 +48,9 @@ class TableItemsList extends Component {
                         <TableCell>{product.weight}</TableCell>
                         <TableCell>{product.quantity}</TableCell>
                         <TableCell>{product.price}</TableCell>
+                        <Button color="primary">
+                          <i className="material-icons">delete</i>
+                        </Button>
                       </TableRow>
                   ))}
                 </TableBody>
