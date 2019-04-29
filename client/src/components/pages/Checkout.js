@@ -67,7 +67,75 @@ class CheckOut extends Component {
           </div>
           <div>
             <form onSubmit={this.handleSubmit}>
-              <h4 style={subhder}>1. DELIVERYMETHOD</h4>
+              <h4 style={subhder}>1. SHIPPING</h4>
+
+              <div
+                style={{
+                  margin: "0% 10% 2% 10%"
+                }}
+              >
+                <Paper>
+                  <TextField
+                    id="street"
+                    name="street"
+                    label="Street"
+                    value={this.state.street}
+                    onChange={this.handleChange("street")}
+                    placeholder="Street"
+                    margin="normal"
+                    variant="outlined"
+                    required
+                    style={{ width: "86.5%", marginLeft: "6.5%" }}
+                  />{" "}
+                  &nbsp;&nbsp;&nbsp;
+                  <TextField
+                    id="city"
+                    name="city"
+                    label="City"
+                    value={this.state.city}
+                    onChange={this.handleChange("city")}
+                    placeholder="City"
+                    margin="normal"
+                    variant="outlined"
+                    style={{ width: "29.2%", marginLeft: "6.5%" }}
+                    required
+                  />{" "}
+                  &nbsp;&nbsp;&nbsp;
+                  <TextField
+                    id="State"
+                    name="State"
+                    label="State"
+                    value={this.state.state}
+                    onChange={this.handleChange("state")}
+                    placeholder="State"
+                    margin="normal"
+                    variant="outlined"
+                    style={{ width: "29.5%" }}
+                    required
+                  />{" "}
+                  &nbsp;&nbsp;&nbsp;
+                  <TextField
+                    id="zipcode"
+                    name="zipcode"
+                    label="Zip Code"
+                    value={this.state.zipcode}
+                    onChange={this.handleChange("zipcode")}
+                    placeholder="Zip Code"
+                    margin="normal"
+                    variant="outlined"
+                    style={{ width: "24.6%" }}
+                    required
+                  />{" "}
+                  <br />
+                  <p style={{ paddingLeft: "6.5%" }}>
+                    *Note: Your privacy is important to us. We will only contacy
+                    you if there is an issue with your order.
+                  </p>
+                  <br />
+                </Paper>
+              </div>
+
+              <h4 style={subhder}>2. DELIVERY METHOD</h4>
               <div
                 style={{
                   margin: "0% 10% 2% 10%"
@@ -200,65 +268,13 @@ class CheckOut extends Component {
                   </div>
                 </Paper>
               </div>
-              <h4 style={subhder}>2. SHIPPING</h4>
+              <h4 style={subhder}>3. PAYMENT</h4>
               <div
                 style={{
                   margin: "0% 10% 2% 10%"
                 }}
               >
                 <Paper>
-                  <TextField
-                    id="Shipping street"
-                    name="bstreet"
-                    label="Shipping Street"
-                    value={this.state.bstreet}
-                    onChange={this.handleChange("bstreet")}
-                    placeholder="Street"
-                    margin="normal"
-                    variant="outlined"
-                    style={{ width: "86.5%", marginLeft: "6.5%" }}
-                    required
-                  />{" "}
-                  &nbsp;&nbsp;&nbsp;
-                  <TextField
-                    id="Shipping city"
-                    name="bcity"
-                    label="Shipping City"
-                    value={this.state.bcity}
-                    onChange={this.handleChange("bcity")}
-                    placeholder="City"
-                    margin="normal"
-                    variant="outlined"
-                    style={{ width: "29.2%", marginLeft: "6.5%" }}
-                    required
-                  />{" "}
-                  &nbsp;&nbsp;&nbsp;
-                  <TextField
-                    id="Shipping State"
-                    name="bstate"
-                    label="Shipping State"
-                    value={this.state.bstate}
-                    onChange={this.handleChange("bstate")}
-                    placeholder="State"
-                    margin="normal"
-                    variant="outlined"
-                    style={{ width: "29.5%" }}
-                    required
-                  />{" "}
-                  &nbsp;&nbsp;&nbsp;
-                  <TextField
-                    id="Shipping zipcode"
-                    name="bzipcode"
-                    label="Shipping Zip Code"
-                    value={this.state.bzipcode}
-                    onChange={this.handleChange("bzipcode")}
-                    placeholder="Zip code"
-                    margin="normal"
-                    variant="outlined"
-                    style={{ width: "24.6%" }}
-                    required
-                  />{" "}
-                  <br />
                   {/*
                   <img src={visa} alt="Visa" style={iconsize} />
                   <img src={master} alt="Master" style={iconsize} />
@@ -361,10 +377,6 @@ class CheckOut extends Component {
                       <TableRow>
                         <TableCell rowSpan={4} />
                         <TableCell colSpan={2}>Subtotal:</TableCell>
-                        <TableCell align="right" />
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Tax:</TableCell>
                         <TableCell align="right" />
                       </TableRow>
                       <TableRow>

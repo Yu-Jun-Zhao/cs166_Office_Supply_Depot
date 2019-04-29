@@ -32,7 +32,6 @@ class ItemCard extends Component {
 
   handleCardClick = () => {
     const { cartId } = this.props.authentication;
-    console.log(cartId);
     this.props.addCartItem(cartId, this.state.id, 1);
   };
 
