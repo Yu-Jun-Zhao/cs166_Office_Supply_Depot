@@ -4,8 +4,8 @@ import pool from "../db";
 
 router.get("/:name/:offset", (req, res) => {
   const { name, offset } = req.params;
-  const count_sql = `SELECT COUNT(*) as total FROM product WHERE pName LIKE '%${name}%'`;
-  const select_sql = `SELECT * FROM product WHERE pName LIKE '%${name}%' LIMIT 10 OFFSET ${offset}`;
+  const count_sql = `SELECT COUNT(*) as total FROM product WHERE p_name LIKE '%${name}%'`;
+  const select_sql = `SELECT * FROM product WHERE p_name LIKE '%${name}%' LIMIT 10 OFFSET ${offset}`;
 
   let json = {};
 
