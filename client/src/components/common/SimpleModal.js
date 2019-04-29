@@ -50,12 +50,12 @@ class SimpleModal extends React.Component {
                     <div style={getModalStyle()} className={classes.paper}>
                         <Typography variant="h6" id="modal-title">
                             {
-                                modalProps && <div> SUCCESS </div>
+                                modalProps && <div> {modalProps["status"]} </div>
                             }
                         </Typography>
                         <Typography variant="subtitle1" id="simple-modal-description">
                             {
-                                modalProps && <div>Successfully added product</div>
+                                modalProps && <div> {modalProps["message"]} </div>
                             }
                         </Typography>
                     </div>
