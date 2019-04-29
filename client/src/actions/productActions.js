@@ -111,12 +111,12 @@ export const deleteProductsFailure = () => ({
 
 export function deleteProduct(product_id) {
   return dispatch => {
-    dispatch(createProductsBegin());
+    dispatch(deleteProductsBegin());
     return axios.post(`/api/products/delete`, {
       product_id: product_id
     })
         .then(res => dispatch(deleteProductsSuccess()))
         .then(res => dispatch(fetchProductsByOffset(100)))
-        .catch(error => dispatch(createProductsFailure()));
+        .catch(error => dispatch(deleteProductsFailure()));
   }
 }
