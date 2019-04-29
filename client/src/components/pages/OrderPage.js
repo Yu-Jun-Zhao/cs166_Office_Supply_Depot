@@ -1,52 +1,41 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { withAuth } from "@okta/okta-react";
-import {checkAuthentication} from "../../actions/authenticateActions";
+import { getAllOrdersFromDB } from "../../actions/orderAction";
 
 class OrderPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isAuthenticated: false,
-            name: ""
-        };
-    }
 
     componentDidMount() {
-        this.props.checkAuthentication(
-            this.props.auth,
-            this.props.authentication.isAuthenticated,
-            this.props.authentication.userInfo
-        );
+        this.props.getAllOrdersFromDB('00uilj3svbiMLnQWQ356')
     }
-
-    static getDerivedStateFromProps(nextProps, prevState) {
-        if (nextProps.authentication.isAuthenticated) {
-            return {
-                isAuthenticated: true,
-                name: nextProps.authentication.userInfo.name
-            };
-        }
-        return {
-            isAuthenticated: false,
-            name: ""
-        };
-    }
-
     render() {
+        const { orders } = this.props
+        // order_id, order_date, user_id, s_address_id,
+        //         from_address_id, weight, price, status
         return (
             <React.Fragment>
-                <h1> TST </h1>
+                {
+                    orders ? orders.map(order =>
+                            <React.Fragment>
+                                <div>
+                                    {order.order_id}
+                                </div>
+                                <div>
+                                    {order.order_date}
+                                </div>
+                    </React.Fragment>) :
+                        <div>LOADING</div>
+                }
             </React.Fragment>
         );
     }
 }
 
 const mapStateToProps = state => ({
-    authentication: state.authentication
+    authentication: state.authentication,
+    orders: state.orders.order,
+    loading: state.orders.loadingFromDB
 });
 
 export default connect(
-    mapStateToProps,
-    { checkAuthentication }
-)(withAuth(OrderPage));
+    mapStateToProps, { getAllOrdersFromDB }
+)(OrderPage);
