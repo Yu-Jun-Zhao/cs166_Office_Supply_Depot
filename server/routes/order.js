@@ -62,7 +62,7 @@ router.get("/address/:addressId", authenticationRequired, (req, res) => {
   const sql = `SELECT * FROM shipping_address WHERE s_address_id = ${addressId}`;
   pool.query(sql, (err, results) => {
     if (err) return res.send(err);
-    return res.send(results);
+    return res.send(results[0]);
   });
 });
 

@@ -1,11 +1,13 @@
 import {
   BEGINLOADINGORDERSFROM_DB,
   FINISHLOADINGORDERSFROM_DB,
-  LOADALLORDERSFROM_DB
+  LOADALLORDERSFROM_DB,
+  FETCHSHIPPINGADDRESS
 } from "../actions/types";
 import axios from "axios";
 
 // might not needed in redux
+// Create order and store in db
 export const createOrder = (
   userId,
   address,
@@ -26,6 +28,7 @@ export const createOrder = (
   axios.post("/api/order/add", orderData).catch(err => console.log(err)); // for now
 };
 
+// Fetch all the orders from db that this person has
 export const getAllOrdersFromDB = userId => dispatch => {
   dispatch(beginLoadingOrderFromDb());
 
@@ -35,6 +38,15 @@ export const getAllOrdersFromDB = userId => dispatch => {
       payload: res.data.order
     })
   );
+};
+
+// fetch shipping address by the addressId
+// addressId could be obtained from getAllOrdersFromDB
+export const retrieveShippingAddress = addressId => dispatch => {
+  axios
+    .get(`/api/order/address/${addressId}`)
+    .then(res => dispatch({ type: FETCHSHIPPINGADDRESS, payload: res.data }))
+    .catch(err => console.log(err));
 };
 
 export const beginLoadingOrderFromDb = () => {

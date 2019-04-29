@@ -1,12 +1,14 @@
 import {
   BEGINLOADINGORDERSFROM_DB,
   FINISHLOADINGORDERSFROM_DB,
-  LOADALLORDERSFROM_DB
+  LOADALLORDERSFROM_DB,
+  FETCHSHIPPINGADDRESS
 } from "../actions/types";
 
 const initialState = {
   order: [],
-  loadingFromDB: false
+  loadingFromDB: false,
+  shippingAddress: {} // shipping address of the one shown in map
 };
 
 export default function(state = initialState, action) {
@@ -25,6 +27,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loadingFromDB: false
+      };
+    case FETCHSHIPPINGADDRESS:
+      return {
+        ...state,
+        shippingAddress: action.payload
       };
     default:
       return state;
