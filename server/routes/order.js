@@ -44,7 +44,7 @@ router.post("/add", authenticationRequired, (req, res) => {
 // @router POST /api/order/check/:userId
 // @desc   Check and Update status or orders and Retrieve all orders
 // @private
-router.put("/check/:userId", authenticationRequired, (req, res) => {
+router.put("/check/:userId", (req, res) => {
   const { userId } = req.params;
   const sql = `CALL checkAllOrderStatus("${userId}")`;
   pool.query(sql, (err, results) => {
