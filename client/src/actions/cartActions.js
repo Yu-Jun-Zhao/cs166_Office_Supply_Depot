@@ -6,6 +6,8 @@ import {
   FINISHLOADINGFROM_DB
 } from "./types";
 import axios from "axios";
+import {openModal, setModalProps} from "./modalActions";
+import {createProductsFailure} from "./productActions";
 
 // Add cart item locally and in db
 
@@ -15,8 +17,13 @@ export const addCartItem = (userCartId, product_id, quantity) => dispatch => {
     productId: product_id,
     quantity
   };
-  axios.post("/api/cart/add", itemData).catch(err => console.log(err)); // for now
-};
+  axios.post("/api/cart/add", itemData)
+      .then(res => dispatch(openModal()))
+      .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully added to cart' })))
+      .catch(error => {
+        dispatch(openModal())
+        dispatch(setModalProps( {status: 'FAIL', message: 'Failed to add product to cart' }))
+      })};
 
 // Add all items
 export const addAllItems = (userCartId, cart) => dispatch => {

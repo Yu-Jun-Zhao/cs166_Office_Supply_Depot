@@ -30,6 +30,7 @@ import { connect } from "react-redux";
 import { fetchProductByType } from "../../actions/productActions";
 
 import ItemCard from "../common/ItemCard";
+import SimpleModal from "../common/SimpleModal";
 
 const drawerWidth = "230px";
 
@@ -179,6 +180,7 @@ class CommonPage extends Component {
 
     return (
       <div className={classes.root}>
+        <SimpleModal/>
         <Drawer
           open={false} // TODO: for now it will stay false
           variant="persistent"
