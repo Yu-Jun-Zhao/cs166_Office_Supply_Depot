@@ -9,7 +9,6 @@ const initialState = {
   isAuthenticated: false,
   userInfo: {},
   cartId: null,
-  cartItems: {},
   error: null
 };
 
@@ -20,7 +19,8 @@ export default function(state = initialState, action) {
       return {
         ...state,
         isAuthenticated: action.payload.isAuthenticated,
-        userInfo: action.payload.userInfo
+        userInfo: action.payload.userInfo,
+        cartId: action.payload.cartId
       };
     case REMOVE_AUTHENTICATION:
       return {

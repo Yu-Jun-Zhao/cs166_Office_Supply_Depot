@@ -34,7 +34,7 @@ export const checkAuthentication = (
       axios
         .put("/api/user/", db_userData)
         .then(res => {
-          dispatch(logInCurrentUser(userInfo));
+          dispatch(logInCurrentUser(userInfo, res.data.cartId));
         })
         .catch(err =>
           dispatch({
@@ -46,12 +46,13 @@ export const checkAuthentication = (
   }
 };
 
-export const logInCurrentUser = userInfo => {
+export const logInCurrentUser = (userInfo, cartId) => {
   return {
     type: FETCH_AUTHENTICATION,
     payload: {
       isAuthenticated: true,
-      userInfo: userInfo
+      userInfo: userInfo,
+      cartId
     }
   };
 };

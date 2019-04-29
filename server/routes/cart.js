@@ -19,15 +19,15 @@ router.post("/add", (req, res) => {
   });
 });
 
-// @router GET /api/cart/all
+// @router GET /api/cart/all/:cartId
 // @desc GET all items in cart
 // @access private
 
-router.get("/all", (req, res) => {
-  const { cartId } = req.body;
+router.get("/all/:cartId", (req, res) => {
+  const { cartId } = req.params;
   const sql = `SELECT cart_id, product_id, COUNT(*) AS quantity FROM cart_item WHERE cart_id = ${cartId} GROUP BY product_id`;
   pool.query(sql, (err, results) => {
-    if (err) return res.send({ error: "Cannot fetch items from cart" });
+    if (err) return res.send({ error: err });
     getAllProductsName(res, results);
   });
 });
@@ -38,7 +38,7 @@ async function getAllProductsName(res, outerSqlResults) {
 
   try {
     for (var i = 0; i < outerSqlResults.length; i++) {
-      const nestedSQL = `SELECT p_name FROM product WHERE product_id = ${
+      const nestedSQL = `SELECT p_name, weight, price FROM product WHERE product_id = ${
         outerSqlResults[i].product_id
       }`;
       const productObj = await getProduct(nestedSQL, outerSqlResults[i]);
@@ -59,16 +59,18 @@ function getProduct(query, outerSqlResult) {
       resolve({
         id: outerSqlResult.product_id,
         name: result[0].p_name,
+        weight: result[0].weight,
+        price: result[0].price,
         quantity: outerSqlResult.quantity
       });
     });
   });
 }
 
-//  @router DELETE /api/cart/
+//  @router DELETE /api/cart/remove
 //  @desc   Remove all items with the same product id from cart
 //  @access private
-router.delete("/remove", (req, res) => {
+router.post("/remove", (req, res) => {
   const { cartId, productId } = req.body;
   const sql = `CALL removeAllItemsFromCart(${cartId}, ${productId})`;
   pool.query(sql, (err, results) => {

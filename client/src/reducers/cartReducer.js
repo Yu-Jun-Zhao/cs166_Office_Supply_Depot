@@ -1,4 +1,8 @@
-import { ADDITEM_TOCART, DELETEITEM_FROMCART } from "../actions/types";
+import {
+  ADDITEM_TOCART,
+  DELETEITEM_FROMCART,
+  LOADALLITEMSFROM_DB
+} from "../actions/types";
 
 const initialState = {
   cart: []
@@ -6,12 +10,15 @@ const initialState = {
 
 export default function(state = initialState, action) {
   switch (action.type) {
-    case ADDITEM_TOCART:
+    case ADDITEM_TOCART: {
       return {};
-
+    }
     case DELETEITEM_FROMCART:
       return {};
-
+    case LOADALLITEMSFROM_DB:
+      return {
+        cart: action.payload
+      };
     default:
       return state;
   }
