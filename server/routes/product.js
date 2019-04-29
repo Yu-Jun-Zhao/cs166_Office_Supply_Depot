@@ -79,6 +79,11 @@ router.post("/add", (req, res) => {
     imgPath,
     type
   } = req.body;
+  if (p_name == null || weight == null || quantity == null || price == null || description == null || imgPath == null || type == null) {
+    return res.status(400).send({
+      error: "Bad Request"
+    });
+  }
   const insert_sql = `INSERT INTO product (p_name, quantity, price, weight, description, imgPath, type) values ('${p_name}', '${quantity}', '${price}', '${weight}', '${description}', '${imgPath}', '${type}')`;
 
   pool.query(insert_sql, (error, results) => {
@@ -93,6 +98,11 @@ router.post("/add", (req, res) => {
 
 router.post("/update", (req, res) => {
   const { product_id, p_name, weight, quantity, price, description, imgPath, type} = req.body;
+  if (product_id == null || p_name == null || weight == null || quantity == null || price == null || description == null || imgPath == null || type == null) {
+    return res.status(400).send({
+      error: "Bad Request"
+    });
+  }
   const sql = `UPDATE product SET p_name = '${p_name}', weight = '${weight}', quantity = '${quantity}', price = '${price}', description = '${description}', imgPath = '${imgPath}', type = '${type}' WHERE product_id = ${product_id}`;
   pool.query(sql, (error, results) => {
       if (error)
@@ -105,7 +115,11 @@ router.post("/update", (req, res) => {
 
 router.post("/delete", (req, res) => {
   const { product_id } = req.body;
-  console.log(product_id)
+  if (product_id == null) {
+      return res.status(400).send({
+        error: "Bad Request"
+      });
+  }
   const sql = `DELETE FROM product WHERE product_id = ${product_id}`;
   pool.query(sql, (error, results) => {
     if (error)
