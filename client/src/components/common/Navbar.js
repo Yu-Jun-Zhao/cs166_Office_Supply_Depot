@@ -138,7 +138,7 @@ class Navbar extends Component {
                       aria-haspopup="true"
                       onMouseEnter={this.handleMenu}
                       component={RouterLink}
-                      to="/user"
+                      to="/orders" // "/user"
                     >
                       <AccountCircle />
                     </IconButton>
@@ -181,15 +181,7 @@ class Navbar extends Component {
                                     Cart
                                   </Link>
                                 </MenuItem>
-                                <MenuItem onClick={this.handleClose}>
-                                  <Link
-                                    component={RouterLink}
-                                    to="/orders"
-                                    underline="none"
-                                  >
-                                    Orders
-                                  </Link>
-                                </MenuItem>
+
                                 <MenuItem onClick={this.logout}>
                                   Logout
                                 </MenuItem>
