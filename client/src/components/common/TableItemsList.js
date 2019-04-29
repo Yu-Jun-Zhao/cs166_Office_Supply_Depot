@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchProductsByOffset } from "../../actions/productActions";
+import { fetchProductsByOffset, deleteProduct } from "../../actions/productActions";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -48,7 +48,7 @@ class TableItemsList extends Component {
                         <TableCell>{product.weight}</TableCell>
                         <TableCell>{product.quantity}</TableCell>
                         <TableCell>{product.price}</TableCell>
-                        <Button color="primary">
+                        <Button color="primary" onClick={() => this.props.deleteProduct(product.product_id)}>
                           <i className="material-icons">delete</i>
                         </Button>
                       </TableRow>
@@ -69,5 +69,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchProductsByOffset }
+  { fetchProductsByOffset, deleteProduct }
 )(TableItemsList);
