@@ -1,7 +1,8 @@
 import {
   BEGINLOADINGORDERSFROM_DB,
   FINISHLOADINGORDERSFROM_DB,
-  LOADALLORDERSFROM_DB
+  LOADALLORDERSFROM_DB,
+  FETCHSHIPPINGADDRESS
 } from "../actions/types";
 import axios from "axios";
 import {openModal, setModalProps} from "./modalActions";
@@ -13,6 +14,7 @@ import {
 } from "./productActions";
 
 // might not needed in redux
+// Create order and store in db
 export const createOrder = (
   userId,
   address,
@@ -32,7 +34,12 @@ export const createOrder = (
 
   axios.post("/api/order/add", orderData).catch(err => console.log(err)); // for now
 };
+<<<<<<< HEAD
 /*
+=======
+
+// Fetch all the orders from db that this person has
+>>>>>>> e69353faca1f44b58a755aec105359578605e6f3
 export const getAllOrdersFromDB = userId => dispatch => {
   dispatch(beginLoadingOrderFromDb());
 
@@ -58,12 +65,24 @@ export function getAllOrdersFromDB(userID) {
   }
 }
 
+<<<<<<< HEAD
 export const loadOrders = (orders) => {
   return {
     type: LOADALLORDERSFROM_DB,
     payload: orders
   }
 }
+=======
+// fetch shipping address by the addressId
+// addressId could be obtained from getAllOrdersFromDB
+export const retrieveShippingAddress = addressId => dispatch => {
+  axios
+    .get(`/api/order/address/${addressId}`)
+    .then(res => dispatch({ type: FETCHSHIPPINGADDRESS, payload: res.data }))
+    .catch(err => console.log(err));
+};
+
+>>>>>>> e69353faca1f44b58a755aec105359578605e6f3
 export const beginLoadingOrderFromDb = () => {
   return { type: BEGINLOADINGORDERSFROM_DB };
 };

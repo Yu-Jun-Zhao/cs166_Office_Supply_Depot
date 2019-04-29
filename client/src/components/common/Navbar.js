@@ -160,18 +160,18 @@ class Navbar extends Component {
                             <ClickAwayListener onClickAway={this.handleClose}>
                               {/* This is the Menu*/}
                               <MenuList>
-                                {
-                                  this.props.authentication.userInfo.groups === 'admin' ?
-                                      <MenuItem onClick={this.handleClose}>
-                                        <Link
-                                            component={RouterLink}
-                                            to="/admin"
-                                            underline="none"
-                                        >
-                                          Admin Panel
-                                        </Link>
-                                      </MenuItem> : null
-                                }
+                                {this.props.authentication.userInfo.groups ===
+                                "admin" ? (
+                                  <MenuItem onClick={this.handleClose}>
+                                    <Link
+                                      component={RouterLink}
+                                      to="/admin"
+                                      underline="none"
+                                    >
+                                      Admin Panel
+                                    </Link>
+                                  </MenuItem>
+                                ) : null}
                                 <MenuItem onClick={this.handleClose}>
                                   <Link
                                     component={RouterLink}
@@ -179,6 +179,15 @@ class Navbar extends Component {
                                     underline="none"
                                   >
                                     Cart
+                                  </Link>
+                                </MenuItem>
+                                <MenuItem onClick={this.handleClose}>
+                                  <Link
+                                    component={RouterLink}
+                                    to="/orders"
+                                    underline="none"
+                                  >
+                                    Orders
                                   </Link>
                                 </MenuItem>
                                 <MenuItem onClick={this.logout}>
