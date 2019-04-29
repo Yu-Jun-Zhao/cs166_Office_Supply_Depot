@@ -103,7 +103,7 @@ router.post("/update", (req, res) => {
   });
 });
 
-router.post("/update", (req, res) => {
+router.post("/delete", (req, res) => {
   const { product_id } = req.body;
   console.log(product_id)
   const sql = `DELETE FROM product WHERE product_id = ${product_id}`;
