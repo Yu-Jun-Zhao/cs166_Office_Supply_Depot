@@ -5,7 +5,7 @@ import {
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILURE,
   CHANGE_OFFSET,
-  CHANGE_PAGE
+  CHANGE_PAGE, CREATE_PRODUCT_BEGIN, CREATE_PRODUCT_FAILURE, CREATE_PRODUCT_SUCCESS, CLOSE_MODAL
 } from "./types";
 
 export const fetchProductsBegin = () => ({
@@ -62,3 +62,33 @@ export const fetchProductByType = type => dispatch => {
     .then(res => dispatch(fetchProductsSuccess(res.data, res.data.length)))
     .catch(error => dispatch(fetchProductsFailure(error)));
 };
+
+
+export const createProductsBegin = () => ({
+  type: CREATE_PRODUCT_BEGIN
+});
+
+export const createProductsSuccess = () => ({
+  type: CREATE_PRODUCT_SUCCESS
+});
+
+export const createProductsFailure = () => ({
+  type: CREATE_PRODUCT_FAILURE
+});
+
+export function createProduct(p_name, quantity, price, weight, description, imgPath, type) {
+  return dispatch => {
+    dispatch(createProductsBegin());
+    return axios.post(`/api/products/add`, {
+      p_name: p_name,
+      quantity: quantity,
+      price: price,
+      weight: weight,
+      description: description,
+      imgPath: imgPath,
+      type: type
+    })
+        .then(res => dispatch(createProductsSuccess()))
+        .catch(error => dispatch(createProductsFailure()));
+  }
+}
