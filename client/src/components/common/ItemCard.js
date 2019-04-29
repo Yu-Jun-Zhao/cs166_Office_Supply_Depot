@@ -28,9 +28,7 @@ class ItemCard extends Component {
     description: this.props.description
   };
 
-  handleCardClick = () => {
-    console.log("dwadwa");
-  };
+  handleCardClick = () => {};
 
   render() {
     const {

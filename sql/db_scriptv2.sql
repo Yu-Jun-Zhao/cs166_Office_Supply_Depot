@@ -59,8 +59,8 @@ CREATE TABLE IF NOT EXISTS `osd`.`Product` (
   `description` VARCHAR(3000) NOT NULL,
   `imgPath` VARCHAR(1000),
   `type` VARCHAR(25),
-  PRIMARY KEY (`product_id`),
-  UNIQUE INDEX `p_name_UNIQUE` (`p_name` ASC) VISIBLE)
+  PRIMARY KEY (`product_id`)
+)
 ENGINE = InnoDB;
 
 

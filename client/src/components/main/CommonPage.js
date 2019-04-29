@@ -119,7 +119,6 @@ class CommonPage extends Component {
   }
 
   componentDidMount() {
-    console.log("mounted");
     this.props.fetchProductByType(this.state.selection);
   }
 
