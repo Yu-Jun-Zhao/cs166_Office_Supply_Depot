@@ -24,7 +24,7 @@ class ItemAdder extends Component {
   }
 
   render() {
-    const { p_name, quantity, price, weight } = this.state
+    const { p_name, quantity, price, weight, description, imgPath, type } = this.state
     return (
       <form onChange={this.setField}>
         <Grid container spacing={24}>
@@ -61,7 +61,7 @@ class ItemAdder extends Component {
           </Grid>
           <Grid item xs={1}>
             <Button color="primary">
-              <i className="material-icons" onClick={() => this.props.dispatch(createProduct(p_name, weight, quantity, price))}>add</i>
+              <i className="material-icons" onClick={() => this.props.dispatch(createProduct(p_name, quantity, price, weight, description, imgPath, type))}>add</i>
             </Button>
           </Grid>
         </Grid>
