@@ -129,9 +129,9 @@ export function deleteProduct(product_id) {
         .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully deleted' })))
         .then(res => dispatch(fetchProductsByOffset(100)))
         .catch(error => {
-          dispatch(deleteProductsFailure())
           dispatch(openModal())
           dispatch(setModalProps( {status: 'FAIL', message: 'Product deletion failed' }))
+          dispatch(deleteProductsFailure())
         })  }
 }
 
@@ -165,9 +165,9 @@ export function updateProduct(product_id, p_name, quantity, price, weight, descr
         .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully updated' })))
         .then(res => dispatch(fetchProductsByOffset(100)))
         .catch(error => {
-          dispatch(updateProductsFailure())
           dispatch(openModal())
           dispatch(setModalProps( {status: 'FAIL', message: 'Product update failed' }))
+          dispatch(updateProductsFailure())
         })
   }
 }
