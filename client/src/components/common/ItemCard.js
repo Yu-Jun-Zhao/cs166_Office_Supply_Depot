@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { addCartItem } from "../../actions/cartActions";
 import { withStyles } from "@material-ui/core/styles";
 import {
   Card,
@@ -28,7 +30,11 @@ class ItemCard extends Component {
     description: this.props.description
   };
 
-  handleCardClick = () => {};
+  handleCardClick = () => {
+    const { cartId } = this.props.authentication;
+    console.log(cartId);
+    this.props.addCartItem(cartId, this.state.id, 1);
+  };
 
   render() {
     const {
@@ -63,4 +69,13 @@ class ItemCard extends Component {
   }
 }
 
-export default withStyles(styles)(ItemCard);
+const mapStateToProps = state => ({
+  authentication: state.authentication
+});
+
+const ItemCardStyled = withStyles(styles)(ItemCard);
+
+export default connect(
+  mapStateToProps,
+  { addCartItem }
+)(ItemCardStyled);

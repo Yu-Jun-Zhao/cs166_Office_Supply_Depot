@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import ItemHolder from "../common/Product";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
-import { fetchProducts, changeOffset } from "../../actions/productActions";
+import {
+  addAllItems,
+  deleteCartItem,
+  getAllCartItemsFromDB
+} from "../../actions/cartActions";
 import TableItemsList from "../../components/common/TableItemsList";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -75,34 +79,47 @@ function createData(pName, price, weight, quantity) {
   return { pName, price, weight, quantity };
 }
 
-const rows = [
-  createData("Frozen yoghurt", 15.9, 6.0, 1),
-  createData("Ice cream sandwich", 2.37, 9.0, 37),
-  createData("Eclair", 2.62, 16.0, 24),
-  createData("Cupcake", 3.05, 3.7, 67),
-  createData("Gingerbread", 3.56, 16.0, 49),
-  createData("Monster Pencil Case", 1, 3.0, 1)
-];
+//const rows = [
+// createData("Frozen yoghurt", 15.9, 6.0, 1),
+// createData("Ice cream sandwich", 2.37, 9.0, 37),
+// createData("Eclair", 2.62, 16.0, 24),
+// createData("Cupcake", 3.05, 3.7, 67),
+// createData("Gingerbread", 3.56, 16.0, 49),
+// createData("Monster Pencil Case", 1, 3.0, 1)
+//];
 /* end of test data */
 
 class Shoppingcart extends Component {
   state = {
-    items: [],
-    quantity: 1
+    cart: [],
+    updateInDB: true
   };
   componentDidMount() {
-    axios.get("https://jsonplaceholder.typicode.com/users").then(res => {
-      console.log(res);
-      this.setState({ items: res.data });
-    });
+    this.props.getAllCartItemsFromDB(this.props.authentication.cartId);
   }
 
-  handleChange = event => {
-    this.setState({ [event.target.quantity]: event.target.value });
+  handleButtonChange = id => event => {
+    this.props.deleteCartItem(this.props.authentication.cartId, id);
   };
-  handleQtyChange = name => event => {
-    this.setState({ [name]: event.target.value });
+  handleQtyChange = id => event => {
+    const { cart } = this.state;
+    for (var i = 0; i < cart.length; i++) {
+      if (cart[i].id === id) {
+        cart[i].quantity = event.target.value;
+      }
+    }
+    this.setState({ cart });
   };
+
+  handleCheckOut = event => {
+    this.props.addAllItems(this.props.authentication.cartId, this.state.cart);
+  };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    return {
+      cart: nextProps.cart.cart
+    };
+  }
 
   render() {
     const { classes, products } = this.props;
@@ -137,7 +154,7 @@ class Shoppingcart extends Component {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map(row => {
+                    {this.state.cart.map(row => {
                       const t = row.price * row.quantity;
                       const total = formatter.format(t);
                       subtotal += t;
@@ -145,7 +162,7 @@ class Shoppingcart extends Component {
                       totalWeight += row.weight * row.quantity;
                       return (
                         <TableRow key={row.id}>
-                          <TableCell>{row.pName}</TableCell>
+                          <TableCell>{row.name}</TableCell>
                           <TableCell>{formatter.format(row.price)}</TableCell>
                           <TableCell>
                             <FormControl>
@@ -153,7 +170,7 @@ class Shoppingcart extends Component {
                                 id="standard-number"
                                 label="Qty"
                                 value={row.quantity}
-                                onChange={this.handleQtyChange("row.quantity")}
+                                onChange={this.handleQtyChange(row.id)}
                                 type="number"
                                 fontSize="16"
                                 className={classes.textField}
@@ -168,7 +185,12 @@ class Shoppingcart extends Component {
                           </TableCell>
                           <TableCell>{row.weight * row.quantity} lbs</TableCell>
                           <TableCell>
-                            <Button variant="outlined">Remove</Button>
+                            <Button
+                              variant="outlined"
+                              onClick={this.handleButtonChange(row.id)}
+                            >
+                              Remove
+                            </Button>
                           </TableCell>
                           <TableCell>{total}</TableCell>
                         </TableRow>
@@ -178,7 +200,7 @@ class Shoppingcart extends Component {
                       <TableCell />
                       <TableCell />
                       <TableCell />
-                      <TableCell>{totalWeight} lbs</TableCell>
+                      <TableCell>{totalWeight.toFixed(2)} lbs</TableCell>
                       <TableCell> </TableCell>
                       <TableCell>{formatter.format(subtotal)}</TableCell>
                     </TableRow>
@@ -199,15 +221,16 @@ class Shoppingcart extends Component {
                       <TableCell>Subtotal</TableCell>
                       <TableCell>{formatter.format(subtotal)}</TableCell>
                     </TableRow>
+
                     <TableRow>
                       <TableCell>Tax({tax * 100}%)</TableCell>
-                      <TableCell>{formatter.format(tax * subtotal)}</TableCell>
+                      {/*<TableCell>{formatter.format(tax * subtotal)}</TableCell> */}
+                      <TableCell>N/A</TableCell>
                     </TableRow>
+
                     <TableRow>
                       <TableCell>Grand Total</TableCell>
-                      <TableCell>
-                        {formatter.format(subtotal * tax + subtotal)}
-                      </TableCell>
+                      <TableCell>{formatter.format(subtotal)}</TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
@@ -218,6 +241,7 @@ class Shoppingcart extends Component {
                 to="/checkout"
                 variant="contained"
                 color="primary"
+                onClick={this.handleCheckOut}
               >
                 Checkout
               </Button>
@@ -230,7 +254,13 @@ class Shoppingcart extends Component {
   }
 }
 const mapStateToProps = state => ({
-  products: state.products.items
+  cart: state.cart,
+  authentication: state.authentication
 });
 const shopping = withStyles(styles)(Shoppingcart);
-export default withRouter(connect(mapStateToProps)(shopping));
+export default withRouter(
+  connect(
+    mapStateToProps,
+    { addAllItems, deleteCartItem, getAllCartItemsFromDB }
+  )(shopping)
+);

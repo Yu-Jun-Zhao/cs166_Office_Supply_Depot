@@ -41,12 +41,13 @@ class App extends Component {
             <Route path="/implicit/callback" component={ImplicitCallback} />
             <Route path="/login" exact component={CustomLoginComponent} />
             <Route path="/result" component={ProductList} />
-            <Route path="/checkout" exact component={Checkout} />
             <Route path="/item" exact component={ItemPage} />
             <SecureRoute path="/profile" component={Profile} />
             <SecureRoute path="/user" component={User} />
             <SecureRoute path="/admin" exact component={Admin} />
             <SecureRoute path="/cart" exact component={ShoppingCart} />
+            <SecureRoute path="/checkout" exact component={Checkout} />
+
             <Footer />
           </Security>
         </Router>
