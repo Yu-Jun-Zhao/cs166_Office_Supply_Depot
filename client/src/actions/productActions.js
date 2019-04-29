@@ -5,7 +5,14 @@ import {
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILURE,
   CHANGE_OFFSET,
-  CHANGE_PAGE, CREATE_PRODUCT_BEGIN, CREATE_PRODUCT_FAILURE, CREATE_PRODUCT_SUCCESS, CLOSE_MODAL
+  CHANGE_PAGE,
+  CREATE_PRODUCT_BEGIN,
+  CREATE_PRODUCT_FAILURE,
+  CREATE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_BEGIN,
+  DELETE_PRODUCT_FAILURE,
+  DELETE_PRODUCT_SUCCESS,
+  CLOSE_MODAL
 } from "./types";
 
 export const fetchProductsBegin = () => ({
@@ -89,3 +96,16 @@ export function createProduct(p_name, quantity, price, weight, description, imgP
         .catch(error => dispatch(createProductsFailure()));
   }
 }
+
+export const deleteProductsBegin = () => ({
+  type: DELETE_PRODUCT_BEGIN
+});
+
+export const deleteProductsSuccess = () => ({
+  type: DELETE_PRODUCT_SUCCESS
+});
+
+export const deleteProductsFailure = () => ({
+  type: DELETE_PRODUCT_FAILURE
+});
+
