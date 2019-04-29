@@ -1,11 +1,15 @@
 import express from "express";
 const router = express.Router();
 import pool from "../db";
+import {
+  authenticationRequired,
+  adminAuthenticationRequired
+} from "../AuthenticationMiddleware/AuthenticationMiddleware";
 
 //  @router POST /api/cart/add
 //  @desc   Add items to cartItems
 //  @access private
-router.post("/add", (req, res) => {
+router.post("/add", authenticationRequired, (req, res) => {
   const { cartId, productId, quantity } = req.body;
   const sql = `CALL addItemsToCart(${cartId}, ${productId}, ${quantity})`;
   pool.query(sql, (err, results) => {
@@ -23,7 +27,7 @@ router.post("/add", (req, res) => {
 // @desc GET all items in cart
 // @access private
 
-router.get("/all/:cartId", (req, res) => {
+router.get("/all/:cartId", authenticationRequired, (req, res) => {
   const { cartId } = req.params;
   const sql = `SELECT cart_id, product_id, COUNT(*) AS quantity FROM cart_item WHERE cart_id = ${cartId} GROUP BY product_id`;
   pool.query(sql, (err, results) => {
@@ -70,7 +74,7 @@ function getProduct(query, outerSqlResult) {
 //  @router DELETE /api/cart/remove
 //  @desc   Remove all items with the same product id from cart
 //  @access private
-router.post("/remove", (req, res) => {
+router.post("/remove", authenticationRequired, (req, res) => {
   const { cartId, productId } = req.body;
   const sql = `CALL removeAllItemsFromCart(${cartId}, ${productId})`;
   pool.query(sql, (err, results) => {

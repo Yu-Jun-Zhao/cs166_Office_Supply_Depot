@@ -1,6 +1,10 @@
 import express from "express";
 const router = express.Router();
 import pool from "../db";
+import {
+  authenticationRequired,
+  adminAuthenticationRequired
+} from "../AuthenticationMiddleware/AuthenticationMiddleware";
 
 // Order routes will be protected
 
@@ -21,7 +25,7 @@ router.get("/all/:userId", (req, res) => {
 // @router POST /api/order/add
 // @desc   Create order
 // @private
-router.post("/add", (req, res) => {
+router.post("/add", authenticationRequired, (req, res) => {
   const { userId, address, city, state, zip, f_address } = req.body;
   const today = new Date();
   const orderDate =
@@ -40,7 +44,7 @@ router.post("/add", (req, res) => {
 // @router POST /api/order/check/:userId
 // @desc   Check and Update status or orders and Retrieve all orders
 // @private
-router.put("/check/:userId", (req, res) => {
+router.put("/check/:userId", authenticationRequired, (req, res) => {
   const { userId } = req.params;
   const sql = `CALL checkAllOrderStatus("${userId}")`;
   pool.query(sql, (err, results) => {
