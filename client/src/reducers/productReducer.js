@@ -10,6 +10,9 @@ import {
   DELETE_PRODUCT_BEGIN,
   DELETE_PRODUCT_SUCCESS,
   DELETE_PRODUCT_FAILURE,
+  UPDATE_PRODUCT_BEGIN,
+  UPDATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_FAILURE,
   CLOSE_MODAL
 } from "../actions/types";
 
@@ -89,6 +92,21 @@ export default function productReducer(state = initialState, action) {
         loading: false,
       };
     case DELETE_PRODUCT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+      };
+    case UPDATE_PRODUCT_BEGIN:
+      return {
+        ...state,
+        loading: true
+      };
+    case UPDATE_PRODUCT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case UPDATE_PRODUCT_FAILURE:
       return {
         ...state,
         loading: false,
