@@ -17,6 +17,7 @@ import {
   UPDATE_PRODUCT_SUCCESS,
   CLOSE_MODAL
 } from "./types";
+import {openModal, setModalProps} from "./modalActions";
 
 export const fetchProductsBegin = () => ({
   type: FETCH_PRODUCTS_BEGIN
@@ -95,6 +96,8 @@ export function createProduct(p_name, quantity, price, weight, description, imgP
       type: type
     })
         .then(res => dispatch(createProductsSuccess()))
+        .then(res => dispatch(openModal()))
+        .then(res => dispatch(setModalProps({ status: 'success', message: 'Product successfully added' })))
         .then(res => dispatch(fetchProductsByOffset(100)))
         .catch(error => dispatch(createProductsFailure()));
   }
