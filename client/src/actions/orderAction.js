@@ -5,7 +5,7 @@ import {
   FETCHSHIPPINGADDRESS
 } from "../actions/types";
 import axios from "axios";
-import {openModal, setModalProps} from "./modalActions";
+import { openModal, setModalProps } from "./modalActions";
 import {
   deleteProductsBegin,
   deleteProductsFailure,
@@ -34,12 +34,9 @@ export const createOrder = (
 
   axios.post("/api/order/add", orderData).catch(err => console.log(err)); // for now
 };
-<<<<<<< HEAD
 /*
-=======
 
 // Fetch all the orders from db that this person has
->>>>>>> e69353faca1f44b58a755aec105359578605e6f3
 export const getAllOrdersFromDB = userId => dispatch => {
   dispatch(beginLoadingOrderFromDb());
 
@@ -58,21 +55,19 @@ export const getAllOrdersFromDB = userId => dispatch => {
 export function getAllOrdersFromDB(userID) {
   return dispatch => {
     dispatch(beginLoadingOrderFromDb());
-    return axios.put(`/api/order/check/${userID}`)
-        .then(res => dispatch(loadOrders(res.data.order)))
-        .catch(res => alert("error"))
-
-  }
+    return axios
+      .put(`/api/order/check/${userID}`)
+      .then(res => dispatch(loadOrders(res.data.order)))
+      .catch(res => alert("error"));
+  };
 }
 
-<<<<<<< HEAD
-export const loadOrders = (orders) => {
+export const loadOrders = orders => {
   return {
     type: LOADALLORDERSFROM_DB,
     payload: orders
-  }
-}
-=======
+  };
+};
 // fetch shipping address by the addressId
 // addressId could be obtained from getAllOrdersFromDB
 export const retrieveShippingAddress = addressId => dispatch => {
@@ -82,7 +77,6 @@ export const retrieveShippingAddress = addressId => dispatch => {
     .catch(err => console.log(err));
 };
 
->>>>>>> e69353faca1f44b58a755aec105359578605e6f3
 export const beginLoadingOrderFromDb = () => {
   return { type: BEGINLOADINGORDERSFROM_DB };
 };

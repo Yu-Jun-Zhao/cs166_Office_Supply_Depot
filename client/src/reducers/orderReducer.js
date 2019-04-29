@@ -6,14 +6,9 @@ import {
 } from "../actions/types";
 
 const initialState = {
-<<<<<<< HEAD
-  order: null,
-  loadingFromDB: false
-=======
   order: [],
   loadingFromDB: false,
   shippingAddress: {} // shipping address of the one shown in map
->>>>>>> e69353faca1f44b58a755aec105359578605e6f3
 };
 
 export default function(state = initialState, action) {
