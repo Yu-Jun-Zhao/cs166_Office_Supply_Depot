@@ -6,6 +6,11 @@ import {
   adminAuthenticationRequired
 } from "../AuthenticationMiddleware/AuthenticationMiddleware";
 
+
+const googleMapsClient = require('@google/maps').createClient({
+  key: 'AIzaSyB6bOePa__5vSd4Ri5ogaaN8Dw-k_plH-M'
+});
+
 // Order routes will be protected
 
 /*
@@ -29,9 +34,9 @@ router.post("/add", authenticationRequired, (req, res) => {
   const { userId, address, city, state, zip, f_address } = req.body;
   const today = new Date();
   const orderDate =
-    new Date(`${today} GMT`).toISOString().split("T")[0] +
-    " " +
-    today.toTimeString().split(" ")[0];
+      new Date(`${today} GMT`).toISOString().split("T")[0] +
+      " " +
+      today.toTimeString().split(" ")[0];
   const sql = `CALL createOrder(
     "${userId}","${orderDate}", "${address}", "${city}", "${state}", "${zip}", ${f_address})`;
 
@@ -67,31 +72,26 @@ router.get("/address/:addressId", authenticationRequired, (req, res) => {
 });
 
 router.post("/route", (req, res) => {
-  const { origin, destination } = req.body;
-  googleMapsClient.geocode(
-    {
-      address: origin
-    },
-    function(err, response) {
-      if (!err) {
-        console.log(response.json.results[0]["geometry"]["location"]);
-      }
+  const {origin, destination} = req.body
+  let originLL = {}
+  googleMapsClient.geocode({
+    address: origin
+  }, function (err, response) {
+    if (!err) {
+      originLL = response.json.results[0]["geometry"]["location"];
     }
-  );
-  googleMapsClient.directions(
-    {
-      origin: origin,
-      destination: destination,
-      departure_time: new Date(),
-      traffic_model: "pessimistic"
-    },
-    function(err, response) {
-      const x = response.json.routes[0].legs[0];
-      if (!err) {
-        res.send({ distance: x.distance.text });
-      }
+  });
+  googleMapsClient.directions({
+    origin: origin,
+    destination: destination,
+    departure_time: new Date(),
+    traffic_model: 'pessimistic'
+  }, function (err, response) {
+    const x = response.json.routes[0].legs[0]
+    if (!err) {
+      res.send({ distance: x.distance.text, origin: originLL});
     }
-  );
+  });
 });
 
-export default router;
+export default router
