@@ -267,7 +267,7 @@ class CommonPage extends Component {
 
         <main className={classes.content}>
           <Grid container spacing={24}>
-            {products.items.map((item, index) => (
+            {products.items && products.items.map((item, index) => (
               <Grid item xs={3} key={index}>
                 <ItemCard
                   id={item.product_id}
