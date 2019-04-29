@@ -12,7 +12,9 @@ class OrderPage extends Component {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    console.log(this.props.authentication.userInfo.sub);
+  }
 
   render() {
     return (
