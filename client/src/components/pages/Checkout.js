@@ -1,4 +1,10 @@
 import React, { Component } from "react";
+import {
+  getAllCartItemsFromDB,
+  FinishLoadingFromDB
+} from "../../actions/cartActions";
+import { connect } from "react-redux";
+
 import "../../style/checkout.css";
 //import "typeface-roboto";
 import Button from "@material-ui/core/Button";
@@ -23,7 +29,22 @@ import FormControl from "@material-ui/core/FormControl";
 class CheckOut extends Component {
   constructor(props) {
     super(props);
-    this.state = { value: "" };
+    this.state = { cart: [], loadingFromDB: false };
+  }
+
+  componentDidMount() {
+    this.props.getAllCartItemsFromDB(this.props.authentication.cartId);
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.cart.cart !== undefined && nextProps.cart.loadingFromDB) {
+      nextProps.FinishLoadingFromDB();
+
+      return {
+        cart: nextProps.cart.cart,
+        loadingFromDB: nextProps.cart.loadingFromDB
+      };
+    }
   }
 
   handleChange = name => event => {
@@ -336,14 +357,14 @@ class CheckOut extends Component {
                         <TableCell
                           style={{ background: "#f5f5f5", color: "black" }}
                         >
-                          Item
+                          ID
                         </TableCell>
                         <TableCell
                           style={{ background: "#f5f5f5", color: "black" }}
-                          align="right"
                         >
-                          Price
+                          Item
                         </TableCell>
+
                         <TableCell
                           style={{ background: "#f5f5f5", color: "black" }}
                           align="right"
@@ -354,24 +375,31 @@ class CheckOut extends Component {
                           style={{ background: "#f5f5f5", color: "black" }}
                           align="right"
                         >
+                          Weight
+                        </TableCell>
+                        <TableCell
+                          style={{ background: "#f5f5f5", color: "black" }}
+                          align="right"
+                        >
                           Total
                         </TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {/* For mapping list of item
-                {rows.map(row => (
-                  <TableRow key={row.id}>
-                    <TableCell>{row.desc}</TableCell>
-                    <TableCell align="right">{row.qty}</TableCell>
-                    <TableCell align="right">{row.unit}</TableCell>
-                    <TableCell align="right">{ccyFormat(row.price)}</TableCell>
-                  </TableRow>
-                ))}
-                 */}
+                      {this.state.cart.map(item => (
+                        <TableRow key={item.id}>
+                          <TableCell>{item.id}</TableCell>
+                          <TableCell>{item.name}</TableCell>
+                          <TableCell align="right">{item.quantity}</TableCell>
+                          <TableCell align="right">
+                            {item.weight * item.quantity}
+                          </TableCell>
+                          <TableCell align="right">
+                            {item.price * item.quantity}
+                          </TableCell>
+                        </TableRow>
+                      ))}
                       {/* Delete <br/><br/><br/><br/> after mapping for item -->*/}{" "}
-                      <br />
-                      <br />
                       <br />
                       <br />
                       <TableRow>
@@ -416,4 +444,12 @@ class CheckOut extends Component {
     );
   }
 }
-export default CheckOut;
+const mapStateToProps = state => ({
+  cart: state.cart,
+  authentication: state.authentication
+});
+
+export default connect(
+  mapStateToProps,
+  { getAllCartItemsFromDB, FinishLoadingFromDB }
+)(CheckOut);
