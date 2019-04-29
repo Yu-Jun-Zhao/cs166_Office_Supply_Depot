@@ -29,6 +29,13 @@ class Searchbar extends Component {
     this.props.history.push(`/result?q=${this.state.searchQuery}`)
   }
 
+  handleChange = e => {
+    const value = e.target.value;
+    this.setState({
+      searchQuery: value,
+    });
+  };
+
   render() {
     const { searchQuery } = this.state;
     const { classes } = this.props;
