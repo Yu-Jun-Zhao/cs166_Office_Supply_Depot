@@ -1,7 +1,9 @@
 import {
   ADDITEM_TOCART,
   DELETEITEM_FROMCART,
-  LOADALLITEMSFROM_DB
+  LOADALLITEMSFROM_DB,
+  BEGINLOADINGFROM_DB,
+  FINISHLOADINGFROM_DB
 } from "./types";
 import axios from "axios";
 
@@ -45,7 +47,20 @@ export const deleteCartItem = (userCartId, product_id) => dispatch => {
 
 // Get all cart items when user goes to cart page
 export const getAllCartItemsFromDB = cartId => dispatch => {
+  dispatch(loadingFromDB());
   axios.get(`/api/cart/all/${cartId}`).then(res => {
     dispatch({ type: LOADALLITEMSFROM_DB, payload: res.data.cart });
   });
+};
+
+export const loadingFromDB = () => {
+  return {
+    type: BEGINLOADINGFROM_DB
+  };
+};
+
+export const FinishLoadingFromDB = () => {
+  return {
+    type: FINISHLOADINGFROM_DB
+  };
 };

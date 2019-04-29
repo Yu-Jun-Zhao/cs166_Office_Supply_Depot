@@ -92,7 +92,7 @@ function createData(pName, price, weight, quantity) {
 class Shoppingcart extends Component {
   state = {
     cart: [],
-    updateInDB: true
+    loadingFromDB: true
   };
   componentDidMount() {
     this.props.getAllCartItemsFromDB(this.props.authentication.cartId);
@@ -116,9 +116,12 @@ class Shoppingcart extends Component {
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    return {
-      cart: nextProps.cart.cart
-    };
+    if (nextProps.cart.cart !== undefined) {
+      return {
+        cart: nextProps.cart.cart,
+        loadingFromDB: nextProps.cart.loadingFromDB
+      };
+    }
   }
 
   render() {
