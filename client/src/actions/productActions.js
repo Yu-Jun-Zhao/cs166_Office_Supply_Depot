@@ -109,3 +109,14 @@ export const deleteProductsFailure = () => ({
   type: DELETE_PRODUCT_FAILURE
 });
 
+export function deleteProduct(product_id) {
+  return dispatch => {
+    dispatch(createProductsBegin());
+    return axios.post(`/api/products/delete`, {
+      product_id: product_id
+    })
+        .then(res => dispatch(deleteProductsSuccess()))
+        .then(res => dispatch(fetchProductsByOffset(100)))
+        .catch(error => dispatch(createProductsFailure()));
+  }
+}
