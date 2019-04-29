@@ -15,9 +15,8 @@ import {
   UPDATE_PRODUCT_BEGIN,
   UPDATE_PRODUCT_FAILURE,
   UPDATE_PRODUCT_SUCCESS,
-  CLOSE_MODAL
 } from "./types";
-import {openModal, setModalProps} from "./modalActions";
+import {openModal, setModalProps, closeModal} from "./modalActions";
 
 export const fetchProductsBegin = () => ({
   type: FETCH_PRODUCTS_BEGIN
@@ -97,9 +96,13 @@ export function createProduct(p_name, quantity, price, weight, description, imgP
     })
         .then(res => dispatch(createProductsSuccess()))
         .then(res => dispatch(openModal()))
-        .then(res => dispatch(setModalProps({ status: 'success', message: 'Product successfully added' })))
+        .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully added' })))
         .then(res => dispatch(fetchProductsByOffset(100)))
-        .catch(error => dispatch(createProductsFailure()));
+        .catch(error => {
+          dispatch(openModal())
+          dispatch(setModalProps( {status: 'FAIL', message: 'Product addition failed' }))
+          dispatch(createProductsFailure())
+        })
   }
 }
 
@@ -122,9 +125,14 @@ export function deleteProduct(product_id) {
       product_id: product_id
     })
         .then(res => dispatch(deleteProductsSuccess()))
+        .then(res => dispatch(openModal()))
+        .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully deleted' })))
         .then(res => dispatch(fetchProductsByOffset(100)))
-        .catch(error => dispatch(deleteProductsFailure()));
-  }
+        .catch(error => {
+          dispatch(deleteProductsFailure())
+          dispatch(openModal())
+          dispatch(setModalProps( {status: 'FAIL', message: 'Product deletion failed' }))
+        })  }
 }
 
 export const updateProductsBegin = () => ({
@@ -153,7 +161,13 @@ export function updateProduct(product_id, p_name, quantity, price, weight, descr
       type: type
     })
         .then(res => dispatch(updateProductsSuccess()))
+        .then(res => dispatch(openModal()))
+        .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully updated' })))
         .then(res => dispatch(fetchProductsByOffset(100)))
-        .catch(error => dispatch(updateProductsFailure()));
+        .catch(error => {
+          dispatch(updateProductsFailure())
+          dispatch(openModal())
+          dispatch(setModalProps( {status: 'FAIL', message: 'Product update failed' }))
+        })
   }
 }
