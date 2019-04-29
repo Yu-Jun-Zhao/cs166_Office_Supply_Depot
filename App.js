@@ -78,7 +78,6 @@ class App extends Component {
           
             <div style={
                 {
-                border: '2px solid #f5f5f5',
                 margin: "0% 10% 2% 10%"             
                 
                 }
@@ -204,8 +203,7 @@ class App extends Component {
 
              <h4 style={subhder}>2. DELIVERY METHOD</h4>
                 <div style={
-                {
-                border: '1px solid #f5f5f5',
+                {               
                 margin: "0% 10% 2% 10%"
                 }
               }>
@@ -309,8 +307,7 @@ class App extends Component {
 
               <h4 style={subhder}>3. PAYMENT</h4>
               <div style={
-                {
-                border: '1px solid #f5f5f5',
+                {                
                 margin: "0% 10% 2% 10%"
                 }
               }>  
