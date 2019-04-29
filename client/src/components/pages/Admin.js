@@ -6,7 +6,7 @@ import { checkAuthentication } from "../../actions/authenticateActions";
 import TableItemsList from "../common/TableItemsList";
 import ItemAdder from "../common/ItemAdder";
 import ItemUpdater from "../common/ItemUpdater";
-
+import SimpleModal from "../common/SimpleModal"
 
 class Admin extends Component {
   constructor(props) {
@@ -43,6 +43,7 @@ class Admin extends Component {
     if (this.props.authentication.userInfo.groups === 'admin') {
       return (
           <React.Fragment>
+            <SimpleModal/>
             <h1>Admin</h1>
             <ItemAdder/>
             <ItemUpdater/>
