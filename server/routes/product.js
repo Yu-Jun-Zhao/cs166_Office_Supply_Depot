@@ -71,7 +71,7 @@ router.get("/1/id/:id", (req, res) => {
 // @access private
 router.post("/add", (req, res) => {
   const {
-    pName,
+    p_name,
     weight,
     quantity,
     price,
@@ -79,7 +79,7 @@ router.post("/add", (req, res) => {
     imgPath,
     type
   } = req.body;
-  const insert_sql = `INSERT INTO product (p_name, quantity, price, weight, description, imgPath, type) values ('${pName}', '${quantity}', '${price}', '${weight}', '${description}', '${imgPath}', '${type}')`;
+  const insert_sql = `INSERT INTO product (p_name, quantity, price, weight, description, imgPath, type) values ('${p_name}', '${quantity}', '${price}', '${weight}', '${description}', '${imgPath}', '${type}')`;
 
   pool.query(insert_sql, (error, results) => {
     if (error) {
@@ -91,18 +91,29 @@ router.post("/add", (req, res) => {
   });
 });
 
-router.delete("/delete", (req, res) => {
-  const { listOfProductId } = req.body;
-  for (var i = 0; i < listOfProductId.length; i++) {
-    const sql = `DELETE FROM product WHERE product_id = ${listOfProductId[i]}`;
-    pool.query(sql, (error, results) => {
+router.post("/update", (req, res) => {
+  const { product_id, p_name, weight, quantity, price, description, imgPath, type} = req.body;
+  const sql = `UPDATE product SET p_name = '${p_name}', weight = '${weight}', quantity = '${quantity}', price = '${price}', description = '${description}', imgPath = '${imgPath}', type = '${type}' WHERE product_id = ${product_id}`;
+  pool.query(sql, (error, results) => {
       if (error)
         return res.status(400).send({
           error: "Bad Request"
         });
       res.sendStatus(200);
-    });
-  }
+  });
+});
+
+router.post("/delete", (req, res) => {
+  const { product_id } = req.body;
+  console.log(product_id)
+  const sql = `DELETE FROM product WHERE product_id = ${product_id}`;
+  pool.query(sql, (error, results) => {
+    if (error)
+      return res.status(400).send({
+        error: "Bad Request"
+      });
+    res.sendStatus(200);
+  });
 });
 
 export default router;

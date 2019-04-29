@@ -1,48 +1,67 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-
+import {
+  createProduct
+} from "../../actions/productActions";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 
-//import ReactPaginate from "react-paginate";
-// Mainly for Admin
-
 class ItemAdder extends Component {
-  constructor(props) {
-    super(props);
+
+  state = {
+    p_name: null,
+    quantity: null,
+    price: null,
+    weight: null,
+    description: null,
+    imgPath: null,
+    type: null
   }
 
-  componentDidMount() {}
+  setField = (e) => {
+    this.setState({[e.target.name]: e.target.value})
+  }
 
   render() {
+    const { p_name, quantity, price, weight, description, imgPath, type } = this.state
     return (
-      <form>
+      <form onChange={this.setField}>
         <Grid container spacing={24}>
-          <Grid item xs={6}>
+          <Grid item xs={2}>
             <TextField
-              type="text"
-              label="New Item"
-              id="new_item_text"
-              fullWidth
+                type="text"
+                label="New Item"
+                name="p_name"
+                fullWidth
             />
           </Grid>
 
           <Grid item xs={1}>
-            <TextField type="number" label="weight" id="new_item_weight" />
-          </Grid>
-
-          <Grid item xs={2}>
-            <TextField type="number" label="quantity" id="new_item_quantity" />
-          </Grid>
-
-          <Grid item xs={2}>
-            <TextField type="number" label="price" id="new_item_price" />
+            <TextField type="number" label="quantity" name="quantity" />
           </Grid>
 
           <Grid item xs={1}>
+            <TextField type="number" label="price" name="price" />
+          </Grid>
+
+          <Grid item xs={1}>
+            <TextField type="number" label="weight" name="weight" />
+          </Grid>
+
+          <Grid item xs={2}>
+            <TextField type="text" label="description" name="description" />
+          </Grid>
+
+          <Grid item xs={1}>
+            <TextField type="text" label="img " name="imgPath" />
+          </Grid>
+          <Grid item xs={1}>
+            <TextField type="text" label="type" name="type" />
+          </Grid>
+          <Grid item xs={1}>
             <Button color="primary">
-              <i className="material-icons">add</i>
+              <i className="material-icons" onClick={() => this.props.dispatch(createProduct(p_name, quantity, price, weight, description, imgPath, type))}>add</i>
             </Button>
           </Grid>
         </Grid>
