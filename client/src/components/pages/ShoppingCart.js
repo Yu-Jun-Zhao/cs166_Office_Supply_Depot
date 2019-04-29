@@ -79,16 +79,6 @@ function createData(pName, price, weight, quantity) {
   return { pName, price, weight, quantity };
 }
 
-//const rows = [
-// createData("Frozen yoghurt", 15.9, 6.0, 1),
-// createData("Ice cream sandwich", 2.37, 9.0, 37),
-// createData("Eclair", 2.62, 16.0, 24),
-// createData("Cupcake", 3.05, 3.7, 67),
-// createData("Gingerbread", 3.56, 16.0, 49),
-// createData("Monster Pencil Case", 1, 3.0, 1)
-//];
-/* end of test data */
-
 class Shoppingcart extends Component {
   state = {
     cart: [],
