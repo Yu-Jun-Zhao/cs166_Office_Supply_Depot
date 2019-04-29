@@ -5,7 +5,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  order: [],
+  order: null,
   loadingFromDB: false
 };
 
