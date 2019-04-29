@@ -139,7 +139,7 @@ export const updateProductsFailure = () => ({
 export function updateProduct(product_id, p_name, quantity, price, weight, description, imgPath, type) {
   return dispatch => {
     dispatch(updateProductsBegin());
-    return axios.post(`/api/products/delete`, {
+    return axios.post(`/api/products/update`, {
       product_id: product_id,
       p_name: p_name,
       quantity: quantity,
