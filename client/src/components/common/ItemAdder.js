@@ -54,10 +54,10 @@ class ItemAdder extends Component {
           </Grid>
 
           <Grid item xs={1}>
-            <TextField type="number" label="img " name="imgPath" />
+            <TextField type="text" label="img " name="imgPath" />
           </Grid>
           <Grid item xs={1}>
-            <TextField type="number" label="type" name="type" />
+            <TextField type="text" label="type" name="type" />
           </Grid>
           <Grid item xs={1}>
             <Button color="primary">
