@@ -13,9 +13,6 @@ import Grid from "@material-ui/core/Grid";
 // Mainly for Admin
 
 class TableItemsList extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   componentDidMount() {
     this.props.fetchProductsByOffset(100);
@@ -30,32 +27,35 @@ class TableItemsList extends Component {
         </div>
       );
     }
-    return (
-      <Grid container>
-        <Grid item xs={12}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Item</TableCell>
-                <TableCell>Weight</TableCell>
-                <TableCell>Quantity</TableCell>
-                <TableCell>Price</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {items.products.map(product => (
-                <TableRow key={product.id} hover>
-                  <TableCell>{product.pName}</TableCell>
-                  <TableCell>{product.weight}</TableCell>
-                  <TableCell>{product.quantity}</TableCell>
-                  <TableCell>{product.price}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Grid>
-      </Grid>
-    );
+    if (items.products) {
+      return (
+          <Grid container>
+            <Grid item xs={12}>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Item</TableCell>
+                    <TableCell>Weight</TableCell>
+                    <TableCell>Quantity</TableCell>
+                    <TableCell>Price</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {items.products.map(product => (
+                      <TableRow key={product.id} hover>
+                        <TableCell>{product.p_name}</TableCell>
+                        <TableCell>{product.weight}</TableCell>
+                        <TableCell>{product.quantity}</TableCell>
+                        <TableCell>{product.price}</TableCell>
+                      </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Grid>
+          </Grid>
+      );
+    }
+    return <div>LOADING</div>
   }
 }
 
