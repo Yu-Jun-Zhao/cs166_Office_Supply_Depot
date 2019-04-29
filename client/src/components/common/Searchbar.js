@@ -40,7 +40,6 @@ class Searchbar extends Component {
             className={classes.input}
             value={searchQuery}
             onChange={this.handleChange}
-            onKeyDown={this.handleKeyDown}
             onKeyPress={e => {
               if (e.key === "Enter") {
                 e.preventDefault();
