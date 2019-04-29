@@ -13,7 +13,6 @@ import {
   UPDATE_PRODUCT_BEGIN,
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_FAILURE,
-  CLOSE_MODAL
 } from "../actions/types";
 
 const initialState = {
@@ -23,8 +22,6 @@ const initialState = {
   pageCount: 0,
   offset: 0,
   page: 0,
-  isModalOpen: false,
-  modalType: null
 };
 
 export default function productReducer(state = initialState, action) {
@@ -71,15 +68,11 @@ export default function productReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        isModalOpen: true,
-        modalType: 'success'
       };
     case CREATE_PRODUCT_FAILURE:
       return {
         ...state,
         loading: false,
-        isModalOpen: true,
-        modalType: 'fail'
       };
     case DELETE_PRODUCT_BEGIN:
       return {
@@ -110,11 +103,6 @@ export default function productReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-      };
-    case CLOSE_MODAL:
-      return {
-        ...state,
-        isModalOpen: false
       };
     default:
       return state;

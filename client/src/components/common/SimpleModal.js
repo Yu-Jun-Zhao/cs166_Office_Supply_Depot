@@ -2,9 +2,8 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
-import Button from '@material-ui/core/Button';
 import {connect} from "react-redux";
-import { closeModal } from "../../actions/productActions";
+import { closeModal } from "../../actions/modalActions";
 
 function getModalStyle() {
     const top = 50
@@ -38,7 +37,7 @@ class SimpleModal extends React.Component {
     };
 
     render() {
-        const { classes, isModalOpen, modalType } = this.props;
+        const { classes, isModalOpen, modalProps } = this.props;
 
         return (
             <div>
@@ -51,12 +50,12 @@ class SimpleModal extends React.Component {
                     <div style={getModalStyle()} className={classes.paper}>
                         <Typography variant="h6" id="modal-title">
                             {
-                                modalType === 'success' ? <div> SUCCESS </div> : <div> FAIL </div>
+                                modalProps && <div> {modalProps["status"]} </div>
                             }
                         </Typography>
                         <Typography variant="subtitle1" id="simple-modal-description">
                             {
-                                modalType === 'success' ? <div>Successfully added product</div> : <div>Failed to add product</div>
+                                modalProps && <div> {modalProps["message"]} </div>
                             }
                         </Typography>
                     </div>
@@ -68,8 +67,8 @@ class SimpleModal extends React.Component {
 
 const mapStateToProps = state => ({
     loading: state.products.loading,
-    isModalOpen: state.products.isModalOpen,
-    modalType: state.products.modalType
+    isModalOpen: state.modal.isModalOpen,
+    modalProps: state.modal.modalProps
 });
 
 const SimpleModalWrapped = withStyles(styles)(SimpleModal);
