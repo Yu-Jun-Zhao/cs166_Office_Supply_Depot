@@ -2,9 +2,8 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
-import Button from '@material-ui/core/Button';
 import {connect} from "react-redux";
-import { closeModal } from "../../actions/productActions";
+import { closeModal } from "../../actions/modalActions";
 
 function getModalStyle() {
     const top = 50
@@ -68,8 +67,8 @@ class SimpleModal extends React.Component {
 
 const mapStateToProps = state => ({
     loading: state.products.loading,
-    isModalOpen: state.products.isModalOpen,
-    modalType: state.products.modalType
+    isModalOpen: state.modal.isModalOpen,
+    modalProps: state.modal.modalProps
 });
 
 const SimpleModalWrapped = withStyles(styles)(SimpleModal);
