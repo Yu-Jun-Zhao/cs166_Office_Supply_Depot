@@ -48,7 +48,7 @@ router.put("/check/:userId", (req, res) => {
     const nestedSql = `SELECT * FROM \`order\` WHERE user_id = "${userId}"`;
     pool.query(nestedSql, (err, results) => {
       if (err) res.send(err);
-      return res.json(results);
+      return res.json({ order: results });
     });
   });
 });

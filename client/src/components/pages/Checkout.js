@@ -3,6 +3,7 @@ import {
   getAllCartItemsFromDB,
   FinishLoadingFromDB
 } from "../../actions/cartActions";
+import { createOrder } from "../../actions/orderAction";
 import { connect } from "react-redux";
 
 import "../../style/checkout.css";
@@ -25,11 +26,19 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
+import { fetchProductByType } from "../../actions/productActions";
 
 class CheckOut extends Component {
   constructor(props) {
     super(props);
-    this.state = { cart: [], loadingFromDB: false };
+    this.state = {
+      cart: [],
+      loadingFromDB: false,
+      address: null,
+      city: null,
+      adState: null,
+      zip: null
+    };
   }
 
   componentDidMount() {
@@ -49,11 +58,25 @@ class CheckOut extends Component {
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
+    //console.log(this.state.address);
+    //console.log(this.state.city);
+    //console.log(this.state.adState);
+    //console.log(this.state.zip);
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    alert("Order is placed" + this.state.value);
+    const { address, city, adState, zip } = this.state;
+    if (address !== null && city !== null && adState !== null && zip !== null) {
+      this.props.createOrder(
+        this.props.authentication.userInfo.sub,
+        address,
+        city,
+        adState,
+        zip,
+        0
+      );
+    }
   };
 
   render() {
@@ -80,6 +103,8 @@ class CheckOut extends Component {
       margin: "0% 10% 0% 10%"
     };
 
+    var subtotal = 0;
+    var shippingFee = 0;
     return (
       <React.Fragment>
         <div style={{ alignItems: "flex-inline" }}>
@@ -100,8 +125,8 @@ class CheckOut extends Component {
                     id="street"
                     name="street"
                     label="Street"
-                    value={this.state.street}
-                    onChange={this.handleChange("street")}
+                    value={this.state.address}
+                    onChange={this.handleChange("address")}
                     placeholder="Street"
                     margin="normal"
                     variant="outlined"
@@ -126,12 +151,12 @@ class CheckOut extends Component {
                     id="State"
                     name="State"
                     label="State"
-                    value={this.state.state}
-                    onChange={this.handleChange("state")}
+                    value={this.state.adState}
+                    onChange={this.handleChange("adState")}
                     placeholder="State"
                     margin="normal"
                     variant="outlined"
-                    style={{ width: "29.5%" }}
+                    style={{ width: "7%" }}
                     required
                   />{" "}
                   &nbsp;&nbsp;&nbsp;
@@ -139,8 +164,9 @@ class CheckOut extends Component {
                     id="zipcode"
                     name="zipcode"
                     label="Zip Code"
-                    value={this.state.zipcode}
-                    onChange={this.handleChange("zipcode")}
+                    type="number"
+                    value={this.state.zip}
+                    onChange={this.handleChange("zip")}
                     placeholder="Zip Code"
                     margin="normal"
                     variant="outlined"
@@ -386,34 +412,41 @@ class CheckOut extends Component {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {this.state.cart.map(item => (
-                        <TableRow key={item.id}>
-                          <TableCell>{item.id}</TableCell>
-                          <TableCell>{item.name}</TableCell>
-                          <TableCell align="right">{item.quantity}</TableCell>
-                          <TableCell align="right">
-                            {item.weight * item.quantity}
-                          </TableCell>
-                          <TableCell align="right">
-                            {item.price * item.quantity}
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                      {this.state.cart.map(item => {
+                        const individualTotal = item.price * item.quantity;
+                        subtotal += individualTotal;
+
+                        return (
+                          <TableRow key={item.id}>
+                            <TableCell>{item.id}</TableCell>
+                            <TableCell>{item.name}</TableCell>
+                            <TableCell align="right">{item.quantity}</TableCell>
+                            <TableCell align="right">
+                              {item.weight * item.quantity} lbs
+                            </TableCell>
+                            <TableCell align="right">
+                              ${individualTotal}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                       {/* Delete <br/><br/><br/><br/> after mapping for item -->*/}{" "}
                       <br />
                       <br />
                       <TableRow>
                         <TableCell rowSpan={4} />
-                        <TableCell colSpan={2}>Subtotal:</TableCell>
-                        <TableCell align="right" />
+                        <TableCell colSpan={2}>Subtotal: ${subtotal}</TableCell>
+                        <TableCell align="left" />
                       </TableRow>
                       <TableRow>
-                        <TableCell>Shipping fee:</TableCell>
-                        <TableCell align="right" />
+                        <TableCell>Shipping fee: ${shippingFee}</TableCell>
+                        <TableCell align="left" />
                       </TableRow>
                       <TableRow>
-                        <TableCell colSpan={2}>Total:</TableCell>
-                        <TableCell align="right" />
+                        <TableCell colSpan={2}>
+                          Total: ${subtotal + shippingFee}
+                        </TableCell>
+                        <TableCell align="left" />
                       </TableRow>
                     </TableBody>
                   </Table>
@@ -428,6 +461,7 @@ class CheckOut extends Component {
                 color="primary"
                 id="buttons"
                 type="submit"
+                onClick={this.handlePlaceOrder}
               >
                 Place Order
               </Button>
@@ -451,5 +485,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getAllCartItemsFromDB, FinishLoadingFromDB }
+  { getAllCartItemsFromDB, FinishLoadingFromDB, createOrder }
 )(CheckOut);
