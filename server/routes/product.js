@@ -92,9 +92,8 @@ router.post("/add", (req, res) => {
 });
 
 router.delete("/delete", (req, res) => {
-  const { listOfProductId } = req.body;
-  for (var i = 0; i < listOfProductId.length; i++) {
-    const sql = `DELETE FROM product WHERE product_id = ${listOfProductId[i]}`;
+  const { product_id } = req.body;
+    const sql = `DELETE FROM product WHERE product_id = ${product_id}`;
     pool.query(sql, (error, results) => {
       if (error)
         return res.status(400).send({
@@ -102,7 +101,6 @@ router.delete("/delete", (req, res) => {
         });
       res.sendStatus(200);
     });
-  }
 });
 
 export default router;
