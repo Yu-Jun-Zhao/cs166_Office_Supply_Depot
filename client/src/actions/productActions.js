@@ -12,6 +12,9 @@ import {
   DELETE_PRODUCT_BEGIN,
   DELETE_PRODUCT_FAILURE,
   DELETE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_BEGIN,
+  UPDATE_PRODUCT_FAILURE,
+  UPDATE_PRODUCT_SUCCESS,
   CLOSE_MODAL
 } from "./types";
 
@@ -120,3 +123,15 @@ export function deleteProduct(product_id) {
         .catch(error => dispatch(deleteProductsFailure()));
   }
 }
+
+export const updateProductsBegin = () => ({
+  type: UPDATE_PRODUCT_BEGIN
+});
+
+export const updateProductsSuccess = () => ({
+  type: UPDATE_PRODUCT_SUCCESS
+});
+
+export const updateProductsFailure = () => ({
+  type: UPDATE_PRODUCT_FAILURE
+});
