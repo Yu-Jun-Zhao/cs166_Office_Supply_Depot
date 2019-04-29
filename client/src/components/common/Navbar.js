@@ -160,6 +160,18 @@ class Navbar extends Component {
                             <ClickAwayListener onClickAway={this.handleClose}>
                               {/* This is the Menu*/}
                               <MenuList>
+                                {
+                                  this.props.authentication.userInfo.groups === 'admin' ?
+                                      <MenuItem onClick={this.handleClose}>
+                                        <Link
+                                            component={RouterLink}
+                                            to="/admin"
+                                            underline="none"
+                                        >
+                                          Admin Panel
+                                        </Link>
+                                      </MenuItem> : null
+                                }
                                 <MenuItem onClick={this.handleClose}>
                                   <Link
                                     component={RouterLink}

@@ -39,14 +39,18 @@ class Admin extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <h1>Admin</h1>
-        <ItemAdder />
-        <ItemUpdater/>
-        <TableItemsList isAuthenticated={this.state.isAuthenticated} />
-      </div>
-    );
+
+    if (this.props.authentication.userInfo.groups === 'admin') {
+      return (
+          <React.Fragment>
+            <h1>Admin</h1>
+            <ItemAdder/>
+            <ItemUpdater/>
+            <TableItemsList isAuthenticated={this.state.isAuthenticated}/>
+          </React.Fragment>
+      );
+    }
+    return <div>...</div>
   }
 }
 
