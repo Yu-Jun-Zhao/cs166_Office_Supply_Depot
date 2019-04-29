@@ -28,7 +28,7 @@ class ItemUpdater extends Component {
     render() {
         const { product_id, p_name, quantity, price, weight, description, imgPath, type } = this.state
         return (
-            <form onChange={this.setField}>
+            <form onChange={this.setField} style={{marginLeft: '2%'}}>
                 <Grid container spacing={24}>
                     <Grid item xs={1}>
                         <TextField type="number" label="ID" name="product_id" />
