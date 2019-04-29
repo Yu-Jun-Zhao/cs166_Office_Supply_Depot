@@ -17,35 +17,47 @@ const styles = theme => ({
   }
 });
 
-//for testing
-const testImage =
-  "https://v5resources.britlink.com/customresourcesview/_GreggOfficeMachines/images/office%20supplies.jpg";
-
 class ItemCard extends Component {
   state = {
+    id: this.props.id,
     title: this.props.title,
     price: this.props.price,
     weight: this.props.weight,
     quantity: this.props.quantity,
     image: this.props.image,
-    description: "this is an office supply"
+    description: this.props.description
   };
+
+  handleCardClick = () => {
+    console.log("dwadwa");
+  };
+
   render() {
-    const { title, price, weight, quantity, image, description } = this.state;
+    const {
+      id,
+      title,
+      price,
+      weight,
+      quantity,
+      image,
+      description
+    } = this.state;
     const { classes } = this.props;
     return (
       <Card className={classes.card}>
-        <CardActionArea>
+        <CardActionArea onClick={this.handleCardClick}>
           <CardMedia
             className={classes.media}
             image={image}
             title="testing image"
           />
           <CardContent>
+            <Typography component="p">{id}</Typography>
             <Typography variant="h5">{title}</Typography>
             <Typography component="p">price: {price}</Typography>
             <Typography component="p">weight: {weight}</Typography>
             <Typography component="p">remaining: {quantity}</Typography>
+            <Typography component="p">{description}</Typography>
           </CardContent>
         </CardActionArea>
       </Card>

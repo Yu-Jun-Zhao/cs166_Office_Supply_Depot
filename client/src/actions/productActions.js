@@ -54,3 +54,11 @@ export function fetchProductsByOffset(offset) {
       .catch(error => dispatch(fetchProductsFailure(error)));
   };
 }
+
+export const fetchProductByType = type => dispatch => {
+  dispatch(fetchProductsBegin());
+  axios
+    .get(`/api/products/all/type/${type}`)
+    .then(res => dispatch(fetchProductsSuccess(res.data, res.data.length)))
+    .catch(error => dispatch(fetchProductsFailure(error)));
+};

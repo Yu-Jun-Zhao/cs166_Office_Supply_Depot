@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   items: [],
-  loading: true,
+  loading: false,
   error: null,
   pageCount: 0,
   offset: 0,
@@ -21,7 +21,8 @@ export default function productReducer(state = initialState, action) {
       return {
         ...state,
         loading: true,
-        error: null
+        error: null,
+        items: []
       };
 
     case FETCH_PRODUCTS_SUCCESS:
@@ -29,7 +30,7 @@ export default function productReducer(state = initialState, action) {
         ...state,
         loading: false,
         items: action.payload.products,
-        pageCount: Math.ceil(action.payload.total / 10)
+        pageCount: Math.ceil(action.payload.total / 16)
       };
 
     case FETCH_PRODUCTS_FAILURE:

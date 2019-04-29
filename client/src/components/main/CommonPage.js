@@ -25,6 +25,10 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import "../../index.css";
 import { withStyles } from "@material-ui/core/styles";
 
+import { connect } from "react-redux";
+
+import { fetchProductByType } from "../../actions/productActions";
+
 import ItemCard from "../common/ItemCard";
 
 const drawerWidth = "230px";
@@ -99,6 +103,12 @@ class CommonPage extends Component {
       selection: props.selection,
       color: props.color,
       label: props.label,
+      currentPage: 1,
+      //totalPage: 0,
+      //loading: false,
+      //data: [],
+
+      // not supported
       filterExpand: ["price"], //expand by default
       filterApply: [],
       priceRange: {
@@ -108,14 +118,22 @@ class CommonPage extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log("mounted");
+    this.props.fetchProductByType(this.state.selection);
+  }
+
+  //not applicable
   handleDrawerOpen = () => {
     this.setState({ drawerOpen: true });
   };
 
+  //not applicable
   handleDrawerClose = () => {
     this.setState({ drawerOpen: false });
   };
 
+  //not applicable
   // A function that takes in an array (filterExpand or filterApply) and a value and returns a function
   // To keep track of what filter is applied
   handleArrayChange = (array, value) => () => {
@@ -133,6 +151,7 @@ class CommonPage extends Component {
     });
   };
 
+  // not applicable
   handlePriceChange = name => event => {
     const value = event.target.value;
     this.setState(prevState => ({
@@ -144,13 +163,21 @@ class CommonPage extends Component {
   };
 
   render() {
-    const { drawerOpen, color, label, filterExpand, filterApply } = this.state;
-    const { classes } = this.props;
+    const {
+      drawerOpen,
+      color,
+      label,
+      filterExpand,
+      filterApply
+      //totalPage,
+      //loading,
+      //data
+    } = this.state;
+    const { classes, products } = this.props;
     const rootDrawer = false // drawerOpen === false
       ? classes.drawerRootBig
       : classes.drawerRootSmall;
 
-    //console.log(this.state.priceRange);
     return (
       <div className={classes.root}>
         <Drawer
@@ -241,13 +268,16 @@ class CommonPage extends Component {
 
         <main className={classes.content}>
           <Grid container spacing={24}>
-            {arrayLoop.map((item, index) => (
+            {products.items.map((item, index) => (
               <Grid item xs={3} key={index}>
                 <ItemCard
-                  title="Office Supply"
-                  price="3.14"
-                  weight={1}
-                  quantity={12}
+                  id={item.product_id}
+                  title={item.p_name}
+                  price={item.price}
+                  weight={item.weight}
+                  quantity={item.quantity}
+                  image={item.imgPath}
+                  description={item.description}
                 />
               </Grid>
             ))}
@@ -258,10 +288,10 @@ class CommonPage extends Component {
               nextLabel={"next"}
               breakLabel={"..."}
               breakClassName={"break-me"}
-              pageCount={10} // 10
+              pageCount={products.pageCount}
               marginPagesDisplayed={2}
               pageRangeDisplayed={5}
-              forcePage={1} // 1
+              initialPage={0}
               onPageChange={this.handlePageClick}
               containerClassName={"pagination"}
               subContainerClassName={"pages pagination"}
@@ -274,4 +304,13 @@ class CommonPage extends Component {
   }
 }
 
-export default withStyles(styles)(CommonPage);
+const CommonPageStyled = withStyles(styles)(CommonPage);
+
+const mapStateToProps = state => ({
+  products: state.products
+});
+
+export default connect(
+  mapStateToProps,
+  { fetchProductByType }
+)(CommonPageStyled);

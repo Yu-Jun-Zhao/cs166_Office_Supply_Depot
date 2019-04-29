@@ -43,6 +43,16 @@ router.get("/:offset", (req, res) => {
   });
 });
 
+// Returns all the objects of the type
+router.get("/all/type/:type", (req, res) => {
+  const { type } = req.params;
+  const sql = `SELECT * FROM product WHERE product.type = "${type}"`;
+  pool.query(sql, (err, results) => {
+    if (err) return res.send({ error: "cannot fetch products" });
+    return res.send(results);
+  });
+});
+
 // @router PUT api/products/1/id/:id
 // @desc   Retrieve the product based on id
 // @access Public

@@ -163,10 +163,10 @@ class Navbar extends Component {
                                 <MenuItem onClick={this.handleClose}>
                                   <Link
                                     component={RouterLink}
-                                    to="/profile"
+                                    to="/cart"
                                     underline="none"
                                   >
-                                    Profile
+                                    Cart
                                   </Link>
                                 </MenuItem>
                                 <MenuItem onClick={this.logout}>

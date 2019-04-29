@@ -116,7 +116,7 @@ class MenuBar extends Component {
           <CommonPage label="Office Furnitures" selection="furniture" />
         )}
         {value === 3 && (
-          <CommonPage label="Technologies" selection="technology" />
+          <CommonPage label="Technologies" selection="computer" />
         )}
         {value === 4 && <CommonPage label="Printers" selection="printer" />}
         {value === 5 && (
