@@ -91,16 +91,28 @@ router.post("/add", (req, res) => {
   });
 });
 
-router.post("/delete", (req, res) => {
-  const { product_id } = req.body;
-  console.log(product_id)
-  const sql = `DELETE FROM product WHERE product_id = ${product_id}`;
+router.post("/update", (req, res) => {
+  const { product_id, p_name, weight, quantity, price, description, imgPath, type} = req.body;
+  const sql = `UPDATE product SET p_name = '${p_name}', weight = '${weight}', quantity = '${quantity}', price = '${price}', description = '${description}', imgPath = '${imgPath}', type = '${type}' WHERE product_id = ${product_id}`;
   pool.query(sql, (error, results) => {
       if (error)
         return res.status(400).send({
           error: "Bad Request"
         });
       res.sendStatus(200);
+  });
+});
+
+router.post("/update", (req, res) => {
+  const { product_id } = req.body;
+  console.log(product_id)
+  const sql = `DELETE FROM product WHERE product_id = ${product_id}`;
+  pool.query(sql, (error, results) => {
+    if (error)
+      return res.status(400).send({
+        error: "Bad Request"
+      });
+    res.sendStatus(200);
   });
 });
 
