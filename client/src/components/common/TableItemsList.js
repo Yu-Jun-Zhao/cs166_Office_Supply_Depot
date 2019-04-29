@@ -31,7 +31,7 @@ class TableItemsList extends Component {
     if (items.products) {
       return (
           <Grid container>
-            <Grid item xs={12}>
+            <Grid item xs={10}>
               <Table>
                 <TableHead>
                   <TableRow>
