@@ -71,7 +71,7 @@ router.get("/1/id/:id", (req, res) => {
 // @access private
 router.post("/add", (req, res) => {
   const {
-    pName,
+    p_name,
     weight,
     quantity,
     price,
@@ -79,7 +79,7 @@ router.post("/add", (req, res) => {
     imgPath,
     type
   } = req.body;
-  const insert_sql = `INSERT INTO product (p_name, quantity, price, weight, description, imgPath, type) values ('${pName}', '${quantity}', '${price}', '${weight}', '${description}', '${imgPath}', '${type}')`;
+  const insert_sql = `INSERT INTO product (p_name, quantity, price, weight, description, imgPath, type) values ('${p_name}', '${quantity}', '${price}', '${weight}', '${description}', '${imgPath}', '${type}')`;
 
   pool.query(insert_sql, (error, results) => {
     if (error) {
