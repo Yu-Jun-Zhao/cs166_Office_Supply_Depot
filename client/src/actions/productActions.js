@@ -89,6 +89,7 @@ export function createProduct(p_name, quantity, price, weight, description, imgP
       type: type
     })
         .then(res => dispatch(createProductsSuccess()))
+        .then(res => dispatch(fetchProductsByOffset(100)))
         .catch(error => dispatch(createProductsFailure()));
   }
 }
