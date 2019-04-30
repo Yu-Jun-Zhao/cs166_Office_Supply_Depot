@@ -4,7 +4,7 @@ import {
   getAllOrdersFromDB,
   retrieveShippingAddress
 } from "../../actions/orderAction";
-
+import MapContainer from "../common/MapContainer"
 import {
   TableBody,
   TableCell,
@@ -14,6 +14,17 @@ import {
   Table,
   Button
 } from "@material-ui/core/";
+
+const data = [
+  {
+    lat: 37.311013,
+    lng: -121.931334
+  },
+  {
+    lat: 37.335187,
+    lng: -121.881072
+  },
+];
 
 class OrderPage extends Component {
   state = {
@@ -83,6 +94,7 @@ class OrderPage extends Component {
             )}
           </TableBody>
         </Table>
+        <MapContainer zoom={4} origin={data[0]} destination={data[1]}/>
       </Paper>
     );
   }

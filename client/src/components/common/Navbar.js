@@ -172,7 +172,15 @@ class Navbar extends Component {
                                     </Link>
                                   </MenuItem>
                                 ) : null}
-
+                                <MenuItem onClick={this.handleClose}>
+                                  <Link
+                                      component={RouterLink}
+                                      to="/orders"
+                                      underline="none"
+                                  >
+                                    Orders
+                                  </Link>
+                                </MenuItem>
                                 <MenuItem onClick={this.handleClose}>
                                   <Link
                                     component={RouterLink}

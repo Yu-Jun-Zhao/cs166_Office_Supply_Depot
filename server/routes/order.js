@@ -34,9 +34,9 @@ router.post("/add", authenticationRequired, (req, res) => {
   const { userId, address, city, state, zip, f_address } = req.body;
   const today = new Date();
   const orderDate =
-      new Date(`${today} GMT`).toISOString().split("T")[0] +
-      " " +
-      today.toTimeString().split(" ")[0];
+    new Date(`${today} GMT`).toISOString().split("T")[0] +
+    " " +
+    today.toTimeString().split(" ")[0];
   const sql = `CALL createOrder(
     "${userId}","${orderDate}", "${address}", "${city}", "${state}", "${zip}", ${f_address})`;
 

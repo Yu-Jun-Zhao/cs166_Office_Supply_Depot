@@ -26,10 +26,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-
 import { fetchProductByType } from "../../actions/productActions";
 
 class CheckOut extends Component {
@@ -41,8 +37,7 @@ class CheckOut extends Component {
       address: null,
       city: null,
       adState: null,
-      zip: null,
-      fromLoc: "1" // its either 1 or 2
+      zip: null
     };
   }
 
@@ -63,11 +58,15 @@ class CheckOut extends Component {
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
+    //console.log(this.state.address);
+    //console.log(this.state.city);
+    //console.log(this.state.adState);
+    //console.log(this.state.zip);
   };
 
   handleSubmit = event => {
     event.preventDefault();
-    const { address, city, adState, zip, fromLoc } = this.state;
+    const { address, city, adState, zip } = this.state;
     if (address !== null && city !== null && adState !== null && zip !== null) {
       this.props.createOrder(
         this.props.authentication.userInfo.sub,
@@ -75,12 +74,9 @@ class CheckOut extends Component {
         city,
         adState,
         zip,
-        fromLoc
+        0
       );
     }
-  };
-  handleRadioChange = event => {
-    this.setState({ fromLoc: event.target.value });
   };
 
   render() {
@@ -315,22 +311,6 @@ class CheckOut extends Component {
                           $20 services by drone (same day during business hours)
                         </MenuItem>
                       </Select>
-                      <RadioGroup
-                        name="From Address"
-                        value={this.state.fromLoc}
-                        onChange={this.handleRadioChange}
-                      >
-                        <FormControlLabel
-                          value="1"
-                          control={<Radio />}
-                          label="1 Washington Sq, San Jose, CA 95192"
-                        />
-                        <FormControlLabel
-                          value="2"
-                          control={<Radio />}
-                          label="1600 Holloway Ave, San Francisco, CA 94132"
-                        />
-                      </RadioGroup>
                     </FormControl>
                   </div>
                 </Paper>
