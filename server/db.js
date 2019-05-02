@@ -3,8 +3,8 @@ import mysql from "mysql";
 const pool = mysql.createPool({
   connectionLimit: 10,
   host: "localhost",
-  user: "root",
-  password: "",
+  user: "user",
+  password: "1234@bcd",
   database: "osd",
   port: 3306
 });
