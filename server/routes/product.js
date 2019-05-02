@@ -48,7 +48,10 @@ router.get("/all/type/:type", (req, res) => {
   const { type } = req.params;
   const sql = `SELECT * FROM product WHERE product.type = "${type}"`;
   pool.query(sql, (err, results) => {
-    if (err) return res.send({ error: "cannot fetch products" });
+    if (err)
+      return res
+        .status(404)
+        .send({ error: "Could not fetch products with type" });
     return res.send(results);
   });
 });
@@ -60,7 +63,8 @@ router.get("/1/id/:id", (req, res) => {
   const { id } = req.params;
   const sql = `SELECT * FROM product WHERE product_id = ${id}`;
   pool.query(sql, (error, results) => {
-    if (error) res.send(error);
+    if (error)
+      return res.status(404).send({ error: "Could not fetch product" });
     res.json({ product: results });
   });
 });
@@ -79,7 +83,15 @@ router.post("/add", (req, res) => {
     imgPath,
     type
   } = req.body;
-  if (p_name == null || weight == null || quantity == null || price == null || description == null || imgPath == null || type == null) {
+  if (
+    p_name == null ||
+    weight == null ||
+    quantity == null ||
+    price == null ||
+    description == null ||
+    imgPath == null ||
+    type == null
+  ) {
     return res.status(400).send({
       error: "Bad Request"
     });
@@ -97,28 +109,46 @@ router.post("/add", (req, res) => {
 });
 
 router.post("/update", (req, res) => {
-  const { product_id, p_name, weight, quantity, price, description, imgPath, type} = req.body;
-  if (product_id == null || p_name == null || weight == null || quantity == null || price == null || description == null || imgPath == null || type == null) {
+  const {
+    product_id,
+    p_name,
+    weight,
+    quantity,
+    price,
+    description,
+    imgPath,
+    type
+  } = req.body;
+  if (
+    product_id == null ||
+    p_name == null ||
+    weight == null ||
+    quantity == null ||
+    price == null ||
+    description == null ||
+    imgPath == null ||
+    type == null
+  ) {
     return res.status(400).send({
       error: "Bad Request"
     });
   }
   const sql = `UPDATE product SET p_name = '${p_name}', weight = '${weight}', quantity = '${quantity}', price = '${price}', description = '${description}', imgPath = '${imgPath}', type = '${type}' WHERE product_id = ${product_id}`;
   pool.query(sql, (error, results) => {
-      if (error)
-        return res.status(400).send({
-          error: "Bad Request"
-        });
-      res.sendStatus(200);
+    if (error)
+      return res.status(400).send({
+        error: "Bad Request"
+      });
+    res.sendStatus(200);
   });
 });
 
 router.post("/delete", (req, res) => {
   const { product_id } = req.body;
   if (product_id == null) {
-      return res.status(400).send({
-        error: "Bad Request"
-      });
+    return res.status(400).send({
+      error: "Bad Request"
+    });
   }
   const sql = `DELETE FROM product WHERE product_id = ${product_id}`;
   pool.query(sql, (error, results) => {
