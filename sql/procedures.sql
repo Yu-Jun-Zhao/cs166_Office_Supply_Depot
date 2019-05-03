@@ -1,33 +1,6 @@
 DELIMITER $$
 
-## for order
-## order is completed after 2 days; for simulation purpose it will be 2 minutes
-## order status:  0 == in progress, 1 == delivered
-/*
-DROP PROCEDURE IF EXISTS checkOrderStatus$$
-CREATE PROCEDURE checkOrderStatus(IN in_order_id INT)
-BEGIN
-	DECLARE s_orderStatus TINYINT;
-	DECLARE s_orderDate DATE;
-    DECLARE dateDiff INT;
-    DECLARE b_rollback TINYINT DEFAULT FALSE;
-    DECLARE CONTINUE HANDLER FOR sqlexception SET b_rollback = TRUE;
-    SELECT `status`, order_date INTO s_orderStatus, s_orderDate FROM `order` WHERE order_id = in_order_id;
-    
-    START TRANSACTION;
-    ## If Order in progress
-    IF s_orderStatus = 0 THEN
-		SET dateDiff = timestampdiff(MINUTE, s_orderDate, now());
-		IF dateDiff > 2 THEN
-			UPDATE `order` SET `status` = 1 WHERE order_id = in_order_id;
-        END IF;
-    END IF;
-    IF b_rollback THEN rollback;
-    ELSE commit;
-    END IF;
-    
-END$$
-*/
+
 ## for order
 ## order is completed after 2 days; for simulation purpose it will be 2 minutes
 ## order status:  0 == in progress, 1 == delivered
@@ -79,27 +52,28 @@ CREATE PROCEDURE insertToOrderItems(IN in_user_id VARCHAR(30), IN in_order_id IN
 BEGIN
 	DECLARE done TINYINT DEFAULT FALSE;
 	DECLARE p_id INT;
+    DECLARE quan INT UNSIGNED;
     DECLARE c_id INT DEFAULT (SELECT cart_id FROM cart WHERE user_id = in_user_id);
     DECLARE totalItems INT DEFAULT 0;
 
-    DECLARE items_cursor CURSOR FOR SELECT product_id FROM cart_item WHERE cart_id = c_id;
+    DECLARE items_cursor CURSOR FOR SELECT product_id, quantity FROM cart_item WHERE cart_id = c_id;
     
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
     
     OPEN items_cursor;
     cursor_loop: LOOP
-    FETCH items_cursor INTO p_id;
+    FETCH items_cursor INTO p_id, quan;
     IF done THEN 
 		LEAVE cursor_loop;
 	END IF;
     
-    INSERT INTO order_item (order_id, product_id) VALUES (in_order_id,p_id);
+    INSERT INTO order_item (order_id, product_id, quantity) VALUES (in_order_id,p_id,quan);
     SET totalItems = totalItems + 1;
     
     END LOOP;
     CLOSE items_cursor;
     
-    ## If there are items delete from cart
+    ## If there are items, delete from cart
     ## Else delete the order from order;
 	IF totalItems > 0 
     THEN
@@ -141,21 +115,25 @@ DROP PROCEDURE IF EXISTS addItemsToCart$$
 CREATE PROCEDURE addItemsToCart(IN in_cart_id INT, IN in_product_id INT, IN in_quantity INT UNSIGNED)
 BEGIN
 	
-	DECLARE i INT DEFAULT in_quantity;
+	DECLARE i INT UNSIGNED DEFAULT in_quantity;
 	DECLARE stock INT DEFAULT (SELECT quantity FROM product WHERE product_id = in_product_id); 
     DECLARE b_rollback TINYINT DEFAULT FALSE;
 
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET b_rollback = true; 
     START TRANSACTION;
     
-    CALL removeAllItemsFromCart(in_cart_id, in_product_id);
+    ## CALL removeAllItemsFromCart(in_cart_id, in_product_id);
     
     IF in_quantity <= stock THEN
-		WHILE i > 0 DO
-			INSERT INTO cart_item (cart_id, product_id) VALUES (in_cart_id, in_product_id);
-			SET i = i - 1;
-		END WHILE;
+		##WHILE i > 0 DO
+		
+        INSERT INTO cart_item (cart_id, product_id, quantity) VALUES (in_cart_id, in_product_id, in_quantity) 
+			ON duplicate key update product_id = in_product_id;
+		
+        ##	SET i = i - 1;
+		##END WHILE;
     
+    ## reduce product quantity
 	UPDATE product SET product.quantity = product.quantity - in_quantity WHERE product_id = in_product_id;
     END IF;
     
@@ -171,14 +149,14 @@ END$$
 DROP PROCEDURE IF EXISTS removeAllItemsFromCart$$
 CREATE PROCEDURE removeAllItemsFromCart(IN in_cart_id INT, IN in_product_id INT)
 BEGIN
-	DECLARE quantity INT;
+	DECLARE l_quantity INT UNSIGNED;
     DECLARE b_rollback TINYINT DEFAULT FALSE;
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET b_rollback = true;
     START TRANSACTION;
     
-    SET quantity = (SELECT count(*) FROM cart_item WHERE cart_id = in_cart_id AND product_id = in_product_id);
+    SET l_quantity = (SELECT quantity FROM cart_item WHERE cart_id = in_cart_id AND product_id = in_product_id);
     DELETE FROM cart_item WHERE cart_id = in_cart_id AND product_id = in_product_id;
-	UPDATE product SET product.quantity = product.quantity + quantity WHERE product_id = in_product_id;
+	UPDATE product SET product.quantity = product.quantity + l_quantity WHERE product_id = in_product_id;
     
 	IF b_rollback THEN rollback;
     ELSE commit;
