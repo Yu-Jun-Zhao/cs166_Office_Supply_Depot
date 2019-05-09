@@ -72,7 +72,6 @@ class OrderPage extends Component {
             ) : (
               <div>LOADING</div>
             )}
-            {warehouse}
           </TableBody>
         </Table>
         <MapContainer key={warehouse} zoom={4} origin={{lat:  37.312113, lng: -121.95431}} destination={warehouse}/>
