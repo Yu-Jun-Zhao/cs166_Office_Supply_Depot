@@ -53,7 +53,6 @@ export default function(state = initialState, action) {
         loadingFromDB: true
       }
     case GEOCODE_SUCCESS:
-      console.log(action.payload)
       return {
         ...state,
         loadingFromDB: false,
