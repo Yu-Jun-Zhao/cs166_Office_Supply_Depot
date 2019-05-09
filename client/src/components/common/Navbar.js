@@ -110,7 +110,6 @@ class Navbar extends Component {
   render() {
     const { classes } = this.props;
     const { isAuthenticated } = this.props.authentication;
-    const userLink = "/";
 
     const open = Boolean(this.state.anchorEl);
     return (
