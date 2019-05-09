@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
+  changeWarehouse, geocodeOrigin,
   getAllOrdersFromDB,
   retrieveShippingAddress
 } from "../../actions/orderAction";
@@ -15,40 +16,19 @@ import {
   Button
 } from "@material-ui/core/";
 
-const data = [
-  {
-    lat: 37.311013,
-    lng: -121.931334
-  },
-  {
-    lat: 37.335187,
-    lng: -121.881072
-  },
-];
-
 class OrderPage extends Component {
-  state = {
-    shippingAddress: null
-  };
 
   componentDidMount() {
     this.props.getAllOrdersFromDB(this.props.authentication.userInfo.sub);
   }
 
-  handleButtonChange = shippingAddressId => event => {
-    this.props.retrieveShippingAddress(shippingAddressId);
+  handleButtonChange = (shippingAddressId, fromAddressId) => event => {
+    this.props.retrieveShippingAddress(shippingAddressId)
+    this.props.changeWarehouse(fromAddressId)
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.shippingAddress !== prevState.shippingAddress) {
-      return {
-        shippingAddress: nextProps.shippingAddress
-      };
-    }
-  }
-
   render() {
-    const { orders } = this.props;
+    const { orders, warehouse } = this.props;
     // order_id, order_date, user_id, s_address_id,
     //         from_address_id, weight, price, status
     return (
@@ -82,7 +62,7 @@ class OrderPage extends Component {
                   <TableCell>
                     <Button
                       variant="outlined"
-                      onClick={this.handleButtonChange(order.s_address_id)}
+                      onClick={this.handleButtonChange(order.s_address_id, order.from_address_id)}
                     >
                       See Map
                     </Button>
@@ -92,9 +72,10 @@ class OrderPage extends Component {
             ) : (
               <div>LOADING</div>
             )}
+            {warehouse}
           </TableBody>
         </Table>
-        <MapContainer zoom={4} origin={data[0]} destination={data[1]}/>
+        <MapContainer key={warehouse} zoom={4} origin={{lat:  37.312113, lng: -121.95431}} destination={warehouse}/>
       </Paper>
     );
   }
@@ -104,10 +85,11 @@ const mapStateToProps = state => ({
   authentication: state.authentication,
   orders: state.orders.order,
   shippingAddress: state.orders.shippingAddress,
-  loading: state.orders.loadingFromDB
+  loading: state.orders.loadingFromDB,
+  warehouse: state.orders.warehouse
 });
 
 export default connect(
   mapStateToProps,
-  { getAllOrdersFromDB, retrieveShippingAddress }
+  { getAllOrdersFromDB, retrieveShippingAddress, changeWarehouse, geocodeOrigin }
 )(OrderPage);

@@ -2,9 +2,12 @@ import {
   BEGINLOADINGORDERSFROM_DB,
   FINISHLOADINGORDERSFROM_DB,
   LOADALLORDERSFROM_DB,
-  FETCHSHIPPINGADDRESS
+  FETCHSHIPPINGADDRESS,
+  CHANGE_WAREHOUSE, GEOCODE_BEGIN, FETCH_PRODUCTS_FAILURE, GEOCODE_FAIL
 } from "../actions/types";
 import axios from "axios";
+import {GEOCODE_SUCCESS} from "./types";
+import {fetchProductsBegin, fetchProductsFailure, fetchProductsSuccess} from "./productActions";
 
 // might not needed in redux
 // Create order and store in db
@@ -77,3 +80,33 @@ export const beginLoadingOrderFromDb = () => {
 export const finishLoadingOrderFromDb = () => {
   return { type: FINISHLOADINGORDERSFROM_DB };
 };
+
+export const changeWarehouse = warehouse => dispatch => {
+  dispatch({
+    type: CHANGE_WAREHOUSE,
+    payload: warehouse
+  })
+};
+
+export const geocodeBegin = () => ({
+  type: GEOCODE_BEGIN
+})
+
+export const geocodeSuccess = origin => ({
+  type: GEOCODE_SUCCESS,
+  payload: origin
+});
+
+export const geocodeFailure = error => ({
+  type: GEOCODE_FAIL,
+  payload: { error }
+});
+
+export function geocodeOrigin(origin) {
+  return dispatch => {
+    dispatch(geocodeBegin());
+    return axios.get(`/api/order/${origin}/`)
+        .then(res => dispatch(geocodeSuccess(res.data.origin)))
+        .catch(error => dispatch(geocodeFailure(error)));
+  };
+}
