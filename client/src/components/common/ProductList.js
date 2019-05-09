@@ -26,7 +26,7 @@ class ProductList extends Component {
   };
 
   render() {
-    const { error, loading, products, pageCount, offset, page } = this.props;
+    const { error, loading, products, pageCount, page } = this.props;
 
     if (error) {
       return <div>Error! {error.message}</div>;

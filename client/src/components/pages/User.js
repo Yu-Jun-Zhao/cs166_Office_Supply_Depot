@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { checkAuthentication } from "../../actions/authenticateActions";
-import Homepage from "../pages/Homepage";
 import { withAuth } from "@okta/okta-react";
 import { Redirect } from "react-router-dom";
 

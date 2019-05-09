@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ItemHolder from "../common/Product";
 import { connect } from "react-redux";
 import { withRouter, Link } from "react-router-dom";
 import {
@@ -7,7 +6,6 @@ import {
   deleteCartItem,
   getAllCartItemsFromDB
 } from "../../actions/cartActions";
-import TableItemsList from "../../components/common/TableItemsList";
 import { withStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -17,14 +15,9 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
-import red from "@material-ui/core/colors/red";
-
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
-
-/* try this */
-import axios from "axios";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -72,12 +65,6 @@ const styles = theme => ({
     marginRight: theme.spacing.unit
   }
 });
-/* test data */
-let id = 0;
-function createData(pName, price, weight, quantity) {
-  id += 1;
-  return { pName, price, weight, quantity };
-}
 
 class Shoppingcart extends Component {
   state = {
@@ -115,7 +102,7 @@ class Shoppingcart extends Component {
   }
 
   render() {
-    const { classes, products } = this.props;
+    const { classes } = this.props;
     var formatter = new Intl.NumberFormat("en-US", {
       style: "currency",
       currency: "USD"

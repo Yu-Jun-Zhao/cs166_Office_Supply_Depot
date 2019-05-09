@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Searchbar from "../common/Searchbar";
 import { connect } from "react-redux";
 import { withAuth } from "@okta/okta-react";
 import { checkAuthentication } from "../../actions/authenticateActions";

@@ -5,13 +5,6 @@ import {
   FETCHSHIPPINGADDRESS
 } from "../actions/types";
 import axios from "axios";
-import { openModal, setModalProps } from "./modalActions";
-import {
-  deleteProductsBegin,
-  deleteProductsFailure,
-  deleteProductsSuccess,
-  fetchProductsByOffset
-} from "./productActions";
 
 // might not needed in redux
 // Create order and store in db
