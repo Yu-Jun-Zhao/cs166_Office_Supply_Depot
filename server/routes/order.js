@@ -74,13 +74,11 @@ router.get("/address/:addressId", authenticationRequired, (req, res) => {
 router.post("/route", (req, res) => {
   const {origin} = req.body
   let originLL = {}
-  console.log(origin)
   googleMapsClient.geocode({
     address: origin
   }, function (err, response) {
     if (!err) {
       originLL = response.json.results[0]["geometry"]["location"];
-      console.log(originLL)
       return res.send({origin: originLL});
     }
     else {
