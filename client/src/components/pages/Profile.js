@@ -7,11 +7,6 @@ import { checkAuthentication } from "../../actions/authenticateActions";
 //import { checkAuthentication } from "../../util/helpers";
 
 class Profile extends Component {
-  constructor(props) {
-    super(props);
-    //this.state = { userInfo: null, ready: false };
-  }
-
   // Need to changes these code later
   componentDidMount() {
     this.props.checkAuthentication(
