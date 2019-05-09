@@ -40,6 +40,7 @@ class TableItemsList extends Component {
                     <TableCell>Weight</TableCell>
                     <TableCell>Quantity</TableCell>
                     <TableCell>Price</TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -50,9 +51,11 @@ class TableItemsList extends Component {
                         <TableCell>{product.weight}</TableCell>
                         <TableCell>{product.quantity}</TableCell>
                         <TableCell>{product.price}</TableCell>
-                        <Button color="primary" onClick={() => this.props.deleteProduct(product.product_id)}>
-                          <i className="material-icons">delete</i>
-                        </Button>
+                        <TableCell>
+                          <Button color="primary" onClick={() => this.props.deleteProduct(product.product_id)}>
+                            <i className="material-icons">delete</i>
+                          </Button>
+                        </TableCell>
                       </TableRow>
                   ))}
                 </TableBody>
