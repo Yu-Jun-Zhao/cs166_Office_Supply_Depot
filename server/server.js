@@ -68,30 +68,6 @@ app.listen(8000, () => {
   console.log(`Resource Server Ready on port 8000`);
 });
 
-/*
-app.get("/api/products/:name/:offset", (req, res) => {
-  const { name, offset } = req.params;
-  const count_sql = `SELECT COUNT(*) as total FROM product WHERE pName LIKE '%${name}%'`;
-  const select_sql = `SELECT * FROM product WHERE pName LIKE '%${name}%' LIMIT 10 OFFSET ${offset}`;
-
-  let json = {};
-  connection.query(select_sql, (error, results) => {
-    if (error) res.send(error);
-    let arr = [];
-    for (let i = 0; i < results.length; i++) {
-      arr.push(results[i]);
-    }
-    json = { products: arr };
-  });
-  connection.query(count_sql, (error, results) => {
-    if (error) res.send(error);
-
-    json["total"] = results[0].total;
-    res.json(json);
-  });
-});
-
-/* Might need this later
 app.post("/api/route", (req, res) => {
     const { origin, destination } = req.body
     googleMapsClient.geocode({
@@ -113,22 +89,6 @@ app.post("/api/route", (req, res) => {
         }
     });
 
-});
-*/
-
-app.post("/api/product/add", (req, res) => {
-    const { pName, weight, quantity, price } = req.body
-    const insert_sql = `INSERT INTO product (pName, quantity, price, weight) values ('${pName}', '${weight}', '${quantity}', '${price}')`;
-
-    connection.query(insert_sql, (error, results) => {
-        if (error) {
-            console.log(error)
-            return res.status(400).send({
-                message: 'Error'
-            })
-        }
-        res.sendStatus(200)
-    });
 });
 
 app.get("/", (req, res) => {
