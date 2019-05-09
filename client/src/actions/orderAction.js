@@ -3,7 +3,7 @@ import {
   FINISHLOADINGORDERSFROM_DB,
   LOADALLORDERSFROM_DB,
   FETCHSHIPPINGADDRESS,
-  CHANGE_WAREHOUSE, GEOCODE_BEGIN, FETCH_PRODUCTS_FAILURE, GEOCODE_FAIL
+  CHANGE_WAREHOUSE, GEOCODE_BEGIN, FETCH_PRODUCTS_FAILURE, GEOCODE_FAIL, CHANGE_ORDER_ID
 } from "../actions/types";
 import axios from "axios";
 import {GEOCODE_SUCCESS} from "./types";
@@ -88,6 +88,13 @@ export const changeWarehouse = warehouse => dispatch => {
   })
 };
 
+export const changeOrderId = id => dispatch => {
+  dispatch({
+    type: CHANGE_ORDER_ID,
+    payload: id
+  })
+};
+
 export const geocodeBegin = () => ({
   type: GEOCODE_BEGIN
 })
@@ -105,8 +112,10 @@ export const geocodeFailure = error => ({
 export function geocodeOrigin(origin) {
   return dispatch => {
     dispatch(geocodeBegin());
-    return axios.get(`/api/order/${origin}/`)
-        .then(res => dispatch(geocodeSuccess(res.data.origin)))
+    return axios.post('/api/order/route', {
+      origin: origin
+    })
+        .then(  res => dispatch(geocodeSuccess(res.data.origin)))
         .catch(error => dispatch(geocodeFailure(error)));
   };
 }

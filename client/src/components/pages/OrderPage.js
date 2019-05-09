@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
+  changeOrderId,
   changeWarehouse, geocodeOrigin,
   getAllOrdersFromDB,
   retrieveShippingAddress
@@ -22,13 +23,16 @@ class OrderPage extends Component {
     this.props.getAllOrdersFromDB(this.props.authentication.userInfo.sub);
   }
 
-  handleButtonChange = (shippingAddressId, fromAddressId) => event => {
+  handleButtonChange = (shippingAddressId, fromAddressId, orderId) => event => {
     this.props.retrieveShippingAddress(shippingAddressId)
+    this.props.changeOrderId(orderId)
     this.props.changeWarehouse(fromAddressId)
+    const { shippingAddress } = this.props
+    this.props.geocodeOrigin(`${shippingAddress.address} ${shippingAddress.city} ${shippingAddress.state} ${shippingAddress.zip}`);
   };
 
   render() {
-    const { orders, warehouse } = this.props;
+    const { origin, orders, warehouse, order_id } = this.props;
     // order_id, order_date, user_id, s_address_id,
     //         from_address_id, weight, price, status
     return (
@@ -62,7 +66,7 @@ class OrderPage extends Component {
                   <TableCell>
                     <Button
                       variant="outlined"
-                      onClick={this.handleButtonChange(order.s_address_id, order.from_address_id)}
+                      onClick={this.handleButtonChange(order.s_address_id, order.from_address_id, order.order_id)}
                     >
                       See Map
                     </Button>
@@ -74,7 +78,7 @@ class OrderPage extends Component {
             )}
           </TableBody>
         </Table>
-        <MapContainer key={warehouse} zoom={4} origin={{lat:  37.312113, lng: -121.95431}} destination={warehouse}/>
+        <MapContainer key={order_id} zoom={4} origin={origin} destination={warehouse}/>
       </Paper>
     );
   }
@@ -85,10 +89,12 @@ const mapStateToProps = state => ({
   orders: state.orders.order,
   shippingAddress: state.orders.shippingAddress,
   loading: state.orders.loadingFromDB,
-  warehouse: state.orders.warehouse
+  warehouse: state.orders.warehouse,
+  origin: state.orders.origin,
+  order_id: state.orders.order_id
 });
 
 export default connect(
   mapStateToProps,
-  { getAllOrdersFromDB, retrieveShippingAddress, changeWarehouse, geocodeOrigin }
+  { getAllOrdersFromDB, retrieveShippingAddress, changeWarehouse, geocodeOrigin, changeOrderId }
 )(OrderPage);
