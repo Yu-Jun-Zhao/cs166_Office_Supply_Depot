@@ -19,10 +19,6 @@ import {
 
 class OrderPage extends Component {
 
-  state = {
-    currentId: null
-  }
-
   componentDidMount() {
     this.props.getAllOrdersFromDB(this.props.authentication.userInfo.sub);
   }
@@ -30,14 +26,6 @@ class OrderPage extends Component {
   handleButtonChange = (shippingAddressId, fromAddressId, orderId) => event => {
     this.props.generateMap(shippingAddressId, fromAddressId, orderId)
   };
-
-  /*
-      await this.props.retrieveShippingAddress(shippingAddressId)
-    await this.props.changeWarehouse(fromAddressId)
-    const { shippingAddress } = this.props
-    await this.props.geocodeOrigin(`${shippingAddress.address} ${shippingAddress.city} ${shippingAddress.state} ${shippingAddress.zip}`);
-    await this.props.changeOrderId(orderId)
-   */
 
   render() {
     const { origin, orders, warehouse, order_id } = this.props;
