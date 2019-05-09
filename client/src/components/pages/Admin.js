@@ -5,6 +5,10 @@ import { withAuth } from "@okta/okta-react";
 import { checkAuthentication } from "../../actions/authenticateActions";
 import TableItemsList from "../common/TableItemsList";
 import ItemAdder from "../common/ItemAdder";
+<<<<<<< HEAD
+=======
+import ItemUpdater from "../common/ItemUpdater";
+>>>>>>> evan_branch
 import SimpleModal from "../common/SimpleModal"
 
 class Admin extends Component {
@@ -38,6 +42,7 @@ class Admin extends Component {
   }
 
   render() {
+<<<<<<< HEAD
     return (
       <div>
         <h1>Admin</h1>
@@ -45,6 +50,21 @@ class Admin extends Component {
         <SimpleModal/>
       </div>
     );
+=======
+
+    if (this.props.authentication.userInfo.groups === 'admin') {
+      return (
+          <React.Fragment>
+            <SimpleModal/>
+            <h1>Admin</h1>
+            <ItemAdder/>
+            <ItemUpdater/>
+            <TableItemsList isAuthenticated={this.state.isAuthenticated}/>
+          </React.Fragment>
+      );
+    }
+    return <div>...</div>
+>>>>>>> evan_branch
   }
 }
 

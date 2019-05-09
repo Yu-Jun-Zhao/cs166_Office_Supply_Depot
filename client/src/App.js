@@ -15,7 +15,13 @@ import Admin from "./components/pages/Admin";
 import Checkout from "./components/pages/Checkout";
 import User from "./components/pages/User";
 import Footer from "./components/common/Footer";
+<<<<<<< HEAD
 import TempMap from "./components/pages/TempMap"
+=======
+import ShoppingCart from "./components/pages/ShoppingCart";
+import ItemPage from "./components/pages/ItemPage";
+import OrderPage from "./components/pages/OrderPage";
+>>>>>>> evan_branch
 
 function customAuthHandler({ history }) {
   // Redirect to the /login page that has a CustomLoginComponent
@@ -40,11 +46,23 @@ class App extends Component {
             <Route path="/implicit/callback" component={ImplicitCallback} />
             <Route path="/login" exact component={CustomLoginComponent} />
             <Route path="/result" component={ProductList} />
+<<<<<<< HEAD
             <Route path="/checkout" exact component={Checkout} />
             <Route path="/map" exact component={TempMap}/>
             <SecureRoute path="/profile" component={Profile} />
             <SecureRoute path="/user" component={User} />
             <SecureRoute path="/admin" exact component={Admin} />
+=======
+            <Route path="/item" exact component={ItemPage} />
+            <SecureRoute path="/profile" component={Profile} />
+            <SecureRoute path="/user" component={User} />
+            <SecureRoute path="/admin" exact component={Admin} />
+            <SecureRoute path="/cart" exact component={ShoppingCart} />
+            <SecureRoute path="/checkout" exact component={Checkout} />
+            <SecureRoute path="/orders" exact component={OrderPage} />
+
+            <Footer />
+>>>>>>> evan_branch
           </Security>
         </Router>
       </Provider>

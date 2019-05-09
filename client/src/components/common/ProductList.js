@@ -39,7 +39,7 @@ class ProductList extends Component {
     return (
       <React.Fragment>
         <ul>
-          {products.map(product => {
+          {products && products.map(product => {
             return (
               <div key={product.productID}>
                 <ItemHolder product={product} />

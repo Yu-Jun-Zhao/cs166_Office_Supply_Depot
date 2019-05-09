@@ -1,10 +1,12 @@
 import express from "express";
 import cors from "cors";
-import mysql from "mysql";
+import pool from "./db";
+
 import {
   authenticationRequired,
   adminAuthenticationRequired
 } from "./AuthenticationMiddleware/AuthenticationMiddleware";
+<<<<<<< HEAD
 import bodyparser from "body-parser";
 
 const googleMapsClient = require('@google/maps').createClient({
@@ -33,11 +35,17 @@ let sql =
 connection.query(sql, (err, result) => {
   if (err) throw err;
 });
+=======
+//import bodyparser from "body-parser";
+>>>>>>> evan_branch
 
-////////////////////////////////////
+import products from "./routes/product";
+import user from "./routes/user";
+import cart from "./routes/cart";
+import order from "./routes/order";
 
 const app = express();
-app.use(bodyparser.json());
+app.use(express.json());
 
 /**
  * For local testing only!  Enables CORS for all domains
@@ -51,6 +59,46 @@ app.use(cors());
     total: total
   }
  */
+
+// ADD ROUTES
+app.use("/api/products", products);
+app.use("/api/user", user);
+app.use("/api/cart", cart);
+app.use("/api/order", order);
+/// TODO
+/**
+ * An example route that requires a valid access token for authentication, it
+ * will echo the contents of the access token if the middleware successfully
+ * validated the token.
+ */
+app.get("/secure", authenticationRequired, (req, res) => {
+  res.json(req.jwt);
+});
+
+/**
+ * Another example route that requires a valid access token for authentication, and
+ * print some messages for the user if they are authenticated
+ */
+app.get("/api/messages", authenticationRequired, (req, res) => {
+  res.json({
+    messages: [
+      {
+        date: new Date(),
+        text: "I am a robot."
+      },
+      {
+        date: new Date(new Date().getTime() - 1000 * 60 * 60),
+        text: "Hello, world!"
+      }
+    ]
+  });
+});
+
+app.listen(8000, () => {
+  console.log(`Resource Server Ready on port 8000`);
+});
+
+/*
 app.get("/api/products/:name/:offset", (req, res) => {
   const { name, offset } = req.params;
   const count_sql = `SELECT COUNT(*) as total FROM product WHERE pName LIKE '%${name}%'`;
@@ -119,35 +167,4 @@ app.get("/", (req, res) => {
       "Hello!  There's not much to see here :) Please grab one of our front-end samples for use with this sample resource server"
   });
 });
-
-/**
- * An example route that requires a valid access token for authentication, it
- * will echo the contents of the access token if the middleware successfully
- * validated the token.
- */
-app.get("/secure", authenticationRequired, (req, res) => {
-  res.json(req.jwt);
-});
-
-/**
- * Another example route that requires a valid access token for authentication, and
- * print some messages for the user if they are authenticated
- */
-app.get("/api/messages", authenticationRequired, (req, res) => {
-  res.json({
-    messages: [
-      {
-        date: new Date(),
-        text: "I am a robot."
-      },
-      {
-        date: new Date(new Date().getTime() - 1000 * 60 * 60),
-        text: "Hello, world!"
-      }
-    ]
-  });
-});
-
-app.listen(8000, () => {
-  console.log(`Resource Server Ready on port 8000`);
-});
+*/

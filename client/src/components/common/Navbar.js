@@ -42,7 +42,10 @@ const navbartheme = createMuiTheme({
   }
 });
 
-const styles = {
+const styles = theme => ({
+  appBarRoot: {
+    zIndex: 999999
+  },
   grow: {
     flexGrow: 1
   },
@@ -55,7 +58,7 @@ const styles = {
   menuList: {
     zIndex: 999
   }
-};
+});
 
 const menuGrowStyle = placement => ({
   transformOrigin: placement === "bottom" ? "center top" : "center bottom"
@@ -113,7 +116,7 @@ class Navbar extends Component {
     return (
       <div>
         <MuiThemeProvider theme={navbartheme}>
-          <AppBar position="relative">
+          <AppBar position="relative" classes={{ root: classes.appBarRoot }}>
             <Toolbar>
               <Link component={RouterLink} to="/" underline="none">
                 <Typography
@@ -135,7 +138,7 @@ class Navbar extends Component {
                       aria-haspopup="true"
                       onMouseEnter={this.handleMenu}
                       component={RouterLink}
-                      to="/user"
+                      to="/orders" // "/user"
                     >
                       <AccountCircle />
                     </IconButton>
@@ -157,15 +160,37 @@ class Navbar extends Component {
                             <ClickAwayListener onClickAway={this.handleClose}>
                               {/* This is the Menu*/}
                               <MenuList>
+                                {this.props.authentication.userInfo.groups ===
+                                "admin" ? (
+                                  <MenuItem onClick={this.handleClose}>
+                                    <Link
+                                      component={RouterLink}
+                                      to="/admin"
+                                      underline="none"
+                                    >
+                                      Admin Panel
+                                    </Link>
+                                  </MenuItem>
+                                ) : null}
+                                <MenuItem onClick={this.handleClose}>
+                                  <Link
+                                      component={RouterLink}
+                                      to="/orders"
+                                      underline="none"
+                                  >
+                                    Orders
+                                  </Link>
+                                </MenuItem>
                                 <MenuItem onClick={this.handleClose}>
                                   <Link
                                     component={RouterLink}
-                                    to="/profile"
+                                    to="/cart"
                                     underline="none"
                                   >
-                                    Profile
+                                    Cart
                                   </Link>
                                 </MenuItem>
+
                                 <MenuItem onClick={this.logout}>
                                   Logout
                                 </MenuItem>
