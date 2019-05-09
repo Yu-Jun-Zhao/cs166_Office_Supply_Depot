@@ -54,7 +54,7 @@ BEGIN
 	DECLARE p_id INT;
     DECLARE quan INT UNSIGNED;
     DECLARE c_id INT DEFAULT (SELECT cart_id FROM cart WHERE user_id = in_user_id);
-    DECLARE totalItems INT DEFAULT 0;
+    DECLARE totalItems INT DEFAULT 0;  ## row
 
     DECLARE items_cursor CURSOR FOR SELECT product_id, quantity FROM cart_item WHERE cart_id = c_id;
     
@@ -83,25 +83,71 @@ BEGIN
 	END IF;
 END$$
 
+## Except in_delivery_method == 0, user choice of delivery method is applied only if weight > 15 lbs 
+## delivery time limit = 1 for one day, 2 for two days
 DROP PROCEDURE IF EXISTS createOrder$$
 CREATE PROCEDURE createOrder(IN user_id VARCHAR(30), IN order_date DATETIME, IN s_address VARCHAR(100), 
-								IN s_city VARCHAR(45), IN s_state CHAR(2), IN s_zip DECIMAL(5,0), IN from_address TINYINT(1))
+								IN s_city VARCHAR(45), IN s_state CHAR(2), IN s_zip DECIMAL(5,0), IN from_address TINYINT(1), 
+                                IN in_delivery_method TINYINT(1), IN in_delivery_time_limit TINYINT(1))
 BEGIN
 	DECLARE b_rollback TINYINT DEFAULT FALSE;
     
 	DECLARE shipping_id INT;
     DECLARE new_order_id INT;
+    DECLARE l_weight DECIMAL(8,4);
+    DECLARE l_price DECIMAL(8,2);
+    DECLARE l_surcharge DECIMAL(4,2) DEFAULT 0;
+	DECLARE l_total DECIMAL(8,2) DEFAULT 0;
+    DECLARE l_delivery_method TINYINT(1) DEFAULT in_delivery_method; 
+    DECLARE l_delivery_time_limit TINYINT(1) DEFAULT in_delivery_time_limit; 
+    
     DECLARE CONTINUE HANDLER FOR sqlexception SET b_rollback = true;
 
     START TRANSACTION; 
-    
+
+	## create order
     INSERT IGNORE INTO `shipping_address` (address, city, state, zip) VALUES(s_address, s_city, s_state, s_zip); 
     SET shipping_id = (SELECT s_address_id FROM shipping_address 
 		WHERE address = s_address AND city = s_city AND state = s_state AND zip = s_zip LIMIT 1);
-	INSERT INTO `order` (order_date, user_id, s_address_id, from_address_id, weight, price, `status`) 
-		VALUES (order_date, user_id, shipping_id, from_address, 0, 0, 0);
+	INSERT INTO `order` (order_date, user_id, s_address_id, from_address_id, 
+							delivery_method, delivery_time_limit, weight, items_price, surcharge,total,`status`) 
+		VALUES (order_date, user_id, shipping_id, from_address, 0, 2, 0, 0, 0, 0,0);
     SET new_order_id = last_insert_id();
+    
+    ## insert order items
     CALL insertToOrderItems(user_id, new_order_id);
+    
+    ## after inserting items
+    ## get new weight after triggers
+    SELECT weight, items_price INTO l_weight, l_price FROM `order` WHERE order_id = new_order_id;
+    
+    IF in_delivery_method <> 0  ## is not pick up at a location
+	THEN
+		IF l_weight > 15
+        THEN
+			SET l_delivery_method = 2; ##truck
+            
+            IF in_delivery_time_limit = 1
+            THEN 
+				SET l_surcharge = 25;
+            END IF;
+		ELSE  
+			SET l_delivery_method = 1; ##drone
+            SET l_delivery_time_limit = 1; ## same day delivery
+        END IF;
+        
+        IF l_price < 100 
+        THEN
+			SET l_surcharge = 20;
+        END IF;
+        
+    END IF;
+    
+    ## set total = surchage + all item price
+    SET l_total = l_surcharge + l_price;
+    
+    UPDATE `order` SET delivery_method = l_delivery_method, delivery_time_limit = l_delivery_time_limit,
+					surcharge = l_surcharge, total = l_total WHERE order_id = new_order_id;
     
     IF b_rollback THEN ROLLBACK;
     ELSE COMMIT;
@@ -122,7 +168,7 @@ BEGIN
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET b_rollback = true; 
     START TRANSACTION;
     
-    ## CALL removeAllItemsFromCart(in_cart_id, in_product_id);
+	CALL removeAllItemsFromCart(in_cart_id, in_product_id);
     
     IF in_quantity <= stock THEN
 		##WHILE i > 0 DO
@@ -154,7 +200,7 @@ BEGIN
     DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET b_rollback = true;
     START TRANSACTION;
     
-    SET l_quantity = (SELECT quantity FROM cart_item WHERE cart_id = in_cart_id AND product_id = in_product_id);
+    SET l_quantity = (SELECT quantity FROM cart_item WHERE cart_id = in_cart_id AND product_id = in_product_id LIMIT 1);
     DELETE FROM cart_item WHERE cart_id = in_cart_id AND product_id = in_product_id;
 	UPDATE product SET product.quantity = product.quantity + l_quantity WHERE product_id = in_product_id;
     

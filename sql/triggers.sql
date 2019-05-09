@@ -21,7 +21,7 @@ CREATE TRIGGER AFTER_INSERT_ORDERITEM
         SELECT weight, price INTO l_weight, l_price FROM product WHERE product_id = NEW.product_id LIMIT 1;
         
         UPDATE `order` SET `order`.weight = `order`.weight + l_weight * NEW.quantity 
-					, `order`.price = `order`.price + l_price  * NEW.quantity
+					, `order`.items_price = `order`.items_price + l_price  * NEW.quantity
                     WHERE order_id = NEW.order_id;
     END$$
 

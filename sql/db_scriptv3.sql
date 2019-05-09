@@ -59,10 +59,10 @@ CREATE TABLE IF NOT EXISTS `osd`.`Product` (
   `description` VARCHAR(3000) NOT NULL,
   `imgPath` VARCHAR(1000),
   `type` VARCHAR(25),
+  `warehouse` TINYINT(1),
   PRIMARY KEY (`product_id`)
 )
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `osd`.`Item`
@@ -116,8 +116,12 @@ CREATE TABLE IF NOT EXISTS `osd`.`Order` (
   `user_id` VARCHAR(30) NOT NULL,
   `s_address_id` INT NOT NULL,
   `from_address_id` TINYINT(1) NOT NULL,
+  `delivery_method` TINYINT(1) NOT NULL, ## 0 == pick up 1 == drone or truck
+  `delivery_time_limit` TINYINT(1) NOT NULL, ## 1 day or 2 days
   `weight` DECIMAL(8,4) NOT NULL,
-  `price` DECIMAL(8,2) NOT NULL,
+  `items_price` DECIMAL(8,2) NOT NULL,
+  `surcharge` DECIMAL(4,2) NOT NULL, 
+  `total` DECIMAL(8,2) NOT NULL,
   `status` TINYINT(1) NOT NULL,
   PRIMARY KEY (`order_id`),
   CONSTRAINT `fk_Order_Customer1`

@@ -14,9 +14,9 @@ import {
   DELETE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_BEGIN,
   UPDATE_PRODUCT_FAILURE,
-  UPDATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_SUCCESS
 } from "./types";
-import {openModal, setModalProps, closeModal} from "./modalActions";
+import { openModal, setModalProps, closeModal } from "./modalActions";
 
 export const fetchProductsBegin = () => ({
   type: FETCH_PRODUCTS_BEGIN
@@ -45,9 +45,12 @@ export const changePage = page => ({
 export function fetchProducts(name, offset) {
   return dispatch => {
     dispatch(fetchProductsBegin());
-    return axios.get(`/api/products/${name}/${offset}`)
-        .then(res => dispatch(fetchProductsSuccess(res.data.products, res.data.total)))
-        .catch(error => dispatch(fetchProductsFailure(error)));
+    return axios
+      .get(`/api/products/${name}/${offset}`)
+      .then(res =>
+        dispatch(fetchProductsSuccess(res.data.products, res.data.total))
+      )
+      .catch(error => dispatch(fetchProductsFailure(error)));
   };
 }
 
@@ -69,7 +72,6 @@ export const fetchProductByType = type => dispatch => {
     .catch(error => dispatch(fetchProductsFailure(error)));
 };
 
-
 export const createProductsBegin = () => ({
   type: CREATE_PRODUCT_BEGIN
 });
@@ -82,28 +84,46 @@ export const createProductsFailure = () => ({
   type: CREATE_PRODUCT_FAILURE
 });
 
-export function createProduct(p_name, quantity, price, weight, description, imgPath, type) {
+export function createProduct(
+  p_name,
+  quantity,
+  price,
+  weight,
+  description,
+  imgPath,
+  type
+) {
   return dispatch => {
     dispatch(createProductsBegin());
-    return axios.post(`/api/products/add`, {
-      p_name: p_name,
-      quantity: quantity,
-      price: price,
-      weight: weight,
-      description: description,
-      imgPath: imgPath,
-      type: type
-    })
-        .then(res => dispatch(createProductsSuccess()))
-        .then(res => dispatch(openModal()))
-        .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully added' })))
-        .then(res => dispatch(fetchProductsByOffset(100)))
-        .catch(error => {
-          dispatch(openModal())
-          dispatch(setModalProps( {status: 'FAIL', message: 'Product addition failed' }))
-          dispatch(createProductsFailure())
-        })
-  }
+    return axios
+      .post(`/api/products/add`, {
+        p_name: p_name,
+        quantity: quantity,
+        price: price,
+        weight: weight,
+        description: description,
+        imgPath: imgPath,
+        type: type
+      })
+      .then(res => dispatch(createProductsSuccess()))
+      .then(res => dispatch(openModal()))
+      .then(res =>
+        dispatch(
+          setModalProps({
+            status: "SUCCESS",
+            message: "Product successfully added"
+          })
+        )
+      )
+      .then(res => dispatch(fetchProductsByOffset(100)))
+      .catch(error => {
+        dispatch(openModal());
+        dispatch(
+          setModalProps({ status: "FAIL", message: "Product addition failed" })
+        );
+        dispatch(createProductsFailure());
+      });
+  };
 }
 
 export const deleteProductsBegin = () => ({
@@ -121,18 +141,29 @@ export const deleteProductsFailure = () => ({
 export function deleteProduct(product_id) {
   return dispatch => {
     dispatch(deleteProductsBegin());
-    return axios.post(`/api/products/delete`, {
-      product_id: product_id
-    })
-        .then(res => dispatch(deleteProductsSuccess()))
-        .then(res => dispatch(openModal()))
-        .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully deleted' })))
-        .then(res => dispatch(fetchProductsByOffset(100)))
-        .catch(error => {
-          dispatch(openModal())
-          dispatch(setModalProps( {status: 'FAIL', message: 'Product deletion failed' }))
-          dispatch(deleteProductsFailure())
-        })  }
+    return axios
+      .post(`/api/products/delete`, {
+        product_id: product_id
+      })
+      .then(res => dispatch(deleteProductsSuccess()))
+      .then(res => dispatch(openModal()))
+      .then(res =>
+        dispatch(
+          setModalProps({
+            status: "SUCCESS",
+            message: "Product successfully deleted"
+          })
+        )
+      )
+      .then(res => dispatch(fetchProductsByOffset(100)))
+      .catch(error => {
+        dispatch(openModal());
+        dispatch(
+          setModalProps({ status: "FAIL", message: "Product deletion failed" })
+        );
+        dispatch(deleteProductsFailure());
+      });
+  };
 }
 
 export const updateProductsBegin = () => ({
@@ -147,27 +178,46 @@ export const updateProductsFailure = () => ({
   type: UPDATE_PRODUCT_FAILURE
 });
 
-export function updateProduct(product_id, p_name, quantity, price, weight, description, imgPath, type) {
+export function updateProduct(
+  product_id,
+  p_name,
+  quantity,
+  price,
+  weight,
+  description,
+  imgPath,
+  type
+) {
   return dispatch => {
     dispatch(updateProductsBegin());
-    return axios.post(`/api/products/update`, {
-      product_id: product_id,
-      p_name: p_name,
-      quantity: quantity,
-      price: price,
-      weight: weight,
-      description: description,
-      imgPath: imgPath,
-      type: type
-    })
-        .then(res => dispatch(updateProductsSuccess()))
-        .then(res => dispatch(openModal()))
-        .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully updated' })))
-        .then(res => dispatch(fetchProductsByOffset(100)))
-        .catch(error => {
-          dispatch(openModal())
-          dispatch(setModalProps( {status: 'FAIL', message: 'Product update failed' }))
-          dispatch(updateProductsFailure())
-        })
-  }
+    return axios
+      .post(`/api/products/update`, {
+        product_id: product_id,
+        p_name: p_name,
+        quantity: quantity,
+        price: price,
+        weight: weight,
+        description: description,
+        imgPath: imgPath,
+        type: type
+      })
+      .then(res => dispatch(updateProductsSuccess()))
+      .then(res => dispatch(openModal()))
+      .then(res =>
+        dispatch(
+          setModalProps({
+            status: "SUCCESS",
+            message: "Product successfully updated"
+          })
+        )
+      )
+      .then(res => dispatch(fetchProductsByOffset(100)))
+      .catch(error => {
+        dispatch(openModal());
+        dispatch(
+          setModalProps({ status: "FAIL", message: "Product update failed" })
+        );
+        dispatch(updateProductsFailure());
+      });
+  };
 }
