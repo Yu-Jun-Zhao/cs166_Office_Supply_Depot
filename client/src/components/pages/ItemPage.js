@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Divider from "@material-ui/core/Divider";
@@ -10,15 +10,12 @@ import {
   createMuiTheme,
   MuiThemeProvider
 } from "@material-ui/core/styles";
-import blue from "@material-ui/core/colors/blue";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import ButtonBase from "@material-ui/core/ButtonBase";
 
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
-import TextField from "@material-ui/core/TextField";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -26,7 +23,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-const color = blue[50];
 const theme = createMuiTheme({
   typography: {
     // Use the system font instead of the default Roboto font.
@@ -237,6 +233,7 @@ class ItemTemplate extends React.Component {
   }
 }
 
+/*
 const ItemTemplate1 = ({ product }) => {
   const { name, price, weight, description, quantity } = product;
   return (
@@ -255,11 +252,12 @@ const ItemTemplate1 = ({ product }) => {
     </Grid>
   );
 };
-
+*/
+/*
 const mapStateToProps = state => ({
   product: state.product.items
 });
-
+*/
 ItemTemplate.propTypes = {
   name: PropTypes.object.isRequired,
   price: PropTypes.object.isRequired,
