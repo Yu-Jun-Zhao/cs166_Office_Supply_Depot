@@ -1,14 +1,5 @@
 import express from "express";
 import cors from "cors";
-import pool from "./db";
-
-import {
-  authenticationRequired,
-  adminAuthenticationRequired
-} from "./AuthenticationMiddleware/AuthenticationMiddleware";
-
-//import bodyparser from "body-parser";
-
 import products from "./routes/product";
 import user from "./routes/user";
 import cart from "./routes/cart";
@@ -22,47 +13,11 @@ app.use(express.json());
  */
 app.use(cors());
 
-/*
-  Returns a json object in this form
-  {
-    products: [{product 1, product 2, ...}],
-    total: total
-  }
- */
-
 // ADD ROUTES
 app.use("/api/products", products);
 app.use("/api/user", user);
 app.use("/api/cart", cart);
 app.use("/api/order", order);
-/// TODO
-/**
- * An example route that requires a valid access token for authentication, it
- * will echo the contents of the access token if the middleware successfully
- * validated the token.
- */
-app.get("/secure", authenticationRequired, (req, res) => {
-  res.json(req.jwt);
-});
-
-/**
- * Another example route that requires a valid access token for authentication, and
- * print some messages for the user if they are authenticated
- */
-app.get("/api/messages", authenticationRequired, (req, res) => {
-  res.json({
-    messages: [
-      {
-        date: new Date(),
-        text: "I am a robot."
-      },
-      {
-        date: new Date(new Date().getTime() - 1000 * 60 * 60),
-        text: "Hello, world!"
-      }
-    ]
-  });
-});
 
 app.listen(8000, () => {
   console.log(`Resource Server Ready on port 8000`);
