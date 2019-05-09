@@ -2,13 +2,8 @@ import React, { Component } from 'react'
 import { Map, GoogleApiWrapper } from 'google-maps-react'
 
 const style = {
-<<<<<<< HEAD
-    width: '100%',
-    height: '100%',
-=======
     width: '50%',
     height: '50%',
->>>>>>> evan_branch
     position: 'relative'
 };
 

@@ -5,9 +5,6 @@ import {
   FETCH_PRODUCTS_SUCCESS,
   FETCH_PRODUCTS_FAILURE,
   CHANGE_OFFSET,
-<<<<<<< HEAD
-  CHANGE_PAGE, CREATE_PRODUCT_BEGIN, CREATE_PRODUCT_FAILURE, CREATE_PRODUCT_SUCCESS, CLOSE_MODAL
-=======
   CHANGE_PAGE,
   CREATE_PRODUCT_BEGIN,
   CREATE_PRODUCT_FAILURE,
@@ -18,7 +15,6 @@ import {
   UPDATE_PRODUCT_BEGIN,
   UPDATE_PRODUCT_FAILURE,
   UPDATE_PRODUCT_SUCCESS,
->>>>>>> evan_branch
 } from "./types";
 import {openModal, setModalProps, closeModal} from "./modalActions";
 
@@ -46,29 +42,12 @@ export const changePage = page => ({
   payload: { page }
 });
 
-export const createProductsBegin = () => ({
-  type: CREATE_PRODUCT_BEGIN
-});
-
-export const createProductsSuccess = () => ({
-  type: CREATE_PRODUCT_SUCCESS
-});
-
-export const createProductsFailure = () => ({
-  type: CREATE_PRODUCT_FAILURE
-});
-
 export function fetchProducts(name, offset) {
   return dispatch => {
     dispatch(fetchProductsBegin());
     return axios.get(`/api/products/${name}/${offset}`)
-<<<<<<< HEAD
-      .then(res => dispatch(fetchProductsSuccess(res.data.products, res.data.total)))
-      .catch(error => dispatch(fetchProductsFailure(error)));
-=======
         .then(res => dispatch(fetchProductsSuccess(res.data.products, res.data.total)))
         .catch(error => dispatch(fetchProductsFailure(error)));
->>>>>>> evan_branch
   };
 }
 
@@ -82,26 +61,6 @@ export function fetchProductsByOffset(offset) {
   };
 }
 
-<<<<<<< HEAD
-export function createProduct(pName, quantity, price, weight) {
-  return dispatch => {
-    dispatch(createProductsBegin());
-    return axios.post(`/api/product/add`, {
-      pName: pName,
-      quantity: quantity,
-      price: price,
-      weight: weight
-    })
-    .then(res => dispatch(createProductsSuccess()))
-    .catch(error => dispatch(createProductsFailure()));
-  }
-}
-
-export const closeModal = () => ({
-  type: CLOSE_MODAL
-});
-
-=======
 export const fetchProductByType = type => dispatch => {
   dispatch(fetchProductsBegin());
   axios
@@ -212,4 +171,3 @@ export function updateProduct(product_id, p_name, quantity, price, weight, descr
         })
   }
 }
->>>>>>> evan_branch

@@ -6,38 +6,8 @@ import {
   authenticationRequired,
   adminAuthenticationRequired
 } from "./AuthenticationMiddleware/AuthenticationMiddleware";
-<<<<<<< HEAD
-import bodyparser from "body-parser";
 
-const googleMapsClient = require('@google/maps').createClient({
-    key: 'AIzaSyB6bOePa__5vSd4Ri5ogaaN8Dw-k_plH-M'
-});
-
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "osd",
-  port: 3306
-});
-
-// Create database on the fly
-// For Development only
-connection.connect(err => {
-  if (err) throw err;
-  connection.query("CREATE DATABASE IF NOT EXISTS osd", (err, result) => {
-    if (err) throw err;
-  });
-});
-
-let sql =
-  "CREATE TABLE IF NOT EXISTS product(id INT AUTO_INCREMENT, pName VARCHAR(255), quantity INT, price FLOAT, weight FLOAT, PRIMARY KEY (id))";
-connection.query(sql, (err, result) => {
-  if (err) throw err;
-});
-=======
 //import bodyparser from "body-parser";
->>>>>>> evan_branch
 
 import products from "./routes/product";
 import user from "./routes/user";
@@ -167,4 +137,4 @@ app.get("/", (req, res) => {
       "Hello!  There's not much to see here :) Please grab one of our front-end samples for use with this sample resource server"
   });
 });
-*/
+

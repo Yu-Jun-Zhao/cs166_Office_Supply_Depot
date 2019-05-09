@@ -3,15 +3,6 @@ import React from "react";
 const Product = ({ product }) => {
   const { p_name, price, weight, quantity } = product;
   return (
-<<<<<<< HEAD
-    <React.Fragment>
-      <span>{pName}</span>
-      <p>Price: ${price}</p>
-      <p>Weight: {weight} lbs</p>
-      <p>Quantity: {quantity}</p>
-      <hr/>
-    </React.Fragment>
-=======
     <div class="row">
       <div class="col s12 m5">
         <div class="card">
@@ -27,7 +18,6 @@ const Product = ({ product }) => {
         </div>
       </div>
     </div>
->>>>>>> evan_branch
   );
 };
 
