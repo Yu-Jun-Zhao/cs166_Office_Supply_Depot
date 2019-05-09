@@ -45,7 +45,7 @@ class TableItemsList extends Component {
                 </TableHead>
                 <TableBody>
                   {items.products.map(product => (
-                      <TableRow key={product.id} hover>
+                      <TableRow key={product.product_id} hover>
                         <TableCell>{product.product_id}</TableCell>
                         <TableCell>{product.p_name}</TableCell>
                         <TableCell>{product.weight}</TableCell>
