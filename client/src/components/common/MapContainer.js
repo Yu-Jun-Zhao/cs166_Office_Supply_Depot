@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { Map, GoogleApiWrapper } from 'google-maps-react'
+import './Map.css'
 
 const style = {
     width: '50%',
     height: '50%',
-    position: 'absolute'
+    position: 'relative'
 };
 
 const wh = [

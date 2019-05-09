@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   changeOrderId,
-  changeWarehouse, geocodeOrigin,
+  changeWarehouse, generateMap, geocodeOrigin,
   getAllOrdersFromDB,
   retrieveShippingAddress
 } from "../../actions/orderAction";
@@ -19,17 +19,25 @@ import {
 
 class OrderPage extends Component {
 
+  state = {
+    currentId: null
+  }
+
   componentDidMount() {
     this.props.getAllOrdersFromDB(this.props.authentication.userInfo.sub);
   }
 
   handleButtonChange = (shippingAddressId, fromAddressId, orderId) => event => {
-    this.props.retrieveShippingAddress(shippingAddressId)
-    this.props.changeOrderId(orderId)
-    this.props.changeWarehouse(fromAddressId)
-    const { shippingAddress } = this.props
-    this.props.geocodeOrigin(`${shippingAddress.address} ${shippingAddress.city} ${shippingAddress.state} ${shippingAddress.zip}`);
+    this.props.generateMap(shippingAddressId, fromAddressId, orderId)
   };
+
+  /*
+      await this.props.retrieveShippingAddress(shippingAddressId)
+    await this.props.changeWarehouse(fromAddressId)
+    const { shippingAddress } = this.props
+    await this.props.geocodeOrigin(`${shippingAddress.address} ${shippingAddress.city} ${shippingAddress.state} ${shippingAddress.zip}`);
+    await this.props.changeOrderId(orderId)
+   */
 
   render() {
     const { origin, orders, warehouse, order_id } = this.props;
@@ -68,7 +76,7 @@ class OrderPage extends Component {
                       variant="outlined"
                       onClick={this.handleButtonChange(order.s_address_id, order.from_address_id, order.order_id)}
                     >
-                      See Map
+                      Select
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -96,5 +104,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getAllOrdersFromDB, retrieveShippingAddress, changeWarehouse, geocodeOrigin, changeOrderId }
+  { getAllOrdersFromDB, retrieveShippingAddress, changeWarehouse, geocodeOrigin, changeOrderId, generateMap }
 )(OrderPage);

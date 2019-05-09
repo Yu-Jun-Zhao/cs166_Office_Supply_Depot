@@ -7,7 +7,14 @@ import {
 } from "../actions/types";
 import axios from "axios";
 import {GEOCODE_SUCCESS} from "./types";
-import {fetchProductsBegin, fetchProductsFailure, fetchProductsSuccess} from "./productActions";
+import {
+  createProductsBegin, createProductsFailure,
+  createProductsSuccess,
+  fetchProductsBegin, fetchProductsByOffset,
+  fetchProductsFailure,
+  fetchProductsSuccess
+} from "./productActions";
+import {openModal, setModalProps} from "./modalActions";
 
 // might not needed in redux
 // Create order and store in db
@@ -118,4 +125,47 @@ export function geocodeOrigin(origin) {
         .then(  res => dispatch(geocodeSuccess(res.data.origin)))
         .catch(error => dispatch(geocodeFailure(error)));
   };
+}
+
+export function generateMap(shippingAddressId, warehouseId, orderId) {
+  return dispatch => {
+    axios
+        .get(`/api/order/address/${shippingAddressId}`)
+        .then(res => {
+          dispatch({ type: FETCHSHIPPINGADDRESS, payload: res.data })
+          let fullOrigin = `${res.data.address} ${res.data.city} ${res.data.zip}`
+          axios.post('/api/order/route', {
+            origin: fullOrigin
+          })
+              .then(  res => dispatch(geocodeSuccess(res.data.origin)))
+              .then(res => dispatch({ type: CHANGE_WAREHOUSE, payload: warehouseId}))
+              .then(res => dispatch({type: CHANGE_ORDER_ID, payload: orderId}))
+              .catch(error => dispatch(geocodeFailure(error)));
+        })
+        .catch(error => console.log(error))
+  }
+}
+
+export function createProduct(p_name, quantity, price, weight, description, imgPath, type) {
+  return dispatch => {
+    dispatch(createProductsBegin());
+    return axios.post(`/api/products/add`, {
+      p_name: p_name,
+      quantity: quantity,
+      price: price,
+      weight: weight,
+      description: description,
+      imgPath: imgPath,
+      type: type
+    })
+        .then(res => dispatch(createProductsSuccess()))
+        .then(res => dispatch(openModal()))
+        .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully added' })))
+        .then(res => dispatch(fetchProductsByOffset(100)))
+        .catch(error => {
+          dispatch(openModal())
+          dispatch(setModalProps( {status: 'FAIL', message: 'Product addition failed' }))
+          dispatch(createProductsFailure())
+        })
+  }
 }
