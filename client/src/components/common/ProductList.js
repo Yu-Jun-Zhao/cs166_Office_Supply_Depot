@@ -41,7 +41,7 @@ class ProductList extends Component {
         <ul>
           {products && products.map(product => {
             return (
-              <div key={product.productID}>
+              <div key={product.product_id}>
                 <ItemHolder product={product} />
               </div>
             );
