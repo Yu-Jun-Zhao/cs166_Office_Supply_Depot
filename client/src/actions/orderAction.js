@@ -2,16 +2,19 @@ import {
   BEGINLOADINGORDERSFROM_DB,
   FINISHLOADINGORDERSFROM_DB,
   LOADALLORDERSFROM_DB,
-  FETCHSHIPPINGADDRESS
+  FETCHSHIPPINGADDRESS,
+  CHANGE_WAREHOUSE, GEOCODE_BEGIN, FETCH_PRODUCTS_FAILURE, GEOCODE_FAIL, CHANGE_ORDER_ID
 } from "../actions/types";
 import axios from "axios";
-import { openModal, setModalProps } from "./modalActions";
+import {GEOCODE_SUCCESS} from "./types";
 import {
-  deleteProductsBegin,
-  deleteProductsFailure,
-  deleteProductsSuccess,
-  fetchProductsByOffset
+  createProductsBegin, createProductsFailure,
+  createProductsSuccess,
+  fetchProductsBegin, fetchProductsByOffset,
+  fetchProductsFailure,
+  fetchProductsSuccess
 } from "./productActions";
+import {openModal, setModalProps} from "./modalActions";
 
 // might not needed in redux
 // Create order and store in db
@@ -84,3 +87,85 @@ export const beginLoadingOrderFromDb = () => {
 export const finishLoadingOrderFromDb = () => {
   return { type: FINISHLOADINGORDERSFROM_DB };
 };
+
+export const changeWarehouse = warehouse => dispatch => {
+  dispatch({
+    type: CHANGE_WAREHOUSE,
+    payload: warehouse
+  })
+};
+
+export const changeOrderId = id => dispatch => {
+  dispatch({
+    type: CHANGE_ORDER_ID,
+    payload: id
+  })
+};
+
+export const geocodeBegin = () => ({
+  type: GEOCODE_BEGIN
+})
+
+export const geocodeSuccess = origin => ({
+  type: GEOCODE_SUCCESS,
+  payload: origin
+});
+
+export const geocodeFailure = error => ({
+  type: GEOCODE_FAIL,
+  payload: { error }
+});
+
+export function geocodeOrigin(origin) {
+  return dispatch => {
+    dispatch(geocodeBegin());
+    return axios.post('/api/order/route', {
+      origin: origin
+    })
+        .then(  res => dispatch(geocodeSuccess(res.data.origin)))
+        .catch(error => dispatch(geocodeFailure(error)));
+  };
+}
+
+export function generateMap(shippingAddressId, warehouseId, orderId) {
+  return dispatch => {
+    axios
+        .get(`/api/order/address/${shippingAddressId}`)
+        .then(res => {
+          dispatch({ type: FETCHSHIPPINGADDRESS, payload: res.data })
+          let fullOrigin = `${res.data.address} ${res.data.city} ${res.data.zip}`
+          axios.post('/api/order/route', {
+            origin: fullOrigin
+          })
+              .then(  res => dispatch(geocodeSuccess(res.data.origin)))
+              .then(res => dispatch({ type: CHANGE_WAREHOUSE, payload: warehouseId}))
+              .then(res => dispatch({type: CHANGE_ORDER_ID, payload: orderId}))
+              .catch(error => dispatch(geocodeFailure(error)));
+        })
+        .catch(error => console.log(error))
+  }
+}
+
+export function createProduct(p_name, quantity, price, weight, description, imgPath, type) {
+  return dispatch => {
+    dispatch(createProductsBegin());
+    return axios.post(`/api/products/add`, {
+      p_name: p_name,
+      quantity: quantity,
+      price: price,
+      weight: weight,
+      description: description,
+      imgPath: imgPath,
+      type: type
+    })
+        .then(res => dispatch(createProductsSuccess()))
+        .then(res => dispatch(openModal()))
+        .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully added' })))
+        .then(res => dispatch(fetchProductsByOffset(100)))
+        .catch(error => {
+          dispatch(openModal())
+          dispatch(setModalProps( {status: 'FAIL', message: 'Product addition failed' }))
+          dispatch(createProductsFailure())
+        })
+  }
+}

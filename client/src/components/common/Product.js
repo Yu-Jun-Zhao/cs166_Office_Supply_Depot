@@ -12,9 +12,6 @@ const Product = ({ product }) => {
             <p>Weight: {weight}</p>
             <p>Quantity: {quantity}</p>
           </div>
-          <div class="card-action">
-            <a href="#">Expand→ </a>
-          </div>
         </div>
       </div>
     </div>

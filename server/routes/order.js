@@ -72,24 +72,17 @@ router.get("/address/:addressId", authenticationRequired, (req, res) => {
 });
 
 router.post("/route", (req, res) => {
-  const {origin, destination} = req.body
+  const {origin} = req.body
   let originLL = {}
   googleMapsClient.geocode({
     address: origin
   }, function (err, response) {
     if (!err) {
       originLL = response.json.results[0]["geometry"]["location"];
+      return res.send({origin: originLL});
     }
-  });
-  googleMapsClient.directions({
-    origin: origin,
-    destination: destination,
-    departure_time: new Date(),
-    traffic_model: 'pessimistic'
-  }, function (err, response) {
-    const x = response.json.routes[0].legs[0]
-    if (!err) {
-      res.send({ distance: x.distance.text, origin: originLL});
+    else {
+      return res.send(err)
     }
   });
 });

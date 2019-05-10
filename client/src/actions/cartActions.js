@@ -1,13 +1,10 @@
 import {
-  ADDITEM_TOCART,
-  DELETEITEM_FROMCART,
   LOADALLITEMSFROM_DB,
   BEGINLOADINGFROM_DB,
   FINISHLOADINGFROM_DB
 } from "./types";
 import axios from "axios";
 import {openModal, setModalProps} from "./modalActions";
-import {createProductsFailure} from "./productActions";
 
 // Add cart item locally and in db
 

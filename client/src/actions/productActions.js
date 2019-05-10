@@ -16,7 +16,7 @@ import {
   UPDATE_PRODUCT_FAILURE,
   UPDATE_PRODUCT_SUCCESS
 } from "./types";
-import { openModal, setModalProps, closeModal } from "./modalActions";
+import { openModal, setModalProps } from "./modalActions";
 
 export const fetchProductsBegin = () => ({
   type: FETCH_PRODUCTS_BEGIN

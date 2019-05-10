@@ -23,6 +23,10 @@ class ItemAdder extends Component {
     this.setState({[e.target.name]: e.target.value})
   }
 
+  setField = (e) => {
+    this.setState({[e.target.name]: e.target.value})
+  }
+
   render() {
     const { p_name, quantity, price, weight, description, imgPath, type } = this.state
     return (

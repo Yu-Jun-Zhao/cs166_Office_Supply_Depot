@@ -26,7 +26,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
-import { fetchProductByType } from "../../actions/productActions";
 
 class CheckOut extends Component {
   constructor(props) {
@@ -80,12 +79,13 @@ class CheckOut extends Component {
   };
 
   render() {
+    /*
     const iconsize = {
       width: "5%",
       height: "5%",
       marginLeft: "6.5%"
     };
-
+*/
     const hder = {
       padding: "0.5% 0% 0% 45%"
     };

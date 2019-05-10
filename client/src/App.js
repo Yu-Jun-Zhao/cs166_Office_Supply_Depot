@@ -49,7 +49,6 @@ class App extends Component {
             <SecureRoute path="/cart" exact component={ShoppingCart} />
             <SecureRoute path="/checkout" exact component={Checkout} />
             <SecureRoute path="/orders" exact component={OrderPage} />
-
             <Footer />
           </Security>
         </Router>

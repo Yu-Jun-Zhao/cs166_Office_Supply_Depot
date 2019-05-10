@@ -40,19 +40,22 @@ class TableItemsList extends Component {
                     <TableCell>Weight</TableCell>
                     <TableCell>Quantity</TableCell>
                     <TableCell>Price</TableCell>
+                    <TableCell></TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {items.products.map(product => (
-                      <TableRow key={product.id} hover>
+                      <TableRow key={product.product_id} hover>
                         <TableCell>{product.product_id}</TableCell>
                         <TableCell>{product.p_name}</TableCell>
                         <TableCell>{product.weight}</TableCell>
                         <TableCell>{product.quantity}</TableCell>
                         <TableCell>{product.price}</TableCell>
-                        <Button color="primary" onClick={() => this.props.deleteProduct(product.product_id)}>
-                          <i className="material-icons">delete</i>
-                        </Button>
+                        <TableCell>
+                          <Button color="primary" onClick={() => this.props.deleteProduct(product.product_id)}>
+                            <i className="material-icons">delete</i>
+                          </Button>
+                        </TableCell>
                       </TableRow>
                   ))}
                 </TableBody>
