@@ -51,12 +51,12 @@ export function fetchProducts(name, offset) {
   };
 }
 
-export function fetchProductsByOffset(offset) {
+export function fetchFirstXProducts(x) {
   return dispatch => {
     dispatch(fetchProductsBegin());
     axios
-      .get(`/api/products/${offset}`)
-      .then(res => dispatch(fetchProductsSuccess(res.data.products, offset)))
+      .get(`/api/products/${x}`)
+      .then(res => dispatch(fetchProductsSuccess(res.data.products, x)))
       .catch(error => dispatch(fetchProductsFailure(error)));
   };
 }
@@ -97,7 +97,7 @@ export function createProduct(p_name, quantity, price, weight, description, imgP
         .then(res => dispatch(createProductsSuccess()))
         .then(res => dispatch(openModal()))
         .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully added' })))
-        .then(res => dispatch(fetchProductsByOffset(100)))
+        .then(res => dispatch(fetchFirstXProducts(100)))
         .catch(error => {
           dispatch(openModal())
           dispatch(setModalProps( {status: 'FAIL', message: 'Product addition failed' }))
@@ -127,7 +127,7 @@ export function deleteProduct(product_id) {
         .then(res => dispatch(deleteProductsSuccess()))
         .then(res => dispatch(openModal()))
         .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully deleted' })))
-        .then(res => dispatch(fetchProductsByOffset(100)))
+        .then(res => dispatch(fetchFirstXProducts(100)))
         .catch(error => {
           dispatch(openModal())
           dispatch(setModalProps( {status: 'FAIL', message: 'Product deletion failed' }))
@@ -163,7 +163,7 @@ export function updateProduct(product_id, p_name, quantity, price, weight, descr
         .then(res => dispatch(updateProductsSuccess()))
         .then(res => dispatch(openModal()))
         .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully updated' })))
-        .then(res => dispatch(fetchProductsByOffset(100)))
+        .then(res => dispatch(fetchFirstXProducts(100)))
         .catch(error => {
           dispatch(openModal())
           dispatch(setModalProps( {status: 'FAIL', message: 'Product update failed' }))

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {fetchProductsByOffset, deleteProduct, updateProduct} from "../../actions/productActions";
+import {fetchFirstXProducts, deleteProduct, updateProduct} from "../../actions/productActions";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -173,5 +173,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { fetchProductsByOffset, deleteProduct, updateProduct }
+  { fetchProductsByOffset: fetchFirstXProducts, deleteProduct, updateProduct }
 )(TableItemsList);
