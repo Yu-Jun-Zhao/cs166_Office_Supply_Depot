@@ -56,7 +56,7 @@ export function fetchProductsByOffset(offset) {
     dispatch(fetchProductsBegin());
     axios
       .get(`/api/products/${offset}`)
-      .then(res => dispatch(fetchProductsSuccess(res.data, offset)))
+      .then(res => dispatch(fetchProductsSuccess(res.data.products, offset)))
       .catch(error => dispatch(fetchProductsFailure(error)));
   };
 }
