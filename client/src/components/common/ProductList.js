@@ -32,7 +32,7 @@ class ProductList extends Component {
       return <div>Error! {error.message}</div>;
     }
 
-    if (loading) {
+    if (loading || !products) {
       return <div>Loading...</div>;
     }
 
