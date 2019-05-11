@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchProductsByOffset, deleteProduct } from "../../actions/productActions";
+import {fetchProductsByOffset, deleteProduct, updateProduct} from "../../actions/productActions";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -9,18 +9,66 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
+import EditableTableCell from "./EditableTableCell";
 
 //import ReactPaginate from "react-paginate";
 // Mainly for Admin
 
+const styles = theme => ({
+  root: {
+    width: '100%',
+    marginTop: theme.spacing.unit * 3,
+    overflowX: 'auto',
+  },
+});
+
 class TableItemsList extends Component {
 
+  state = {
+    rowsChanges: {}
+  };
+
   componentDidMount() {
-    this.props.fetchProductsByOffset(100);
+    this.props.fetchProductsByOffset(5);
+    console.log(this.props.products)
+  }
+
+  componentDidUpdate(prevProps) {
+    if(this.props.products !== prevProps.products)
+    {
+      if (this.props.products) {
+        this.props.products.map((row, index) => {
+          let temp = this.state.rowsChanges
+          temp[index] = row
+          this.setState({
+            rowsChanges: temp
+          })
+        });
+      }
+    }
+  }
+
+  handleSave = (rowIndex) => {
+    const product = this.state.rowsChanges[rowIndex]
+    this.props.updateProduct(product.product_id, product.p_name, product.quantity, product.price, product.weight, product.description, product.imgPath, product.type)
+  }
+
+  handleDelete = (rowIndex) => {
+    const product = this.state.rowsChanges[rowIndex]
+    this.props.deleteProduct(product.product_id, product.p_name, product.quantity, product.price, product.weight, product.description, product.imgPath, product.type)
+  }
+
+  handleTextFieldChange(rowIndex,change) {
+    this.setState(prevState => ({
+      rowsChanges: {
+        ...prevState.rowsChanges,
+        [rowIndex]: {...prevState.rowsChanges[rowIndex],[change.fieldName]: change.fieldValue}
+      }
+    }));
   }
 
   render() {
-    const { loading, items } = this.props.products;
+    const { loading, products } = this.props;
     if (loading) {
       return (
         <div>
@@ -28,51 +76,102 @@ class TableItemsList extends Component {
         </div>
       );
     }
-    if (items.products) {
-      return (
-          <Grid container>
-            <Grid item xs={10}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>ID</TableCell>
-                    <TableCell>Item</TableCell>
-                    <TableCell>Weight</TableCell>
-                    <TableCell>Quantity</TableCell>
-                    <TableCell>Price</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {items.products.map(product => (
-                      <TableRow key={product.product_id} hover>
-                        <TableCell>{product.product_id}</TableCell>
-                        <TableCell>{product.p_name}</TableCell>
-                        <TableCell>{product.weight}</TableCell>
-                        <TableCell>{product.quantity}</TableCell>
-                        <TableCell>{product.price}</TableCell>
-                        <TableCell>
-                          <Button color="primary" onClick={() => this.props.deleteProduct(product.product_id)}>
-                            <i className="material-icons">delete</i>
+    return (
+        <Grid container>
+          <Grid>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Item</TableCell>
+                  <TableCell>Quantity</TableCell>
+                  <TableCell>Weight</TableCell>
+                  <TableCell>Price</TableCell>
+                  <TableCell>Description</TableCell>
+                  <TableCell>Type</TableCell>
+                  <TableCell>Image</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {products && products.map((row, index) => {
+                  return (
+                      <TableRow key={row.product_id}>
+                        <TableCell padding="dense"> {row.product_id}</TableCell>
+                        <EditableTableCell
+                            row={row}
+                            fieldName="p_name"
+                            onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                            style={{width: '190px'}}
+
+                        />
+                        <EditableTableCell
+                            row={row}
+                            fieldName="quantity"
+                            onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                            style={{width: '20px'}}
+                        />
+                        <EditableTableCell
+                            row={row}
+                            fieldName="price"
+                            onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                            style={{width: '20px'}}
+                        />
+                        <EditableTableCell
+                            row={row}
+                            fieldName="weight"
+                            onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                            style={{width: '20px'}}
+                        />
+                        <EditableTableCell
+                            row={row}
+                            fieldName="description"
+                            onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                        />
+                        <EditableTableCell
+                            row={row}
+                            fieldName="type"
+                            onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                        />
+                        <EditableTableCell
+                            row={row}
+                            fieldName="imgPath"
+                            onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                        />
+                        <TableCell padding="none">
+                          <Button
+                              onClick={() => this.handleSave(index, row)}
+                              variant="outlined"
+                          >
+                            Update
+                          </Button>
+                        </TableCell>
+                        <TableCell padding="none">
+                          <Button
+                              onClick={() => this.handleDelete(index, row)}
+                              variant="outlined"
+                          >
+                            DELETE
                           </Button>
                         </TableCell>
                       </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Grid>
+                  );
+                })}
+              </TableBody>
+            </Table>
           </Grid>
-      );
-    }
+        </Grid>
+    );
     return <div>LOADING</div>
   }
 }
 
 const mapStateToProps = state => ({
-  products: state.products
+  products: state.products.items
 });
 
 export default connect(
   mapStateToProps,
-  { fetchProductsByOffset, deleteProduct }
+  { fetchProductsByOffset, deleteProduct, updateProduct }
 )(TableItemsList);
