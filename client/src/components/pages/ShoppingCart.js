@@ -78,14 +78,15 @@ class Shoppingcart extends Component {
   handleButtonChange = id => event => {
     this.props.deleteCartItem(this.props.authentication.cartId, id);
   };
+  
   handleQtyChange = id => event => {
-    const { cart } = this.state;
-    for (var i = 0; i < cart.length; i++) {
-      if (cart[i].id === id) {
-        cart[i].quantity = event.target.value;
+    const tempCart = this.state.cart;
+    for (let i = 0; i < tempCart.length; i++) {
+      if (tempCart[i].id === id) {
+        tempCart[i].quantity = event.target.value;
       }
     }
-    this.setState({ cart });
+    this.setState({ cart: tempCart });
   };
 
   handleCheckOut = event => {
