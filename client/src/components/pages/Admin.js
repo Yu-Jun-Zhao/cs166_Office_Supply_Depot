@@ -4,7 +4,6 @@ import { withAuth } from "@okta/okta-react";
 import { checkAuthentication } from "../../actions/authenticateActions";
 import TableItemsList from "../common/TableItemsList";
 import ItemAdder from "../common/ItemAdder";
-import ItemUpdater from "../common/ItemUpdater";
 import SimpleModal from "../common/SimpleModal"
 
 class Admin extends Component {
@@ -42,9 +41,7 @@ class Admin extends Component {
       return (
           <React.Fragment>
             <SimpleModal/>
-            <h1>Admin</h1>
             <ItemAdder/>
-            <ItemUpdater/>
             <TableItemsList isAuthenticated={this.state.isAuthenticated}/>
           </React.Fragment>
       );
