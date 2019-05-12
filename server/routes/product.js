@@ -2,7 +2,7 @@ import express from "express";
 const router = express.Router();
 import pool from "../db";
 
-router.get("/:name/:offset", (req, res) => {
+router.get("/o1/:name/:offset", (req, res) => {
   const { name, offset } = req.params;
   const count_sql = `SELECT COUNT(*) as total FROM product WHERE p_name LIKE '%${name}%'`;
   const select_sql = `SELECT * FROM product WHERE p_name LIKE '%${name}%' LIMIT 10 OFFSET ${offset}`;
@@ -21,6 +21,38 @@ router.get("/:name/:offset", (req, res) => {
       json = { products: arr };
     });
     connection.query(count_sql, (error, results) => {
+      json["total"] = results[0].total;
+
+      connection.release();
+
+      if (error) return res.send({ error: "problem getting products" });
+
+      return res.json(json);
+    });
+  });
+});
+
+router.get("/all/:offset", (req, res) => {
+  console.log("hit")
+  const { offset } = req.params;
+  const count_sql = `SELECT COUNT(*) as total FROM product`;
+  const select_sql = `SELECT * FROM product LIMIT 10 OFFSET ${offset}`;
+
+  let json = {};
+
+  pool.getConnection((err, connection) => {
+    if (err) res.send({ error: "Cannot fetch product data" });
+
+    connection.query(select_sql, (error, results) => {
+      if (error) res.send(error);
+      let arr = [];
+      for (let i = 0; i < results.length; i++) {
+        arr.push(results[i]);
+      }
+      json = { products: arr };
+    });
+    connection.query(count_sql, (error, results) => {
+      console.log(results)
       json["total"] = results[0].total;
 
       connection.release();
