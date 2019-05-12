@@ -4,35 +4,14 @@ import pool from "../db";
 
 // @router GET "/api/products/:name/:offset"
 // @desc Returns the object by similar name
-// @ret {products: [{item1}, {item2}, ....{itemN}]}
 // @access public
 router.get("/:name/:offset", (req, res) => {
   const { name, offset } = req.params;
-  const count_sql = `SELECT COUNT(*) as total FROM product WHERE p_name LIKE '%${name}%'`;
   const select_sql = `SELECT * FROM product WHERE p_name LIKE '%${name}%' LIMIT 10 OFFSET ${offset}`;
 
-  let json = {};
-
-  pool.getConnection((err, connection) => {
-    if (err) res.send({ error: "Cannot fetch product data" });
-
-    connection.query(select_sql, (error, results) => {
-      if (error) res.send(error);
-      let arr = [];
-      for (let i = 0; i < results.length; i++) {
-        arr.push(results[i]);
-      }
-      json = { products: arr };
-    });
-    connection.query(count_sql, (error, results) => {
-      json["total"] = results[0].total;
-
-      connection.release();
-
-      if (error) return res.send({ error: "problem getting products" });
-
-      return res.json(json);
-    });
+  pool.query(select_sql, (error, results) => {
+    if (error) return res.send({ error: "error fetching product" });
+    return res.send({ products: results, total: results.length });
   });
 });
 
