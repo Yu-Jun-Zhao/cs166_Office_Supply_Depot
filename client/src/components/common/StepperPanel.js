@@ -23,11 +23,6 @@ const path = [
   {
     label: "Item 3",
     imgPath: "http://newtechqatar.com/img/switchgear.jpg"
-  },
-  {
-    label: "Item 4",
-    imgPath:
-      "https://i.pinimg.com/originals/ad/04/c6/ad04c673508523f9cae560aeebb5cc79.jpg"
   }
 ];
 

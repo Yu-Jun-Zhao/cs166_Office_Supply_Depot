@@ -57,10 +57,6 @@ class CheckOut extends Component {
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
-    //console.log(this.state.address);
-    //console.log(this.state.city);
-    //console.log(this.state.adState);
-    //console.log(this.state.zip);
   };
 
   handleSubmit = event => {
@@ -113,7 +109,85 @@ class CheckOut extends Component {
           </div>
           <div>
             <form onSubmit={this.handleSubmit}>
-              <h4 style={subhder}>1. SHIPPING</h4>
+              <h4 style={subhder}>1. REVIEW ORDER</h4>
+              <div style={table}>
+                <Paper>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell
+                          style={{ background: "#f5f5f5", color: "black" }}
+                        >
+                          ID
+                        </TableCell>
+                        <TableCell
+                          style={{ background: "#f5f5f5", color: "black" }}
+                        >
+                          Item
+                        </TableCell>
+
+                        <TableCell
+                          style={{ background: "#f5f5f5", color: "black" }}
+                          align="right"
+                        >
+                          Quantity
+                        </TableCell>
+                        <TableCell
+                          style={{ background: "#f5f5f5", color: "black" }}
+                          align="right"
+                        >
+                          Weight
+                        </TableCell>
+                        <TableCell
+                          style={{ background: "#f5f5f5", color: "black" }}
+                          align="right"
+                        >
+                          Total
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {this.state.cart.map(item => {
+                        const individualTotal = item.price * item.quantity;
+                        subtotal += individualTotal;
+
+                        return (
+                          <TableRow key={item.id}>
+                            <TableCell>{item.id}</TableCell>
+                            <TableCell>{item.name}</TableCell>
+                            <TableCell align="right">{item.quantity}</TableCell>
+                            <TableCell align="right">
+                              {item.weight * item.quantity} lbs
+                            </TableCell>
+                            <TableCell align="right">
+                              ${individualTotal}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                      {/* Delete <br/><br/><br/><br/> after mapping for item -->*/}{" "}
+                      <br />
+                      <br />
+                      <TableRow>
+                        <TableCell rowSpan={4} />
+                        <TableCell colSpan={2}>Subtotal: ${subtotal}</TableCell>
+                        <TableCell align="left" />
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Shipping fee: ${shippingFee}</TableCell>
+                        <TableCell align="left" />
+                      </TableRow>
+                      <TableRow>
+                        <TableCell colSpan={2}>
+                          Total: ${subtotal + shippingFee}
+                        </TableCell>
+                        <TableCell align="left" />
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </Paper>
+              </div>
+              <h4 style={subhder}>2. SHIPPING</h4>
 
               <div
                 style={{
@@ -182,7 +256,7 @@ class CheckOut extends Component {
                 </Paper>
               </div>
 
-              <h4 style={subhder}>2. DELIVERY METHOD</h4>
+              <h4 style={subhder}>3. DELIVERY METHOD</h4>
               <div
                 style={{
                   margin: "0% 10% 2% 10%"
@@ -200,17 +274,17 @@ class CheckOut extends Component {
                     &nbsp;&nbsp;&nbsp;*Note: Depending on you order's total
                     weights and prices, our office will provide different
                     delivery method: <br /> <br />
-                    1) If Grand Total is over $100 and Total weight is over 14
-                    lbs : Free services by truck (2 business days) or $25
-                    service fees by truck (same day) <br />
-                    2) If Grand Total is over $100 and Total weight is less than
-                    15 lbs : Free services by drone (same day during business
-                    hours) <br />
-                    3) If Grand Total is less than $100 and Total weight is over
-                    14 lbs: $20 services fee by truck (2 business days) <br />
-                    4) If Grand Total is less than $100 and Total weight is less
-                    than 15 lbs: $20 services by drone (same day during business
-                    hours) <br />
+                    1) Orders that are less than 15 lbs are delivered by a
+                    drone. Order that are 15 lbs or more are delivered by a
+                    truck.
+                    <br />
+                    2) If Grand Total is $100 or more, we offer free delivery
+                    service. If Grand Total is less than $100, there will be a
+                    surcharge of $20.
+                    <br />
+                    3) Drone delivery: Same day. Truck delivery: 2 days or 1 day
+                    (with a surchage of 25).
+                    <br />
                   </p>
                   {/*This is for #1 from above*/}
                   <div style={{ paddingLeft: "6.5%", paddingBottom: "3%" }}>
@@ -315,7 +389,7 @@ class CheckOut extends Component {
                   </div>
                 </Paper>
               </div>
-              <h4 style={subhder}>3. PAYMENT</h4>
+              <h4 style={subhder}>4. PAYMENT</h4>
               <div
                 style={{
                   margin: "0% 10% 2% 10%"
@@ -371,85 +445,6 @@ class CheckOut extends Component {
                     required
                   />{" "}
                   <br />
-                </Paper>
-              </div>
-
-              <h4 style={subhder}>4. REVIEW ORDER</h4>
-              <div style={table}>
-                <Paper>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell
-                          style={{ background: "#f5f5f5", color: "black" }}
-                        >
-                          ID
-                        </TableCell>
-                        <TableCell
-                          style={{ background: "#f5f5f5", color: "black" }}
-                        >
-                          Item
-                        </TableCell>
-
-                        <TableCell
-                          style={{ background: "#f5f5f5", color: "black" }}
-                          align="right"
-                        >
-                          Quantity
-                        </TableCell>
-                        <TableCell
-                          style={{ background: "#f5f5f5", color: "black" }}
-                          align="right"
-                        >
-                          Weight
-                        </TableCell>
-                        <TableCell
-                          style={{ background: "#f5f5f5", color: "black" }}
-                          align="right"
-                        >
-                          Total
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {this.state.cart.map(item => {
-                        const individualTotal = item.price * item.quantity;
-                        subtotal += individualTotal;
-
-                        return (
-                          <TableRow key={item.id}>
-                            <TableCell>{item.id}</TableCell>
-                            <TableCell>{item.name}</TableCell>
-                            <TableCell align="right">{item.quantity}</TableCell>
-                            <TableCell align="right">
-                              {item.weight * item.quantity} lbs
-                            </TableCell>
-                            <TableCell align="right">
-                              ${individualTotal}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                      {/* Delete <br/><br/><br/><br/> after mapping for item -->*/}{" "}
-                      <br />
-                      <br />
-                      <TableRow>
-                        <TableCell rowSpan={4} />
-                        <TableCell colSpan={2}>Subtotal: ${subtotal}</TableCell>
-                        <TableCell align="left" />
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Shipping fee: ${shippingFee}</TableCell>
-                        <TableCell align="left" />
-                      </TableRow>
-                      <TableRow>
-                        <TableCell colSpan={2}>
-                          Total: ${subtotal + shippingFee}
-                        </TableCell>
-                        <TableCell align="left" />
-                      </TableRow>
-                    </TableBody>
-                  </Table>
                 </Paper>
               </div>
 
