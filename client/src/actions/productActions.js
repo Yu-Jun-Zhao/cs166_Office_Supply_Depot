@@ -68,7 +68,11 @@ export const fetchProductByType = type => dispatch => {
   dispatch(fetchProductsBegin());
   axios
     .get(`/api/products/all/type/${type}`)
-    .then(res => dispatch(fetchProductsSuccess(res.data, res.data.length)))
+    .then(res =>
+      dispatch(
+        fetchProductsSuccess(res.data.products, res.data.products.length)
+      )
+    )
     .catch(error => dispatch(fetchProductsFailure(error)));
 };
 

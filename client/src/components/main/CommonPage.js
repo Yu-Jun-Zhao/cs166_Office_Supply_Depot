@@ -180,7 +180,7 @@ class CommonPage extends Component {
 
     return (
       <div className={classes.root}>
-        <SimpleModal/>
+        <SimpleModal />
         <Drawer
           open={false} // TODO: for now it will stay false
           variant="persistent"
@@ -269,19 +269,20 @@ class CommonPage extends Component {
 
         <main className={classes.content}>
           <Grid container spacing={24}>
-            {products.items && products.items.map((item, index) => (
-              <Grid item xs={3} key={index}>
-                <ItemCard
-                  id={item.product_id}
-                  title={item.p_name}
-                  price={item.price}
-                  weight={item.weight}
-                  quantity={item.quantity}
-                  image={item.imgPath}
-                  description={item.description}
-                />
-              </Grid>
-            ))}
+            {products.items !== undefined &&
+              products.items.map((item, index) => (
+                <Grid item xs={3} key={index}>
+                  <ItemCard
+                    id={item.product_id}
+                    title={item.p_name}
+                    price={item.price}
+                    weight={item.weight}
+                    quantity={item.quantity}
+                    image={item.imgPath}
+                    description={item.description}
+                  />
+                </Grid>
+              ))}
           </Grid>
           <div className="paginator">
             <ReactPaginate
