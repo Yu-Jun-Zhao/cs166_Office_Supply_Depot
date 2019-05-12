@@ -6,7 +6,7 @@ import pool from "../db";
 // @desc Returns the object by similar name
 // @access public
 router.get("/o1/:name/:offset", (req, res) => {
-    const { offset } = req.params;
+    const { name, offset } = req.params;
     const count_sql = `SELECT COUNT(*) FROM product WHERE p_name LIKE '%${name}%' LIMIT 10 OFFSET ${offset}`;
     const select_sql = `SELECT * FROM product WHERE p_name LIKE '%${name}%' LIMIT 10 OFFSET ${offset}`;
 
@@ -66,19 +66,6 @@ router.get("/all/:offset", (req, res) => {
   });
 });
 
-// @router GET "/api/products/:offset"
-// @desc Returns object that contains an array of objects
-// @ret {products: [{item1}, {item2}, ....{itemN}]}
-// @access public
-router.get("/:offset", (req, res) => {
-  const { offset } = req.params;
-  const select_sql = `SELECT * FROM product LIMIT ${offset}`;
-
-  pool.query(select_sql, (error, results) => {
-    if (error) res.send(error);
-    res.send({ products: results });
-  });
-});
 
 // @router GET "/api/products/all/type/:type"
 // @desc Return all items of the type specified
