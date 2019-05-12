@@ -13,6 +13,7 @@ const EditableTableCell = ({ row, fieldName, onCellValueChange, style }) => {
     return (
         <TableCell padding="dense">
             <TextField
+                margin="dense"
                 onChange={handleTextFieldChange}
                 id={fieldName}
                 defaultValue={row[fieldName]}
