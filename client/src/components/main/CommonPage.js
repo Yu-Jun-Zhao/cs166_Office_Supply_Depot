@@ -1,41 +1,22 @@
 import React, { Component } from "react";
-import {
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Fab,
-  Divider,
-  ListItemSecondaryAction,
-  Switch,
-  ListItemIcon,
-  Collapse,
-  TextField,
-  Grid
-} from "@material-ui/core/";
+import { Grid } from "@material-ui/core/";
 
 import ReactPaginate from "react-paginate";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
 import "../../index.css";
 import { withStyles } from "@material-ui/core/styles";
 
 import { connect } from "react-redux";
 
-import { fetchProductByType } from "../../actions/productActions";
+import {
+  changeOffset,
+  changePage,
+  fetchProductByType
+} from "../../actions/productActions";
 
 import ItemCard from "../common/ItemCard";
 import SimpleModal from "../common/SimpleModal";
 
 const drawerWidth = "230px";
-
-// for testing
-const arrayLoop = [...new Array(16)];
 
 const styles = theme => ({
   root: {
@@ -100,83 +81,26 @@ class CommonPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      drawerOpen: true,
-      selection: props.selection,
-      color: props.color,
-      label: props.label,
-      currentPage: 1,
-      //totalPage: 0,
-      //loading: false,
-      //data: [],
-
-      // not supported
-      filterExpand: ["price"], //expand by default
-      filterApply: [],
-      priceRange: {
-        min: 0,
-        max: 99999
-      }
+      selection: props.selection
     };
   }
 
   componentDidMount() {
-    this.props.fetchProductByType(this.state.selection);
+    this.props.fetchProductByType(this.state.selection, 0);
   }
 
-  //not applicable
-  handleDrawerOpen = () => {
-    this.setState({ drawerOpen: true });
-  };
-
-  //not applicable
-  handleDrawerClose = () => {
-    this.setState({ drawerOpen: false });
-  };
-
-  //not applicable
-  // A function that takes in an array (filterExpand or filterApply) and a value and returns a function
-  // To keep track of what filter is applied
-  handleArrayChange = (array, value) => () => {
-    const index = array.indexOf(value);
-
-    // Not in array
-    if (index === -1) {
-      array.push(value);
-    } else {
-      array.splice(index, 1);
-    }
-
-    this.setState({
-      array
-    });
-  };
-
-  // not applicable
-  handlePriceChange = name => event => {
-    const value = event.target.value;
-    this.setState(prevState => ({
-      priceRange: {
-        ...prevState.priceRange,
-        [name]: value
-      }
-    }));
+  handlePageClick = data => {
+    let selected = data.selected;
+    let offset = Math.ceil(selected * 10);
+    this.props.changeOffset(offset);
+    this.props.changePage(selected);
+    this.props.fetchProductByType(this.state.selection, offset);
   };
 
   render() {
-    const {
-      drawerOpen,
-      color,
-      label,
-      filterExpand,
-      filterApply
-      //totalPage,
-      //loading,
-      //data
-    } = this.state;
-    const { classes, products } = this.props;
-    const rootDrawer = false // drawerOpen === false
-      ? classes.drawerRootBig
-      : classes.drawerRootSmall;
+    const { classes, products, pageCount } = this.props;
+
+    if (!products) return <div> LOADING... </div>;
 
     return (
       <div className={classes.root}>
@@ -269,8 +193,8 @@ class CommonPage extends Component {
 
         <main className={classes.content}>
           <Grid container spacing={24}>
-            {products.items !== undefined &&
-              products.items.map((item, index) => (
+            {products &&
+              products.map((item, index) => (
                 <Grid item xs={3} key={index}>
                   <ItemCard
                     id={item.product_id}
@@ -284,13 +208,15 @@ class CommonPage extends Component {
                 </Grid>
               ))}
           </Grid>
+          <SimpleModal />
+
           <div className="paginator">
             <ReactPaginate
               previousLabel={"previous"}
               nextLabel={"next"}
               breakLabel={"..."}
               breakClassName={"break-me"}
-              pageCount={products.pageCount}
+              pageCount={pageCount}
               marginPagesDisplayed={2}
               pageRangeDisplayed={5}
               initialPage={0}
@@ -309,10 +235,13 @@ class CommonPage extends Component {
 const CommonPageStyled = withStyles(styles)(CommonPage);
 
 const mapStateToProps = state => ({
-  products: state.products
+  products: state.products.items,
+  page: state.products.page,
+  pageCount: state.products.pageCount,
+  offset: state.products.offset
 });
 
 export default connect(
   mapStateToProps,
-  { fetchProductByType }
+  { fetchProductByType, changeOffset, changePage }
 )(CommonPageStyled);

@@ -36,6 +36,7 @@ hr {
 .paginator li {
   display: inline-block;
   padding: 5px 5px;
+  font-family: Roboto;
   font-weight: bold;
   color: darkslateblue;
 }
@@ -52,6 +53,5 @@ hr {
 
 .paginator li.active {
   border: 2px solid mediumblue;
-  border-radius: 50px 25px;
-  background-color: azure;
+  background-color: white;
 }

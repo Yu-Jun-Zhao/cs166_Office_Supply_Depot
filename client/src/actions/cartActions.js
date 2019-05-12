@@ -14,6 +14,8 @@ export const addCartItem = (userCartId, product_id, quantity) => dispatch => {
     productId: product_id,
     quantity
   };
+
+  console.log(itemData)
   axios.post("/api/cart/add", itemData)
       .then(res => dispatch(openModal()))
       .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully added to cart' })))
@@ -30,7 +32,6 @@ export const addAllItems = (userCartId, cart) => dispatch => {
       productId: cart[i].id,
       quantity: cart[i].quantity
     };
-    console.log(i);
     axios.post("/api/cart/add", itemData).catch(err => console.log(err));
   }
 };
@@ -42,7 +43,6 @@ export const deleteCartItem = (userCartId, product_id) => dispatch => {
     cartId: userCartId,
     productId: product_id
   };
-  console.log(itemData);
   axios
     .post("/api/cart/remove", itemData)
     .then(res => dispatch(getAllCartItemsFromDB(userCartId)))

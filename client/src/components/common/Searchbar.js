@@ -26,7 +26,13 @@ class Searchbar extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
-    this.props.history.push(`/result?q=${this.state.searchQuery}`)
+    const { searchQuery } = this.state
+    if (searchQuery.match(/^[a-z0-9]+$/i)) {
+      this.props.history.push(`/result?q=${this.state.searchQuery}`)
+    }
+    else {
+      alert("Alphanumeric characters only")
+    }
   }
 
   handleChange = e => {

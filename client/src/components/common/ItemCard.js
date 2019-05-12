@@ -52,7 +52,7 @@ class ItemCard extends Component {
           <CardMedia
             className={classes.media}
             image={image}
-            title="testing image"
+            title={title}
           />
           <CardContent>
             <Typography component="p">{id}</Typography>

@@ -8,6 +8,7 @@ import {
 import { withRouter } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import ItemHolder from "./Product";
+import "../../index.css";
 
 class ProductList extends Component {
   componentDidMount() {
@@ -32,7 +33,7 @@ class ProductList extends Component {
       return <div>Error! {error.message}</div>;
     }
 
-    if (loading) {
+    if (loading || !products) {
       return <div>Loading...</div>;
     }
 
@@ -41,15 +42,16 @@ class ProductList extends Component {
         <ul>
           {products && products.map(product => {
             return (
-              <div key={product.productID}>
+              <div key={product.product_id}>
                 <ItemHolder product={product} />
               </div>
             );
           })}
         </ul>
+        <div className="paginator">
         <ReactPaginate
-          previousLabel={"previous"}
-          nextLabel={"next"}
+          previousLabel={"<"}
+          nextLabel={">"}
           breakLabel={"..."}
           breakClassName={"break-me"}
           pageCount={pageCount}
@@ -61,6 +63,7 @@ class ProductList extends Component {
           subContainerClassName={"pages pagination"}
           activeClassName={"active"}
         />
+        </div>
       </React.Fragment>
     );
   }

@@ -39,7 +39,7 @@ export default function productReducer(state = initialState, action) {
         ...state,
         loading: false,
         items: action.payload.products,
-        pageCount: Math.ceil(action.payload.total / 16)
+        pageCount: Math.ceil(action.payload.total / 10)
       };
 
     case FETCH_PRODUCTS_FAILURE:

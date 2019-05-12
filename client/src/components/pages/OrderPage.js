@@ -20,8 +20,19 @@ import {
 class OrderPage extends Component {
 
   componentDidMount() {
-    this.props.getAllOrdersFromDB(this.props.authentication.userInfo.sub);
+    if (this.props.authentication.cartId !== null) {
+      console.log(this.props.authentication.cartId)
+      this.props.getAllOrdersFromDB(this.props.authentication.userInfo.sub);
+    }
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if(this.props.authentication.cartId !== prevProps.authentication.cartId)
+    {
+      this.props.getAllOrdersFromDB(this.props.authentication.userInfo.sub);
+    }
+  }
+
 
   handleButtonChange = (shippingAddressId, fromAddressId, orderId) => event => {
     this.props.generateMap(shippingAddressId, fromAddressId, orderId)

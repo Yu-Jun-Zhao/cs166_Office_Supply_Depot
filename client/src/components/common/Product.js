@@ -1,13 +1,14 @@
 import React from "react";
 
 const Product = ({ product }) => {
-  const { p_name, price, weight, quantity } = product;
+  const { p_name, product_id, price, weight, quantity } = product;
   return (
-    <div class="row">
-      <div class="col s12 m5">
-        <div class="card">
-          <div class="card-content">
-            <span class="card-title">{p_name}</span>
+    <div>
+      <div>
+        <div>
+          <div>
+            <span >{p_name}</span>
+            <p>ID: {product_id}</p>
             <p>Price: {price}</p>
             <p>Weight: {weight}</p>
             <p>Quantity: {quantity}</p>

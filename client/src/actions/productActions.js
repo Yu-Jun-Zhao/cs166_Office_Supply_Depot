@@ -46,7 +46,7 @@ export function fetchProducts(name, offset) {
   return dispatch => {
     dispatch(fetchProductsBegin());
     return axios
-      .get(`/api/products/${name}/${offset}`)
+      .get(`/api/products/o1/${name}/${offset}`)
       .then(res =>
         dispatch(fetchProductsSuccess(res.data.products, res.data.total))
       )
@@ -54,24 +54,24 @@ export function fetchProducts(name, offset) {
   };
 }
 
-export function fetchProductsByOffset(offset) {
+export function fetchFirstXProducts(x) {
   return dispatch => {
     dispatch(fetchProductsBegin());
     axios
-      .get(`/api/products/${offset}`)
-      .then(res => dispatch(fetchProductsSuccess(res.data, offset)))
+      .get(`/api/products/all/${x}`)
+      .then(res =>
+        dispatch(fetchProductsSuccess(res.data.products, res.data.total))
+      )
       .catch(error => dispatch(fetchProductsFailure(error)));
   };
 }
 
-export const fetchProductByType = type => dispatch => {
+export const fetchProductByType = (type, offset) => dispatch => {
   dispatch(fetchProductsBegin());
   axios
-    .get(`/api/products/all/type/${type}`)
+    .get(`/api/products/all/type/${type}/${offset}`)
     .then(res =>
-      dispatch(
-        fetchProductsSuccess(res.data.products, res.data.products.length)
-      )
+      dispatch(fetchProductsSuccess(res.data.products, res.data.total))
     )
     .catch(error => dispatch(fetchProductsFailure(error)));
 };
@@ -119,7 +119,7 @@ export function createProduct(
           })
         )
       )
-      .then(res => dispatch(fetchProductsByOffset(100)))
+      .then(res => dispatch(fetchFirstXProducts(0)))
       .catch(error => {
         dispatch(openModal());
         dispatch(
@@ -142,7 +142,7 @@ export const deleteProductsFailure = () => ({
   type: DELETE_PRODUCT_FAILURE
 });
 
-export function deleteProduct(product_id) {
+export function deleteProduct(product_id, offset) {
   return dispatch => {
     dispatch(deleteProductsBegin());
     return axios
@@ -159,7 +159,7 @@ export function deleteProduct(product_id) {
           })
         )
       )
-      .then(res => dispatch(fetchProductsByOffset(100)))
+      .then(res => dispatch(fetchFirstXProducts(offset)))
       .catch(error => {
         dispatch(openModal());
         dispatch(
@@ -190,7 +190,8 @@ export function updateProduct(
   weight,
   description,
   imgPath,
-  type
+  type,
+  offset
 ) {
   return dispatch => {
     dispatch(updateProductsBegin());
@@ -215,7 +216,7 @@ export function updateProduct(
           })
         )
       )
-      .then(res => dispatch(fetchProductsByOffset(100)))
+      .then(res => dispatch(fetchFirstXProducts(offset)))
       .catch(error => {
         dispatch(openModal());
         dispatch(
