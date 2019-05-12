@@ -75,6 +75,16 @@ class Shoppingcart extends Component {
     this.props.getAllCartItemsFromDB(this.props.authentication.cartId);
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if(this.props.authentication.cartId !== prevProps.authentication.cartId)
+    {
+      this.props.getAllCartItemsFromDB(this.props.authentication.cartId);
+      this.setState({
+        cart: this.props.cart
+      })
+    }
+  }
+
   handleButtonChange = id => event => {
     this.props.deleteCartItem(this.props.authentication.cartId, id);
   };
