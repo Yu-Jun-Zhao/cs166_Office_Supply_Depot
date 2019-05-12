@@ -45,7 +45,7 @@ export const changePage = page => ({
 export function fetchProducts(name, offset) {
   return dispatch => {
     dispatch(fetchProductsBegin());
-    return axios.get(`/api/products/${name}/${offset}`)
+    return axios.get(`/api/products/o1/${name}/${offset}`)
         .then(res => dispatch(fetchProductsSuccess(res.data.products, res.data.total)))
         .catch(error => dispatch(fetchProductsFailure(error)));
   };
@@ -53,10 +53,11 @@ export function fetchProducts(name, offset) {
 
 export function fetchFirstXProducts(x) {
   return dispatch => {
+    console.log(x)
     dispatch(fetchProductsBegin());
     axios
-      .get(`/api/products/${x}`)
-      .then(res => dispatch(fetchProductsSuccess(res.data.products, x)))
+      .get(`/api/products/all/${x}`)
+      .then(res => dispatch(fetchProductsSuccess(res.data.products, res.data.total)))
       .catch(error => dispatch(fetchProductsFailure(error)));
   };
 }
@@ -97,7 +98,7 @@ export function createProduct(p_name, quantity, price, weight, description, imgP
         .then(res => dispatch(createProductsSuccess()))
         .then(res => dispatch(openModal()))
         .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully added' })))
-        .then(res => dispatch(fetchFirstXProducts(100)))
+        .then(res => dispatch(fetchFirstXProducts(0)))
         .catch(error => {
           dispatch(openModal())
           dispatch(setModalProps( {status: 'FAIL', message: 'Product addition failed' }))
@@ -118,7 +119,7 @@ export const deleteProductsFailure = () => ({
   type: DELETE_PRODUCT_FAILURE
 });
 
-export function deleteProduct(product_id) {
+export function deleteProduct(product_id, offset) {
   return dispatch => {
     dispatch(deleteProductsBegin());
     return axios.post(`/api/products/delete`, {
@@ -127,7 +128,7 @@ export function deleteProduct(product_id) {
         .then(res => dispatch(deleteProductsSuccess()))
         .then(res => dispatch(openModal()))
         .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully deleted' })))
-        .then(res => dispatch(fetchFirstXProducts(100)))
+        .then(res => dispatch(fetchFirstXProducts(offset)))
         .catch(error => {
           dispatch(openModal())
           dispatch(setModalProps( {status: 'FAIL', message: 'Product deletion failed' }))
@@ -147,7 +148,7 @@ export const updateProductsFailure = () => ({
   type: UPDATE_PRODUCT_FAILURE
 });
 
-export function updateProduct(product_id, p_name, quantity, price, weight, description, imgPath, type) {
+export function updateProduct(product_id, p_name, quantity, price, weight, description, imgPath, type, offset) {
   return dispatch => {
     dispatch(updateProductsBegin());
     return axios.post(`/api/products/update`, {
@@ -163,7 +164,7 @@ export function updateProduct(product_id, p_name, quantity, price, weight, descr
         .then(res => dispatch(updateProductsSuccess()))
         .then(res => dispatch(openModal()))
         .then(res => dispatch(setModalProps({ status: 'SUCCESS', message: 'Product successfully updated' })))
-        .then(res => dispatch(fetchFirstXProducts(100)))
+        .then(res => dispatch(fetchFirstXProducts(offset)))
         .catch(error => {
           dispatch(openModal())
           dispatch(setModalProps( {status: 'FAIL', message: 'Product update failed' }))

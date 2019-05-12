@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {fetchFirstXProducts, deleteProduct, updateProduct} from "../../actions/productActions";
+import {
+  deleteProduct,
+  updateProduct,
+  fetchProducts,
+  fetchFirstXProducts,
+  changeOffset, changePage
+} from "../../actions/productActions";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -10,8 +16,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import EditableTableCell from "./EditableTableCell";
-
-//import ReactPaginate from "react-paginate";
+import ReactPaginate from "react-paginate";
 // Mainly for Admin
 
 const styles = theme => ({
@@ -29,7 +34,7 @@ class TableItemsList extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchProductsByOffset(5);
+    this.props.fetchFirstXProducts(0);
     console.log(this.props.products)
   }
 
@@ -50,12 +55,12 @@ class TableItemsList extends Component {
 
   handleSave = (rowIndex) => {
     const product = this.state.rowsChanges[rowIndex]
-    this.props.updateProduct(product.product_id, product.p_name, product.quantity, product.price, product.weight, product.description, product.imgPath, product.type)
+    this.props.updateProduct(product.product_id, product.p_name, product.quantity, product.price, product.weight, product.description, product.imgPath, product.type, this.props.offset)
   }
 
   handleDelete = (rowIndex) => {
     const product = this.state.rowsChanges[rowIndex]
-    this.props.deleteProduct(product.product_id, product.p_name, product.quantity, product.price, product.weight, product.description, product.imgPath, product.type)
+    this.props.deleteProduct(product.product_id, this.props.offset)
   }
 
   handleTextFieldChange(rowIndex,change) {
@@ -67,8 +72,16 @@ class TableItemsList extends Component {
     }));
   }
 
+  handlePageClick = data => {
+    let selected = data.selected;
+    let offset = Math.ceil(selected * 10);
+    this.props.changeOffset(offset);
+    this.props.changePage(selected);
+    this.props.fetchFirstXProducts(offset);
+  };
+
   render() {
-    const { loading, products } = this.props;
+    const { loading, products, pageCount, page } = this.props;
     if (loading) {
       return (
         <div>
@@ -161,6 +174,20 @@ class TableItemsList extends Component {
               </TableBody>
             </Table>
           </Grid>
+          <ReactPaginate
+              previousLabel={"previous"}
+              nextLabel={"next"}
+              breakLabel={"..."}
+              breakClassName={"break-me"}
+              pageCount={pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={10}
+              forcePage={page}
+              onPageChange={this.handlePageClick}
+              containerClassName={"pagination"}
+              subContainerClassName={"pages pagination"}
+              activeClassName={"active"}
+          />
         </Grid>
     );
     return <div>LOADING</div>
@@ -168,10 +195,13 @@ class TableItemsList extends Component {
 }
 
 const mapStateToProps = state => ({
-  products: state.products.items
+  products: state.products.items,
+  page: state.products.page,
+  pageCount: state.products.pageCount,
+  offset: state.products.offset
 });
 
 export default connect(
   mapStateToProps,
-  { fetchProductsByOffset: fetchFirstXProducts, deleteProduct, updateProduct }
+  { fetchFirstXProducts, deleteProduct, updateProduct, changeOffset, changePage }
 )(TableItemsList);
