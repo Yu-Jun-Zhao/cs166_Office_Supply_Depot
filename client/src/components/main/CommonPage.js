@@ -105,91 +105,6 @@ class CommonPage extends Component {
     return (
       <div className={classes.root}>
         <SimpleModal />
-        <Drawer
-          open={false} // TODO: for now it will stay false
-          variant="persistent"
-          className={classes.drawer}
-          classes={{ paper: classes.drawerPaper, root: rootDrawer }}
-          elevation={6}
-          anchor="left"
-        >
-          <div className={classes.drawerArrowButton}>
-            <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </div>
-          <Divider />
-          <List classes={{ root: classes.listRoot }}>
-            <ListItem
-              button
-              onClick={this.handleArrayChange(filterExpand, "price")}
-            >
-              <ListItemIcon style={{ marginRight: "0px" }}>
-                <AttachMoneyIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary="Price Range"
-                classes={{ root: classes.listItemTextRoot }}
-              />
-              <ListItemIcon style={{ marginLeft: "15%" }}>
-                {filterExpand.indexOf("price") !== -1 ? (
-                  <ExpandLessIcon />
-                ) : (
-                  <ExpandMoreIcon />
-                )}
-              </ListItemIcon>
-            </ListItem>
-            <Collapse
-              in={filterExpand.indexOf("price") !== -1}
-              timeout="auto"
-              unmountOnExit
-            >
-              <List disablePadding>
-                <ListItem className={classes.listItemRoot}>
-                  <TextField
-                    type="number"
-                    margin="normal"
-                    className={classes.textField}
-                    placeholder="$"
-                    disabled={filterApply.indexOf("price") === -1}
-                    onChange={this.handlePriceChange("min")}
-                  />
-                  <ListItemText
-                    primary="to"
-                    classes={{ root: classes.listItemTextRoot }}
-                  />
-                  <TextField
-                    type="number"
-                    margin="normal"
-                    className={classes.textField}
-                    placeholder="$"
-                    disabled={filterApply.indexOf("price") === -1}
-                    onChange={this.handlePriceChange("max")}
-                  />
-                  <ListItemSecondaryAction>
-                    <Switch
-                      onChange={this.handleArrayChange(filterApply, "price")}
-                      checked={filterApply.indexOf("price") !== -1}
-                    />
-                  </ListItemSecondaryAction>
-                </ListItem>
-              </List>
-            </Collapse>
-          </List>
-        </Drawer>
-
-        {/*(drawerOpen) True for now but Function not supported*/}
-        {false && (
-          <Fab
-            classes={{ root: classes.fab }}
-            color="secondary"
-            size="small"
-            aria-label="Filter Menu"
-            onClick={this.handleDrawerOpen}
-          >
-            <MenuIcon />
-          </Fab>
-        )}
 
         <main className={classes.content}>
           <Grid container spacing={24}>
@@ -208,8 +123,6 @@ class CommonPage extends Component {
                 </Grid>
               ))}
           </Grid>
-          <SimpleModal />
-
           <div className="paginator">
             <ReactPaginate
               previousLabel={"previous"}
