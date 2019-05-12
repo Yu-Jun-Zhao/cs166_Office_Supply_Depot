@@ -99,8 +99,8 @@ class TableItemsList extends Component {
                   <TableCell>ID</TableCell>
                   <TableCell>Item</TableCell>
                   <TableCell>Quantity</TableCell>
-                  <TableCell>Weight</TableCell>
                   <TableCell>Price</TableCell>
+                  <TableCell>Weight</TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Type</TableCell>
                   <TableCell>Image</TableCell>
@@ -130,13 +130,13 @@ class TableItemsList extends Component {
                             row={row}
                             fieldName="price"
                             onCellValueChange={this.handleTextFieldChange.bind(this,index)}
-                            style={{width: '20px'}}
+                            style={{width: '23px'}}
                         />
                         <EditableTableCell
                             row={row}
                             fieldName="weight"
                             onCellValueChange={this.handleTextFieldChange.bind(this,index)}
-                            style={{width: '20px'}}
+                            style={{width: '23px'}}
                         />
                         <EditableTableCell
                             row={row}
