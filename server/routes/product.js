@@ -219,21 +219,21 @@ router.put("/update", (req, res) => {
 // @router DELETE "/delete/:product_id"
 // @desc Delete a product with the product_id
 // @access private
-router.delete("/delete/:product_id", (req, res) => {
-  const { product_id } = req.params;
-  if (product_id == null) {
-    return res.status(400).send({
-      error: "Bad Request"
+router.post("/delete", (req, res) => {
+    const { product_id } = req.body;
+    if (product_id == null) {
+        return res.status(400).send({
+            error: "Bad Request"
+        });
+    }
+    const sql = `DELETE FROM product WHERE product_id = ${product_id}`;
+    pool.query(sql, (error, results) => {
+        if (error)
+            return res.status(400).send({
+                error: "Bad Request"
+            });
+        res.sendStatus(200);
     });
-  }
-  const sql = `DELETE FROM product WHERE product_id = ${product_id}`;
-  pool.query(sql, (error, results) => {
-    if (error)
-      return res.status(400).send({
-        error: "Bad Request"
-      });
-    res.sendStatus(200);
-  });
 });
 
 export default router;
