@@ -7,7 +7,7 @@ import pool from "../db";
 // @access public
 router.get("/o1/:name/:offset", (req, res) => {
     const { name, offset } = req.params;
-    const count_sql = `SELECT COUNT(*) FROM product WHERE p_name LIKE '%${name}%' LIMIT 10 OFFSET ${offset}`;
+    const count_sql = `SELECT COUNT(*) as total FROM product WHERE p_name LIKE '%${name}%'`;
     const select_sql = `SELECT * FROM product WHERE p_name LIKE '%${name}%' LIMIT 10 OFFSET ${offset}`;
 
     let json = {};
@@ -33,7 +33,6 @@ router.get("/o1/:name/:offset", (req, res) => {
             return res.json(json);
         });
     });
-
 });
 
 router.get("/all/:offset", (req, res) => {
