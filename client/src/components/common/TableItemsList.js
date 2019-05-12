@@ -103,6 +103,7 @@ class TableItemsList extends Component {
                   <TableCell>Description</TableCell>
                   <TableCell>Type</TableCell>
                   <TableCell>Image</TableCell>
+                  <TableCell>Warehouse</TableCell>
                   <TableCell></TableCell>
                   <TableCell></TableCell>
                 </TableRow>
@@ -151,6 +152,12 @@ class TableItemsList extends Component {
                             row={row}
                             fieldName="imgPath"
                             onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                        />
+                        <EditableTableCell
+                            row={row}
+                            fieldName="warehouse"
+                            onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                            style={{width: '23px'}}
                         />
                         <TableCell padding="none">
                           <Button

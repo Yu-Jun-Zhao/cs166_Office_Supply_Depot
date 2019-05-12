@@ -145,40 +145,30 @@ router.get("/1/id/:id", (req, res) => {
 // @desc    Add new item to products list
 // @access private
 router.post("/add", (req, res) => {
-  const {
-    p_name,
-    weight,
-    quantity,
-    price,
-    description,
-    imgPath,
-    type,
-    warehouse
-  } = req.body;
-  if (
-    p_name == null ||
-    weight == null ||
-    quantity == null ||
-    price == null ||
-    description == null ||
-    imgPath == null ||
-    type == null ||
-    warehouse == null
-  ) {
-    return res.status(400).send({
-      error: "Bad Request"
-    });
-  }
-  const insert_sql = `INSERT INTO product (p_name, quantity, price, weight, description, imgPath, type, warehouse) values ('${p_name}', '${quantity}', '${price}', '${weight}', '${description}', '${imgPath}', '${type}', '${warehouse}')`;
-
-  pool.query(insert_sql, (error, results) => {
-    if (error) {
-      return res.status(400).send({
-        error: "Could not add item. Possibly this item already exists."
-      });
+    const {
+        p_name,
+        weight,
+        quantity,
+        price,
+        description,
+        imgPath,
+        type,
+        warehouse
+    } = req.body;
+    if (p_name == null || weight == null || quantity == null || price == null || description == null || imgPath == null || type == null, warehouse == null) {
+        return res.status(400).send({
+            error: "Bad Request"
+        });
     }
-    res.sendStatus(200);
-  });
+    const insert_sql = `INSERT INTO product (p_name, quantity, price, weight, description, imgPath, type, warehouse) values ('${p_name}', '${quantity}', '${price}', '${weight}', '${description}', '${imgPath}', '${type}', '${warehouse}')`;
+    pool.query(insert_sql, (error, results) => {
+        if (error) {
+            return res.status(400).send({
+                message: "Error"
+            });
+        }
+        res.sendStatus(200);
+    });
 });
 // @router  POST api/products/update
 // @desc    Update an item
@@ -198,7 +188,6 @@ router.post("/update", (req, res) => {
             });
         res.sendStatus(200);
     });
-});
 });
 
 // @router DELETE "/delete/:product_id"

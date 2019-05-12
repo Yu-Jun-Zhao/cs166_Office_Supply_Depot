@@ -16,7 +16,8 @@ class ItemAdder extends Component {
     weight: null,
     description: null,
     imgPath: null,
-    type: null
+    type: null,
+    warehouse: null
   }
 
   setField = (e) => {
@@ -24,7 +25,7 @@ class ItemAdder extends Component {
   }
 
   render() {
-    const { p_name, quantity, price, weight, description, imgPath, type } = this.state
+    const { p_name, quantity, price, weight, description, imgPath, type, warehouse } = this.state
     return (
       <form onChange={this.setField} style={{marginLeft: '2%'}}>
         <Grid container spacing={24}>
@@ -60,8 +61,11 @@ class ItemAdder extends Component {
             <TextField type="text" label="type" name="type" />
           </Grid>
           <Grid item xs={1}>
+            <TextField type="number" label="warehouse" name="warehouse" />
+          </Grid>
+          <Grid item xs={1}>
             <Button color="primary">
-              <i className="material-icons" onClick={() => this.props.dispatch(createProduct(p_name, quantity, price, weight, description, imgPath, type))}>add</i>
+              <i className="material-icons" onClick={() => this.props.dispatch(createProduct(p_name, quantity, price, weight, description, imgPath, type, warehouse))}>add</i>
             </Button>
           </Grid>
         </Grid>
