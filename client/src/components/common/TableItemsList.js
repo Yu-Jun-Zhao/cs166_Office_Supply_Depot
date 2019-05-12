@@ -29,9 +29,9 @@ const styles = {
   },
   hcell: {
     marginLeft: '0',
-    padding: '0',
+    padding: '5% 2% 1% 2%',
     maxWidth: '100px'
-  }
+  },
 };
 
 class TableItemsList extends Component {
