@@ -3,10 +3,10 @@ import { connect } from "react-redux";
 import {
   deleteProduct,
   updateProduct,
-  fetchProducts,
   fetchFirstXProducts,
   changeOffset, changePage
 } from "../../actions/productActions";
+import "../../index.css";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -90,6 +90,7 @@ class TableItemsList extends Component {
       );
     }
     return (
+        <React.Fragment>
         <Grid container>
           <Grid>
             <Table>
@@ -174,21 +175,24 @@ class TableItemsList extends Component {
               </TableBody>
             </Table>
           </Grid>
-          <ReactPaginate
-              previousLabel={"previous"}
-              nextLabel={"next"}
-              breakLabel={"..."}
-              breakClassName={"break-me"}
-              pageCount={pageCount}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={10}
-              forcePage={page}
-              onPageChange={this.handlePageClick}
-              containerClassName={"pagination"}
-              subContainerClassName={"pages pagination"}
-              activeClassName={"active"}
-          />
         </Grid>
+          <div className="paginator">
+            <ReactPaginate
+                previousLabel={"<"}
+                nextLabel={">"}
+                breakLabel={"..."}
+                breakClassName={"break-me"}
+                pageCount={pageCount}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={10}
+                forcePage={page}
+                onPageChange={this.handlePageClick}
+                containerClassName={"pagination"}
+                subContainerClassName={"pages pagination"}
+                activeClassName={"active"}
+            />
+          </div>
+        </React.Fragment>
     );
     return <div>LOADING</div>
   }

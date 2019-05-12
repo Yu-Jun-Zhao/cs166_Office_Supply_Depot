@@ -8,6 +8,7 @@ import {
 import { withRouter } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import ItemHolder from "./Product";
+import "../../index.css";
 
 class ProductList extends Component {
   componentDidMount() {
@@ -47,9 +48,10 @@ class ProductList extends Component {
             );
           })}
         </ul>
+        <div className="paginator">
         <ReactPaginate
-          previousLabel={"previous"}
-          nextLabel={"next"}
+          previousLabel={"<"}
+          nextLabel={">"}
           breakLabel={"..."}
           breakClassName={"break-me"}
           pageCount={pageCount}
@@ -61,6 +63,7 @@ class ProductList extends Component {
           subContainerClassName={"pages pagination"}
           activeClassName={"active"}
         />
+        </div>
       </React.Fragment>
     );
   }
