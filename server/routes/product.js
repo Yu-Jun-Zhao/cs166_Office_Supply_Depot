@@ -183,37 +183,22 @@ router.post("/add", (req, res) => {
 // @router  POST api/products/update
 // @desc    Update an item
 // @access private
-router.put("/update", (req, res) => {
-  const {
-    product_id,
-    p_name,
-    weight,
-    quantity,
-    price,
-    description,
-    imgPath
-  } = req.body;
-  if (
-    product_id == null ||
-    p_name == null ||
-    weight == null ||
-    quantity == null ||
-    price == null ||
-    description == null ||
-    imgPath == null
-  ) {
-    return res.status(400).send({
-      error: "Bad Request Var empty"
+router.post("/update", (req, res) => {
+    const { product_id, p_name, weight, quantity, price, description, imgPath, type} = req.body;
+    if (product_id == null || p_name == null || weight == null || quantity == null || price == null || description == null || imgPath == null || type == null) {
+        return res.status(400).send({
+            error: "Bad Request"
+        });
+    }
+    const sql = `UPDATE product SET p_name = '${p_name}', weight = '${weight}', quantity = '${quantity}', price = '${price}', description = '${description}', imgPath = '${imgPath}', type = '${type}' WHERE product_id = ${product_id}`;
+    pool.query(sql, (error, results) => {
+        if (error)
+            return res.status(400).send({
+                error: "Bad Request"
+            });
+        res.sendStatus(200);
     });
-  }
-  const sql = `UPDATE product SET p_name = '${p_name}', weight = ${weight}, quantity = ${quantity}, price = ${price}, product.description = '${description}', imgPath = '${imgPath}' WHERE product_id = ${product_id}`;
-  pool.query(sql, (error, results) => {
-    if (error)
-      return res.status(400).send({
-        error: "Bad Request, Possible duplicate names and type"
-      });
-    res.sendStatus(200);
-  });
+});
 });
 
 // @router DELETE "/delete/:product_id"
