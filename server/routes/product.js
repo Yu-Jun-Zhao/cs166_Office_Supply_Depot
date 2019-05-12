@@ -2,6 +2,10 @@ import express from "express";
 const router = express.Router();
 import pool from "../db";
 
+// @router GET "/api/products/:name/:offset"
+// @desc Returns the object by similar name
+// @ret {products: [{item1}, {item2}, ....{itemN}]}
+// @access public
 router.get("/:name/:offset", (req, res) => {
   const { name, offset } = req.params;
   const count_sql = `SELECT COUNT(*) as total FROM product WHERE p_name LIKE '%${name}%'`;
@@ -32,7 +36,10 @@ router.get("/:name/:offset", (req, res) => {
   });
 });
 
-// Returns object that contains an array of objects
+// @router GET "/api/products/:offset"
+// @desc Returns object that contains an array of objects
+// @ret {products: [{item1}, {item2}, ....{itemN}]}
+// @access public
 router.get("/:offset", (req, res) => {
   const { offset } = req.params;
   const select_sql = `SELECT * FROM product LIMIT ${offset}`;
@@ -43,7 +50,10 @@ router.get("/:offset", (req, res) => {
   });
 });
 
-// Returns all the objects of the type
+// @router GET "/api/products/all/type/:type"
+// @desc Return all items of the type specified
+// @ret {products: [{item1}, {item2}, ....{itemN}]}
+// @access public
 router.get("/all/type/:type", (req, res) => {
   const { type } = req.params;
   const sql = `SELECT * FROM product WHERE product.type = "${type}"`;
@@ -52,7 +62,7 @@ router.get("/all/type/:type", (req, res) => {
       return res
         .status(404)
         .send({ error: "Could not fetch products with type" });
-    return res.send(results);
+    return res.send({ products: results });
   });
 });
 
@@ -63,9 +73,9 @@ router.get("/1/id/:id", (req, res) => {
   const { id } = req.params;
   const sql = `SELECT * FROM product WHERE product_id = ${id}`;
   pool.query(sql, (error, results) => {
-    if (error)
+    if (error || results.length === 0)
       return res.status(404).send({ error: "Could not fetch product" });
-    res.json({ product: results });
+    res.json({ product: results[0] });
   });
 });
 
@@ -81,7 +91,8 @@ router.post("/add", (req, res) => {
     price,
     description,
     imgPath,
-    type
+    type,
+    warehouse
   } = req.body;
   if (
     p_name == null ||
@@ -90,25 +101,28 @@ router.post("/add", (req, res) => {
     price == null ||
     description == null ||
     imgPath == null ||
-    type == null
+    type == null ||
+    warehouse == null
   ) {
     return res.status(400).send({
       error: "Bad Request"
     });
   }
-  const insert_sql = `INSERT INTO product (p_name, quantity, price, weight, description, imgPath, type) values ('${p_name}', '${quantity}', '${price}', '${weight}', '${description}', '${imgPath}', '${type}')`;
+  const insert_sql = `INSERT INTO product (p_name, quantity, price, weight, description, imgPath, type, warehouse) values ('${p_name}', '${quantity}', '${price}', '${weight}', '${description}', '${imgPath}', '${type}', '${warehouse}')`;
 
   pool.query(insert_sql, (error, results) => {
     if (error) {
       return res.status(400).send({
-        message: "Error"
+        error: "Could not add item. Possibly this item already exists."
       });
     }
     res.sendStatus(200);
   });
 });
-
-router.post("/update", (req, res) => {
+// @router  POST api/products/update
+// @desc    Update an item
+// @access private
+router.put("/update", (req, res) => {
   const {
     product_id,
     p_name,
@@ -116,8 +130,7 @@ router.post("/update", (req, res) => {
     quantity,
     price,
     description,
-    imgPath,
-    type
+    imgPath
   } = req.body;
   if (
     product_id == null ||
@@ -126,25 +139,27 @@ router.post("/update", (req, res) => {
     quantity == null ||
     price == null ||
     description == null ||
-    imgPath == null ||
-    type == null
+    imgPath == null
   ) {
     return res.status(400).send({
-      error: "Bad Request"
+      error: "Bad Request Var empty"
     });
   }
-  const sql = `UPDATE product SET p_name = '${p_name}', weight = '${weight}', quantity = '${quantity}', price = '${price}', description = '${description}', imgPath = '${imgPath}', type = '${type}' WHERE product_id = ${product_id}`;
+  const sql = `UPDATE product SET p_name = '${p_name}', weight = ${weight}, quantity = ${quantity}, price = ${price}, product.description = '${description}', imgPath = '${imgPath}' WHERE product_id = ${product_id}`;
   pool.query(sql, (error, results) => {
     if (error)
       return res.status(400).send({
-        error: "Bad Request"
+        error: "Bad Request, Possible duplicate names and type"
       });
     res.sendStatus(200);
   });
 });
 
-router.post("/delete", (req, res) => {
-  const { product_id } = req.body;
+// @router DELETE "/delete/:product_id"
+// @desc Delete a product with the product_id
+// @access private
+router.delete("/delete/:product_id", (req, res) => {
+  const { product_id } = req.params;
   if (product_id == null) {
     return res.status(400).send({
       error: "Bad Request"

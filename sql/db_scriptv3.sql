@@ -60,7 +60,9 @@ CREATE TABLE IF NOT EXISTS `osd`.`Product` (
   `imgPath` VARCHAR(1000),
   `type` VARCHAR(25),
   `warehouse` TINYINT(1),
-  PRIMARY KEY (`product_id`)
+  PRIMARY KEY (`product_id`),
+  UNIQUE KEY(`p_name`, `type`)
+
 )
 ENGINE = InnoDB;
 

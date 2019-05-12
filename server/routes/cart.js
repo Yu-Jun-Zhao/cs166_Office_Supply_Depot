@@ -9,15 +9,21 @@ import {
 //  @router POST /api/cart/add
 //  @desc   Add items to cartItems
 //  @access private
-router.post("/add", authenticationRequired, (req, res) => {
+router.post("/add", (req, res) => {
   const { cartId, productId, quantity } = req.body;
   const sql = `CALL addItemsToCart(${cartId}, ${productId}, ${quantity})`;
   pool.query(sql, (err, results) => {
-    if (err) return res.send({ error: "Fail to add items to cart" });
-    const nestedSQL = `SELECT product_id, COUNT(*) AS quantity FROM cart_item WHERE cart_id = ${cartId} AND product_id = ${productId}`;
+    if (err) return res.status(400).send({ error: "Bad Request" });
+    const nestedSQL = `SELECT product_id, quantity FROM cart_item 
+                WHERE cart_id = ${cartId} AND product_id = ${productId}`;
     pool.query(nestedSQL, (err, results) => {
       const quantity = results[0].quantity;
       const product = results[0].product_id;
+      if (product === null) {
+        return res
+          .status(404)
+          .json({ error: "Fail to add product: Product Not Found" });
+      }
       return res.json({ product, quantity });
     });
   });
@@ -26,10 +32,9 @@ router.post("/add", authenticationRequired, (req, res) => {
 // @router GET /api/cart/all/:cartId
 // @desc GET all items in cart
 // @access private
-
-router.get("/all/:cartId", authenticationRequired, (req, res) => {
+router.get("/all/:cartId", (req, res) => {
   const { cartId } = req.params;
-  const sql = `SELECT cart_id, product_id, COUNT(*) AS quantity FROM cart_item WHERE cart_id = ${cartId} GROUP BY product_id`;
+  const sql = `SELECT cart_id, product_id, quantity FROM cart_item WHERE cart_id = ${cartId} GROUP BY product_id`;
   pool.query(sql, (err, results) => {
     if (err) return res.send({ error: err });
     getAllProductsName(res, results);
@@ -74,12 +79,13 @@ function getProduct(query, outerSqlResult) {
 //  @router DELETE /api/cart/remove
 //  @desc   Remove all items with the same product id from cart
 //  @access private
-router.post("/remove", authenticationRequired, (req, res) => {
+router.delete("/remove", (req, res) => {
   const { cartId, productId } = req.body;
   const sql = `CALL removeAllItemsFromCart(${cartId}, ${productId})`;
   pool.query(sql, (err, results) => {
-    if (err) return res.send(err);
-    res.json({ success: true }); //for now
+    if (err)
+      return res.send({ error: "Bad request: Cannot delete item from cart" });
+    res.sendStatus(200);
   });
 });
 

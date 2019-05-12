@@ -22,11 +22,15 @@ INSERT INTO customer (user_id, first_name, last_name) VALUES ("ccc356", "test2",
 ##INSERT INTO Cart_Item (cart_id, product_id) VALUES (2,1);
 ##INSERT INTO Cart_Item (cart_id, product_id) VALUES (3,1);
 
+UPDATE product SET p_name = "Ticonderoga The World Best Pencils", weight = 12, quantity = 20, price = 0.5, 
+	`description` = "testing", imgPath = "www.google.com"
+ WHERE product_id = 1;
+
 CALL addItemsToCart(1,2,20);
 CALL addItemsToCart(1,2,5);
 
 CALL addItemsToCart(2,2,7);
-CALL addItemsToCart(1,1,15);
+CALL addItemsToCart(2,17,15);
 CALL addItemsToCart(3,1,3);
 
 CALL removeAllItemsFromCart(1,2);

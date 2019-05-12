@@ -9,13 +9,14 @@ CREATE PROCEDURE checkAllOrderStatus(IN in_user_id VARCHAR(30))
 BEGIN
 	DECLARE s_orderStatus TINYINT;
 	DECLARE s_orderDate DATETIME;
+    DECLARE s_delivery_time_limit TINYINT;
     DECLARE s_orderID INT;
     DECLARE dateDiff INT;
     
     DECLARE done TINYINT DEFAULT FALSE;
     DECLARE b_rollback TINYINT DEFAULT FALSE;
     
-    DECLARE order_cursor CURSOR FOR SELECT order_id, order_date, `status` FROM `order` WHERE user_id = in_user_id;
+    DECLARE order_cursor CURSOR FOR SELECT order_id, order_date, delivery_time_limit,`status` FROM `order` WHERE user_id = in_user_id;
     
 	DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
     DECLARE CONTINUE HANDLER FOR sqlexception SET b_rollback = TRUE;
@@ -24,14 +25,14 @@ BEGIN
     ## If Order in progress
     OPEN order_cursor;
     cursor_loop: LOOP
-	FETCH order_cursor INTO s_orderID ,s_orderDate, s_orderStatus;
+	FETCH order_cursor INTO s_orderID ,s_orderDate, s_delivery_time_limit, s_orderStatus;
 		IF done THEN 
 			LEAVE cursor_loop;
 		END IF;
     
 		IF s_orderStatus = 0 THEN
 			SET dateDiff = timestampdiff(MINUTE, s_orderDate, now());
-			IF dateDiff > 2 THEN
+			IF dateDiff > s_delivery_time_limit THEN
 				UPDATE `order` SET `status` = 1 WHERE order_id = s_orderID;
 			END IF;
 		END IF;
@@ -123,7 +124,7 @@ BEGIN
     
     IF in_delivery_method <> 0  ## is not pick up at a location
 	THEN
-		IF l_weight > 15
+		IF l_weight >= 15
         THEN
 			SET l_delivery_method = 2; ##truck
             
@@ -131,7 +132,7 @@ BEGIN
             THEN 
 				SET l_surcharge = 25;
             END IF;
-		ELSE  
+		ELSE  ## less than 15 lbs
 			SET l_delivery_method = 1; ##drone
             SET l_delivery_time_limit = 1; ## same day delivery
         END IF;

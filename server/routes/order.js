@@ -6,50 +6,42 @@ import {
   adminAuthenticationRequired
 } from "../AuthenticationMiddleware/AuthenticationMiddleware";
 
-
-const googleMapsClient = require('@google/maps').createClient({
-  key: 'AIzaSyB6bOePa__5vSd4Ri5ogaaN8Dw-k_plH-M'
+const googleMapsClient = require("@google/maps").createClient({
+  key: "AIzaSyB6bOePa__5vSd4Ri5ogaaN8Dw-k_plH-M"
 });
-
-// Order routes will be protected
-
-/*
-// @router POST /api/order/all/:userId
-// @desc   Retrieve all orders
-// @private
-router.get("/all/:userId", (req, res) => {
-  const { userId } = req.params;
-  const sql = `SELECT * FROM \`order\` WHERE user_id = "${userId}"`;
-  pool.query(sql, (err, results) => {
-    if (err) res.send(err);
-    res.json(results);
-  });
-});
-*/
 
 // @router POST /api/order/add
 // @desc   Create order
 // @private
-router.post("/add", authenticationRequired, (req, res) => {
-  const { userId, address, city, state, zip, f_address } = req.body;
+router.post("/add", (req, res) => {
+  const {
+    userId,
+    address,
+    city,
+    state,
+    zip,
+    f_address,
+    delivery_method,
+    delivery_time
+  } = req.body;
   const today = new Date();
   const orderDate =
     new Date(`${today} GMT`).toISOString().split("T")[0] +
     " " +
     today.toTimeString().split(" ")[0];
   const sql = `CALL createOrder(
-    "${userId}","${orderDate}", "${address}", "${city}", "${state}", "${zip}", ${f_address})`;
+    "${userId}","${orderDate}", "${address}", "${city}", "${state}", "${zip}", ${f_address}, ${delivery_method}, ${delivery_time})`;
 
   pool.query(sql, (err, results) => {
-    if (err) return res.send(err);
-    return res.send({ success: true });
+    if (err) return res.status(406).send({ error: "Could not create order" });
+    return res.sendStatus(200);
   });
 });
 
-// @router POST /api/order/check/:userId
-// @desc   Check and Update status or orders and Retrieve all orders
+// @router PUT /api/order/check/:userId
+// @desc   Check and Update status of orders and Retrieve all orders
 // @private
-router.put("/check/:userId", authenticationRequired, (req, res) => {
+router.put("/check/:userId", (req, res) => {
   const { userId } = req.params;
   const sql = `CALL checkAllOrderStatus("${userId}")`;
   pool.query(sql, (err, results) => {
@@ -62,29 +54,35 @@ router.put("/check/:userId", authenticationRequired, (req, res) => {
   });
 });
 
-router.get("/address/:addressId", authenticationRequired, (req, res) => {
+// @router GET /api/order/address/:addressId
+// @desc  GET shipping address based on address id from order
+// @private
+router.get("/address/:addressId", (req, res) => {
   const { addressId } = req.params;
   const sql = `SELECT * FROM shipping_address WHERE s_address_id = ${addressId}`;
   pool.query(sql, (err, results) => {
-    if (err) return res.send(err);
+    if (err)
+      return res.status(404).send({ error: "Unable to retrieve address" });
     return res.send(results[0]);
   });
 });
 
 router.post("/route", (req, res) => {
-  const {origin} = req.body
-  let originLL = {}
-  googleMapsClient.geocode({
-    address: origin
-  }, function (err, response) {
-    if (!err) {
-      originLL = response.json.results[0]["geometry"]["location"];
-      return res.send({origin: originLL});
+  const { origin } = req.body;
+  let originLL = {};
+  googleMapsClient.geocode(
+    {
+      address: origin
+    },
+    function(err, response) {
+      if (!err) {
+        originLL = response.json.results[0]["geometry"]["location"];
+        return res.send({ origin: originLL });
+      } else {
+        return res.send(err);
+      }
     }
-    else {
-      return res.send(err)
-    }
-  });
+  );
 });
 
-export default router
+export default router;
