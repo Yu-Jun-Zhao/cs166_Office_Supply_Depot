@@ -53,7 +53,6 @@ export function fetchProducts(name, offset) {
 
 export function fetchFirstXProducts(x) {
   return dispatch => {
-    console.log(x)
     dispatch(fetchProductsBegin());
     axios
       .get(`/api/products/all/${x}`)
@@ -62,11 +61,11 @@ export function fetchFirstXProducts(x) {
   };
 }
 
-export const fetchProductByType = type => dispatch => {
+export const fetchProductByType = (type, offset) => dispatch => {
   dispatch(fetchProductsBegin());
   axios
-    .get(`/api/products/all/type/${type}`)
-    .then(res => dispatch(fetchProductsSuccess(res.data, res.data.length)))
+    .get(`/api/products/all/type/${type}/${offset}`)
+    .then(res => dispatch(fetchProductsSuccess(res.data.products, res.data.total)))
     .catch(error => dispatch(fetchProductsFailure(error)));
 };
 

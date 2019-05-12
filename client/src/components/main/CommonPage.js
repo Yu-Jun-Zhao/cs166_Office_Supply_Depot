@@ -9,7 +9,7 @@ import { withStyles } from "@material-ui/core/styles";
 
 import { connect } from "react-redux";
 
-import { fetchProductByType } from "../../actions/productActions";
+import {changeOffset, changePage, fetchProductByType} from "../../actions/productActions";
 
 import ItemCard from "../common/ItemCard";
 import SimpleModal from "../common/SimpleModal";
@@ -84,11 +84,20 @@ class CommonPage extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchProductByType(this.state.selection);
+    this.props.fetchProductByType(this.state.selection, 0);
   }
 
+  handlePageClick = data => {
+    let selected = data.selected;
+    let offset = Math.ceil(selected * 10);
+    this.props.changeOffset(offset);
+    this.props.changePage(selected);
+    this.props.fetchProductByType(this.state.selection, offset)
+  };
+
+
   render() {
-    const { classes, products } = this.props;
+    const { classes, products, pageCount } = this.props;
 
     if (!products) return <div> LOADING... </div>;
 
@@ -118,7 +127,7 @@ class CommonPage extends Component {
               nextLabel={"next"}
               breakLabel={"..."}
               breakClassName={"break-me"}
-              pageCount={products.pageCount}
+              pageCount={pageCount}
               marginPagesDisplayed={2}
               pageRangeDisplayed={5}
               initialPage={0}
@@ -137,10 +146,13 @@ class CommonPage extends Component {
 const CommonPageStyled = withStyles(styles)(CommonPage);
 
 const mapStateToProps = state => ({
-  products: state.products.items
+  products: state.products.items,
+  page: state.products.page,
+  pageCount: state.products.pageCount,
+  offset: state.products.offset
 });
 
 export default connect(
   mapStateToProps,
-  { fetchProductByType }
+  { fetchProductByType, changeOffset, changePage }
 )(CommonPageStyled);
