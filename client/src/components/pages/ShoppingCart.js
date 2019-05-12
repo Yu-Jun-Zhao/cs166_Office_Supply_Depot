@@ -90,6 +90,7 @@ class Shoppingcart extends Component {
   };
   
   handleQtyChange = id => event => {
+    if (event.target.value <= 0) return;
     const tempCart = this.state.cart;
     for (let i = 0; i < tempCart.length; i++) {
       if (tempCart[i].id === id) {
