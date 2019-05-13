@@ -91,6 +91,7 @@ class Navbar extends Component {
   async logout() {
     this.props.logOutUser();
     this.props.auth.logout("/");
+    localStorage.removeItem('cart')
   }
 
   handleMenu = event => {

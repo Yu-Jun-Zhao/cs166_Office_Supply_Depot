@@ -79,14 +79,31 @@ class Shoppingcart extends Component {
     if(this.props.authentication.cartId !== prevProps.authentication.cartId)
     {
       this.props.getAllCartItemsFromDB(this.props.authentication.cartId);
-      this.setState({
-        cart: this.props.cart
-      })
+      if (JSON.parse(localStorage.getItem('cart')) !== null) {
+        console.log(JSON.parse(localStorage.getItem('cart')))
+        this.setState({
+          cart: JSON.parse(localStorage.getItem('cart'))
+        })
+      }
+      else {
+        console.log('notls')
+        this.setState({
+          cart: this.props.cart
+        })
+      }
     }
   }
 
   handleButtonChange = id => event => {
+    const tempCart = this.state.cart.filter((item, index) => {
+      console.log(id, index)
+      return index !== id
+    })
     this.props.deleteCartItem(this.props.authentication.cartId, id);
+    localStorage.setItem('cart', JSON.stringify(tempCart));
+    this.setState({
+      cart: tempCart
+    })
   };
   
   handleQtyChange = id => event => {
@@ -97,6 +114,8 @@ class Shoppingcart extends Component {
         tempCart[i].quantity = event.target.value;
       }
     }
+    console.log(tempCart)
+    localStorage.setItem('cart', JSON.stringify(tempCart));
     this.setState({ cart: tempCart });
   };
 
@@ -106,10 +125,17 @@ class Shoppingcart extends Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.cart.cart !== undefined) {
-      return {
-        cart: nextProps.cart.cart,
-        loadingFromDB: nextProps.cart.loadingFromDB
-      };
+      if (localStorage.getItem('cart') !== null) {
+        return {
+          cart: JSON.parse(localStorage.getItem('cart'))
+        }
+      }
+      else {
+        return {
+          cart: nextProps.cart.cart,
+          loadingFromDB: nextProps.cart.loadingFromDB
+        };
+      }
     }
   }
 
@@ -175,7 +201,7 @@ class Shoppingcart extends Component {
                               />
                             </FormControl>
                           </TableCell>
-                          <TableCell>{row.weight * row.quantity} lbs</TableCell>
+                          <TableCell>{(row.weight * row.quantity).toFixed(2)} lbs</TableCell>
                           <TableCell>
                             <Button
                               variant="outlined"

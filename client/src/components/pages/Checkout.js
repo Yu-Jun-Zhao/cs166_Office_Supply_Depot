@@ -118,6 +118,7 @@ class CheckOut extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    localStorage.removeItem('cart')
     const {
       address,
       city,
