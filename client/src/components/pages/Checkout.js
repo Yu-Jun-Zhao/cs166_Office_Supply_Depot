@@ -118,7 +118,6 @@ class CheckOut extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    localStorage.removeItem('cart')
     const {
       address,
       city,
@@ -139,6 +138,7 @@ class CheckOut extends Component {
         delivery_time_limit
       );
       window.location.href = "/orders";
+      localStorage.removeItem('cart')
     }
   };
 
