@@ -79,8 +79,9 @@ function getProduct(query, outerSqlResult) {
 //  @router DELETE /api/cart/remove
 //  @desc   Remove all items with the same product id from cart
 //  @access private
-router.delete("/remove", (req, res) => {
+router.post("/remove", (req, res) => {
   const { cartId, productId } = req.body;
+  console.log(cartId, productId)
   const sql = `CALL removeAllItemsFromCart(${cartId}, ${productId})`;
   pool.query(sql, (err, results) => {
     if (err)
