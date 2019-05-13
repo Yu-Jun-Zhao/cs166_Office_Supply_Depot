@@ -31,10 +31,12 @@ export default function(state = initialState, action) {
       };
     case GET_AUTH_ERRORS:
       return {
+        ...state,
         error: action.payload
       };
     case REMOVE_AUTH_ERRORS:
       return {
+        ...state,
         error: null
       };
     default:
