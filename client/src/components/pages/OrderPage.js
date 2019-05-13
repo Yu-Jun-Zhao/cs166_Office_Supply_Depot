@@ -77,7 +77,7 @@ class OrderPage extends Component {
                   <TableCell>{order.order_id}</TableCell>
                   <TableCell>{order.order_date.split("T")[0]}</TableCell>
                   <TableCell>{order.weight} lbs</TableCell>
-                  <TableCell>{order.surcharge}</TableCell>
+                  <TableCell>${order.surcharge}</TableCell>
                   <TableCell>${order.total}</TableCell>
 
                   <TableCell>

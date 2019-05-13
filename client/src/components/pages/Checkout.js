@@ -421,7 +421,7 @@ class CheckOut extends Component {
                       </TableRow>
                       <TableRow>
                         <TableCell colSpan={2}>
-                          Total: ${subtotal + shippingFee}
+                          Total: ${this.state.subtotal + this.state.shippingFee}
                         </TableCell>
                         <TableCell align="left" />
                       </TableRow>

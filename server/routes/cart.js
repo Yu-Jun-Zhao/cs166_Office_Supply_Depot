@@ -81,7 +81,7 @@ function getProduct(query, outerSqlResult) {
 //  @access private
 router.post("/remove", (req, res) => {
   const { cartId, productId } = req.body;
-  console.log(cartId, productId)
+  console.log(cartId, productId);
   const sql = `CALL removeAllItemsFromCart(${cartId}, ${productId})`;
   pool.query(sql, (err, results) => {
     if (err)
