@@ -57,9 +57,9 @@ class ItemCard extends Component {
           <CardContent>
             <Typography component="p">{id}</Typography>
             <Typography variant="h5">{title}</Typography>
-            <Typography component="p">price: {price}</Typography>
-            <Typography component="p">weight: {weight}</Typography>
-            <Typography component="p">remaining: {quantity}</Typography>
+            <Typography component="p">Price: {price}</Typography>
+            <Typography component="p">Weight: {weight}</Typography>
+            <Typography component="p">Remaining: {quantity}</Typography>
             <Typography component="p">{description}</Typography>
           </CardContent>
         </CardActionArea>
