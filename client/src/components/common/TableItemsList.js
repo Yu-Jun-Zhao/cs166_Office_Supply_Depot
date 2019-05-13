@@ -41,7 +41,7 @@ class TableItemsList extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchFirstXProducts(0);
+    this.props.fetchFirstXProducts(this.props.offset);
   }
 
   componentDidUpdate(prevProps) {
