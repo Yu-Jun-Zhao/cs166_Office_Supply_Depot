@@ -43,7 +43,10 @@ class CheckOut extends Component {
       delivery_time_limit: 2,
       subtotal: 0,
       shippingFee: 0,
-      weight: 0
+      weight: 0,
+      cvv: null,
+      exdate: null,
+      cardnumber: null
     };
   }
 
@@ -124,8 +127,43 @@ class CheckOut extends Component {
       adState,
       zip,
       delivery_method,
-      delivery_time_limit
+      delivery_time_limit,
+      cardnumber,
+      exdate,
+      cvv
     } = this.state;
+    if (address === null || !address.match(/^\d+\s[A-z]+\s[A-z]+/g)) {
+      alert('Address invalid');
+      return;
+    }
+    if (city === null || !city.match(/^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$/)) {
+      alert('City invalid');
+      return;
+    }
+    if (adState === null || !adState.match(/^[a-z]+$/i)) {
+      alert('State invalid');
+      return;
+    }
+    if (zip === null || !zip.match(/(^\d{5}$)|(^\d{5}-\d{4}$)/)) {
+      alert('Zip code invalid');
+      return;
+    }
+
+    if (cardnumber === null || !cardnumber.match(/^[0-9]{16}$/)) {
+      alert('Invalid card number');
+      return;
+    }
+
+    if (exdate === null || !exdate.match(/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/)) {
+      alert('Invalid card date');
+      return;
+    }
+
+    if (cvv === null || !cvv.match(/^[0-9]{3}$/)) {
+      alert('Invalid cvv');
+      return;
+    }
+
     if (address !== null && city !== null && adState !== null && zip !== null) {
       this.props.createOrder(
         this.props.authentication.userInfo.sub,
