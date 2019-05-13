@@ -110,7 +110,6 @@ export function createProduct(
         imgPath: imgPath,
         type: type,
         warehouse: warehouse
-
       })
       .then(res => dispatch(createProductsSuccess()))
       .then(res => dispatch(openModal()))

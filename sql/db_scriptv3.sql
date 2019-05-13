@@ -154,12 +154,8 @@ CREATE TABLE IF NOT EXISTS `osd`.`Order_Item` (
     FOREIGN KEY (`order_id`)
     REFERENCES `osd`.`Order` (`order_id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_OrderItem_Product1`
-    FOREIGN KEY (`product_id`)
-    REFERENCES `osd`.`Product` (`product_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION
+)
 ENGINE = InnoDB;
 
 

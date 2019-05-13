@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import pool from "../db";
-
+import { adminAuthenticationRequired } from "../AuthenticationMiddleware/AuthenticationMiddleware";
 // @router GET "/api/products/o1/:name/:offset"
 // @desc Returns the object by similar name
 // @access public
@@ -141,14 +141,14 @@ router.post("/add", (req, res) => {
     warehouse
   } = req.body;
   if (
-    (p_name == null ||
-      weight == null ||
-      quantity == null ||
-      price == null ||
-      description == null ||
-      imgPath == null ||
-      type == null,
-    warehouse == null)
+    p_name == null ||
+    weight == null ||
+    quantity == null ||
+    price == null ||
+    description == null ||
+    imgPath == null ||
+    type == null ||
+    warehouse == null
   ) {
     return res.status(400).send({
       error: "Bad Request"
@@ -216,7 +216,7 @@ router.post("/delete", (req, res) => {
   pool.query(sql, (error, results) => {
     if (error)
       return res.status(400).send({
-        error: "Bad Request"
+        error: "Bad Request Cannot delete"
       });
     res.sendStatus(200);
   });

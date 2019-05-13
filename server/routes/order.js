@@ -13,7 +13,7 @@ const googleMapsClient = require("@google/maps").createClient({
 // @router POST /api/order/add
 // @desc   Create order
 // @private
-router.post("/add", (req, res) => {
+router.post("/add", authenticationRequired, (req, res) => {
   const {
     userId,
     address,
@@ -41,7 +41,7 @@ router.post("/add", (req, res) => {
 // @router PUT /api/order/check/:userId
 // @desc   Check and Update status of orders and Retrieve all orders
 // @private
-router.put("/check/:userId", (req, res) => {
+router.put("/check/:userId", authenticationRequired, (req, res) => {
   const { userId } = req.params;
   const sql = `CALL checkAllOrderStatus("${userId}")`;
   pool.query(sql, (err, results) => {
@@ -57,7 +57,7 @@ router.put("/check/:userId", (req, res) => {
 // @router GET /api/order/address/:addressId
 // @desc  GET shipping address based on address id from order
 // @private
-router.get("/address/:addressId", (req, res) => {
+router.get("/address/:addressId", authenticationRequired, (req, res) => {
   const { addressId } = req.params;
   const sql = `SELECT * FROM shipping_address WHERE s_address_id = ${addressId}`;
   pool.query(sql, (err, results) => {
@@ -67,7 +67,7 @@ router.get("/address/:addressId", (req, res) => {
   });
 });
 
-router.post("/route", (req, res) => {
+router.post("/route", authenticationRequired, (req, res) => {
   const { origin } = req.body;
   let originLL = {};
   googleMapsClient.geocode(

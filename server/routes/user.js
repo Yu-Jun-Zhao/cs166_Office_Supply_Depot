@@ -10,7 +10,7 @@ import {
 // @desc   Store user information to MySql database
 // @ret    {cart_id: #}
 // @access Private TODO
-router.put("/", (req, res) => {
+router.put("/", authenticationRequired, (req, res) => {
   const { userId, firstName, lastName } = req.body;
 
   const sql = `INSERT INTO customer(user_id, first_name, last_name) VALUES('${userId}', '${firstName}', '${lastName}')
