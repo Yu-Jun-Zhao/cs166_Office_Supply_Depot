@@ -95,7 +95,8 @@ export function createProduct(
   weight,
   description,
   imgPath,
-  type
+  type,
+  warehouse
 ) {
   return dispatch => {
     dispatch(createProductsBegin());
@@ -107,7 +108,9 @@ export function createProduct(
         weight: weight,
         description: description,
         imgPath: imgPath,
-        type: type
+        type: type,
+        warehouse: warehouse
+
       })
       .then(res => dispatch(createProductsSuccess()))
       .then(res => dispatch(openModal()))

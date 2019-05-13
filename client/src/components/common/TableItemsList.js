@@ -17,15 +17,22 @@ import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import EditableTableCell from "./EditableTableCell";
 import ReactPaginate from "react-paginate";
+import withStyles from "@material-ui/core/es/styles/withStyles";
 // Mainly for Admin
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
+const styles = {
+  row: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: 'rgb(250,250,250)'
+    },
+    margin: '0'
   },
-});
+  hcell: {
+    marginLeft: '0',
+    padding: '5% 2% 1% 2%',
+    maxWidth: '100px'
+  },
+};
 
 class TableItemsList extends Component {
 
@@ -34,7 +41,7 @@ class TableItemsList extends Component {
   };
 
   componentDidMount() {
-    this.props.fetchFirstXProducts(0);
+    this.props.fetchFirstXProducts(this.props.offset);
   }
 
   componentDidUpdate(prevProps) {
@@ -80,7 +87,7 @@ class TableItemsList extends Component {
   };
 
   render() {
-    const { loading, products, pageCount, page } = this.props;
+    const { classes, loading, products, pageCount, page } = this.props;
     if (loading) {
       return (
         <div>
@@ -90,27 +97,28 @@ class TableItemsList extends Component {
     }
     return (
         <React.Fragment>
-        <Grid container>
+        <Grid className={classes.root}>
           <Grid>
-            <Table>
+            <Table className={classes.table}>
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell>Item</TableCell>
-                  <TableCell>Quantity</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Weight</TableCell>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Type</TableCell>
-                  <TableCell>Image</TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
+                  <TableCell className={classes.hcell}>ID</TableCell>
+                  <TableCell className={classes.hcell}>Item</TableCell>
+                  <TableCell className={classes.hcell}>Quantity</TableCell>
+                  <TableCell className={classes.hcell}>Price</TableCell>
+                  <TableCell className={classes.hcell}>Weight</TableCell>
+                  <TableCell className={classes.hcell}>Description</TableCell>
+                  <TableCell className={classes.hcell}>Type</TableCell>
+                  <TableCell className={classes.hcell}>Image</TableCell>
+                  <TableCell className={classes.hcell}>Warehouse</TableCell>
+                  <TableCell className={classes.hcell}></TableCell>
+                  <TableCell className={classes.hcell}></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {products && products.map((row, index) => {
                   return (
-                      <TableRow key={row.product_id}>
+                      <TableRow className={classes.row} key={row.product_id}>
                         <TableCell padding="dense"> {row.product_id}</TableCell>
                         <EditableTableCell
                             row={row}
@@ -141,16 +149,25 @@ class TableItemsList extends Component {
                             row={row}
                             fieldName="description"
                             onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                            style={{width: '190px'}}
                         />
                         <EditableTableCell
                             row={row}
                             fieldName="type"
                             onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                            style={{width: '60px'}}
                         />
                         <EditableTableCell
                             row={row}
                             fieldName="imgPath"
                             onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                            style={{width: '60px'}}
+                        />
+                        <EditableTableCell
+                            row={row}
+                            fieldName="warehouse"
+                            onCellValueChange={this.handleTextFieldChange.bind(this,index)}
+                            style={{width: '23px'}}
                         />
                         <TableCell padding="none">
                           <Button
@@ -207,4 +224,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { fetchFirstXProducts, deleteProduct, updateProduct, changeOffset, changePage }
-)(TableItemsList);
+)(withStyles(styles)(TableItemsList));
