@@ -24,6 +24,42 @@ class ItemAdder extends Component {
     this.setState({[e.target.name]: e.target.value})
   }
 
+  handleSubmit = (p_name, quantity, price, weight, description, imgPath, type, warehouse) => {
+    if (p_name === null) {
+      alert('Product name is invalid');
+      return;
+    }
+    if (quantity === null || !quantity.match(/^[0-9]+/)) {
+      alert('Invalid quantity or quantity too large');
+      return;
+    }
+    if (price === null || !price.match(/^(\d*([.,](?=\d{3}))?\d+)+((?!\2)[.,]\d\d)?$/)) {
+      alert('Invalid price');
+      return;
+    }
+    if (weight === null || !weight.match(/^[0-9]+([,.][0-9]+)?$/g)) {
+      alert('Invalid weight');
+      return;
+    }
+    if (description === null) {
+      alert("Invalid description")
+      return;
+    }
+    if (imgPath === null) {
+      alert("Invalid image path")
+      return;
+    }
+    if (type === null) {
+      alert("Invalid description")
+      return;
+    }
+    if (warehouse === null) {
+      alert("Invalid warehouse")
+      return;
+    }
+    this.props.dispatch(createProduct(p_name, quantity, price, weight, description, imgPath, type, warehouse))
+  }
+
   render() {
     const { p_name, quantity, price, weight, description, imgPath, type, warehouse } = this.state
     return (
@@ -65,7 +101,7 @@ class ItemAdder extends Component {
           </Grid>
           <Grid item xs={1}>
             <Button color="primary">
-              <i className="material-icons" onClick={() => this.props.dispatch(createProduct(p_name, quantity, price, weight, description, imgPath, type, warehouse))}>add</i>
+              <i className="material-icons" onClick={() => this.handleSubmit(p_name, quantity, price, weight, description, imgPath, type, warehouse)}>add</i>
             </Button>
           </Grid>
         </Grid>
