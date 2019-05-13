@@ -102,13 +102,15 @@ class CheckOut extends Component {
     // less than $100 and not pick up
 
     if (name === "delivery_time_limit" && this.state.delivery_method !== 0) {
-      let shippingFee = 20;
+      let shippingFee = 0;
       if (
         this.state.subtotal >= 100 &&
         event.target.value === 1 &&
         this.state.delivery_method === 2
       ) {
         shippingFee = 25;
+      } else if (this.state.subtotal < 100) {
+        shippingFee = 20;
       }
       this.setState({ delivery_time_limit: event.target.value, shippingFee });
     }
@@ -135,6 +137,7 @@ class CheckOut extends Component {
         delivery_method,
         delivery_time_limit
       );
+      window.location.href = "/orders";
     }
   };
 
