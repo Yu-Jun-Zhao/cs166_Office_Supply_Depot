@@ -88,9 +88,9 @@ export const geocodeBegin = () => ({
   type: GEOCODE_BEGIN
 });
 
-export const geocodeSuccess = origin => ({
+export const geocodeSuccess = (origin, eta) => ({
   type: GEOCODE_SUCCESS,
-  payload: origin
+  payload: { origin, eta }
 });
 
 export const geocodeFailure = error => ({
@@ -98,19 +98,7 @@ export const geocodeFailure = error => ({
   payload: { error }
 });
 
-export function geocodeOrigin(origin) {
-  return dispatch => {
-    dispatch(geocodeBegin());
-    return axios
-      .post("/api/order/route", {
-        origin: origin
-      })
-      .then(res => dispatch(geocodeSuccess(res.data.origin)))
-      .catch(error => dispatch(geocodeFailure(error)));
-  };
-}
-
-export function generateMap(shippingAddressId, warehouseId, orderId) {
+export function generateMap(shippingAddressId, warehouseId, orderId, delivery_method) {
   return dispatch => {
     axios
       .get(`/api/order/address/${shippingAddressId}`)
@@ -121,7 +109,14 @@ export function generateMap(shippingAddressId, warehouseId, orderId) {
           .post("/api/order/route", {
             origin: fullOrigin
           })
-          .then(res => dispatch(geocodeSuccess(res.data.origin)))
+          .then(res => {
+            if (delivery_method === 1) {
+              dispatch(geocodeSuccess(res.data.origin, res.data.droneETA))
+            }
+            else if (delivery_method === 2){
+              dispatch(geocodeSuccess(res.data.origin, res.data.truckETA))
+            }
+          })
           .then(res =>
             dispatch({ type: CHANGE_WAREHOUSE, payload: warehouseId })
           )

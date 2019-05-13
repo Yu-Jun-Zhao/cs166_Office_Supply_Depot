@@ -4,7 +4,6 @@ import {
   changeOrderId,
   changeWarehouse,
   generateMap,
-  geocodeOrigin,
   getAllOrdersFromDB,
   retrieveShippingAddress
 } from "../../actions/orderAction";
@@ -20,6 +19,11 @@ import {
 } from "@material-ui/core/";
 
 class OrderPage extends Component {
+
+  state = {
+    eta: null
+  }
+
   componentDidMount() {
     if (this.props.authentication.cartId !== null) {
       console.log(this.props.authentication.cartId);
@@ -33,14 +37,14 @@ class OrderPage extends Component {
     }
   }
 
-  handleButtonChange = (shippingAddressId, fromAddressId, orderId) => event => {
-    this.props.generateMap(shippingAddressId, fromAddressId, orderId);
+  handleButtonChange = (shippingAddressId, fromAddressId, orderId, delivery_method) => event => {
+    this.props.generateMap(shippingAddressId, fromAddressId, orderId, delivery_method);
+    this.setState({eta: true})
   };
 
   render() {
     const { origin, orders, warehouse, order_id } = this.props;
-    // order_id, order_date, user_id, s_address_id,
-    //         from_address_id, weight, price, status
+
     return (
       <Paper>
         <Table>
@@ -57,16 +61,16 @@ class OrderPage extends Component {
                 Weight
               </TableCell>
               <TableCell style={{ background: "#f5f5f5", color: "black" }}>
-                Delivery Fee
-              </TableCell>
-              <TableCell style={{ background: "#f5f5f5", color: "black" }}>
                 Total
               </TableCell>
               <TableCell style={{ background: "#f5f5f5", color: "black" }}>
-                See Map
+                Delivery Method
               </TableCell>
               <TableCell style={{ background: "#f5f5f5", color: "black" }}>
                 Status
+              </TableCell>
+              <TableCell style={{ background: "#f5f5f5", color: "black" }}>
+                MAP & ETA
               </TableCell>
             </TableRow>
           </TableHead>
@@ -77,23 +81,33 @@ class OrderPage extends Component {
                   <TableCell>{order.order_id}</TableCell>
                   <TableCell>{order.order_date.split("T")[0]}</TableCell>
                   <TableCell>{order.weight} lbs</TableCell>
-                  <TableCell>${order.surcharge}</TableCell>
                   <TableCell>${order.total}</TableCell>
 
                   <TableCell>
-                    <Button
-                      variant="outlined"
-                      onClick={this.handleButtonChange(
-                        order.s_address_id,
-                        order.from_address_id,
-                        order.order_id
-                      )}
-                    >
-                      See Map
-                    </Button>
+                    {
+                      order.delivery_method === 0 ? 'Pickup' :
+                          order.delivery_method === 1 ? 'Drone' : 'Truck'
+                    }
+
                   </TableCell>
                   <TableCell>
                     {order.status === 0 ? "In progress" : "Delivered"}
+                  </TableCell>
+                  <TableCell>
+                    {
+                      order.delivery_method === 0 ? 'N/A' :
+                      <Button
+                          variant="outlined"
+                          onClick={this.handleButtonChange(
+                              order.s_address_id,
+                              0,
+                              order.order_id,
+                              order.delivery_method
+                          )}
+                      >
+                        View
+                      </Button>
+                    }
                   </TableCell>
                 </TableRow>
               ))
@@ -108,6 +122,11 @@ class OrderPage extends Component {
           origin={origin}
           destination={warehouse}
         />
+        <div>
+          {
+            this.state.eta && this.props.eta ? 'ETA: ' + this.props.eta : ''
+          }
+        </div>
       </Paper>
     );
   }
@@ -120,7 +139,8 @@ const mapStateToProps = state => ({
   loading: state.orders.loadingFromDB,
   warehouse: state.orders.warehouse,
   origin: state.orders.origin,
-  order_id: state.orders.order_id
+  order_id: state.orders.order_id,
+  eta: state.orders.eta
 });
 
 export default connect(
@@ -129,7 +149,6 @@ export default connect(
     getAllOrdersFromDB,
     retrieveShippingAddress,
     changeWarehouse,
-    geocodeOrigin,
     changeOrderId,
     generateMap
   }

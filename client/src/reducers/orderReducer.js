@@ -12,7 +12,8 @@ const initialState = {
   shippingAddress: {}, // shipping address of the one shown in map
   warehouse: 0,
   origin: {},
-  order_id: null
+  order_id: null,
+  eta: null
 };
 
 export default function(state = initialState, action) {
@@ -56,7 +57,8 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loadingFromDB: false,
-        origin: action.payload
+        origin: action.payload.origin,
+        eta: action.payload.eta
       }
     case GEOCODE_FAIL:
       return {

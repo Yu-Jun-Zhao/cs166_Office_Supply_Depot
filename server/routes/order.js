@@ -67,22 +67,29 @@ router.get("/address/:addressId", authenticationRequired, (req, res) => {
   });
 });
 
-router.post("/route", authenticationRequired, (req, res) => {
-  const { origin } = req.body;
-  let originLL = {};
-  googleMapsClient.geocode(
-    {
-      address: origin
-    },
-    function(err, response) {
-      if (!err) {
-        originLL = response.json.results[0]["geometry"]["location"];
-        return res.send({ origin: originLL });
-      } else {
-        return res.send(err);
-      }
+router.post("/route", (req, res) => {
+  const { origin } = req.body
+  let originLL = {}
+  googleMapsClient.geocode({
+    address: origin
+  }, function (err, response) {
+    if (!err) {
+      originLL = response.json.results[0]["geometry"]["location"];
     }
-  );
+  });
+  googleMapsClient.directions({
+    origin: origin,
+    destination: '1 Washington Sq, San Jose, CA 95192',
+    departure_time: new Date(),
+    traffic_model: 'pessimistic'
+  }, function (err, response) {
+    const x = response.json.routes[0].legs[0]
+    if (!err) {
+      const distance = x.distance.text.substring(0, x.distance.text.length - 2)
+      const droneETA = (distance * 60) / 50
+      res.send({ origin: originLL, truckETA: x.duration.text, droneETA: droneETA });
+    }
+  });
 });
 
 export default router;
