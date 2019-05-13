@@ -27,7 +27,8 @@ class ItemCard extends Component {
     weight: this.props.weight,
     quantity: this.props.quantity,
     image: this.props.image,
-    description: this.props.description
+    description: this.props.description,
+    warehouse: this.props.warehouse
   };
 
   handleCardClick = () => {
@@ -43,7 +44,8 @@ class ItemCard extends Component {
       weight,
       quantity,
       image,
-      description
+      description,
+      warehouse
     } = this.state;
     const { classes } = this.props;
     return (
@@ -60,6 +62,7 @@ class ItemCard extends Component {
             <Typography component="p">Price: {price}</Typography>
             <Typography component="p">Weight: {weight}</Typography>
             <Typography component="p">Remaining: {quantity}</Typography>
+            <Typography component="p">Warehouse: {warehouse}</Typography>
             <Typography component="p">{description}</Typography>
           </CardContent>
         </CardActionArea>

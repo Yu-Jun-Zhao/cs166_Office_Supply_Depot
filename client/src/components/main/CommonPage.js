@@ -119,6 +119,7 @@ class CommonPage extends Component {
                     quantity={item.quantity}
                     image={item.imgPath}
                     description={item.description}
+                    warehouse={item.warehouse}
                   />
                 </Grid>
               ))}
