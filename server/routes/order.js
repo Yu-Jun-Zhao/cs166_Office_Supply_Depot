@@ -87,7 +87,7 @@ router.post("/route", (req, res) => {
     if (!err) {
       const distance = x.distance.text.substring(0, x.distance.text.length - 2)
       const droneETA = (distance * 60) / 50
-      res.send({ origin: originLL, truckETA: x.duration.text, droneETA: droneETA });
+      res.send({ origin: originLL, truckETA: x.duration.text, droneETA: droneETA + ' mins' });
     }
   });
 });
