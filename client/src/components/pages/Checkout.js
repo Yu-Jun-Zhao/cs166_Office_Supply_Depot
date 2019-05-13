@@ -27,6 +27,8 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import FormControl from "@material-ui/core/FormControl";
 
+const from_address = 1; // since we only support one starting point of delivery.
+
 class CheckOut extends Component {
   constructor(props) {
     super(props);
@@ -36,7 +38,12 @@ class CheckOut extends Component {
       address: null,
       city: null,
       adState: null,
-      zip: null
+      zip: null,
+      delivery_method: 0,
+      delivery_time_limit: 2,
+      subtotal: 0,
+      shippingFee: 0,
+      weight: 0
     };
   }
 
@@ -50,13 +57,61 @@ class CheckOut extends Component {
 
       return {
         cart: nextProps.cart.cart,
-        loadingFromDB: nextProps.cart.loadingFromDB
+        loadingFromDB: nextProps.cart.loadingFromDB,
+        subtotal:
+          nextProps.cart.cart.length !== 0
+            ? nextProps.cart.cart
+                .map(item => item.price * item.quantity)
+                .reduce((a, c) => a + c)
+            : 0,
+        weight:
+          nextProps.cart.cart.length !== 0
+            ? nextProps.cart.cart
+                .map(item => item.weight * item.quantity)
+                .reduce((a, c) => a + c)
+            : 0
       };
     }
   }
 
   handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
+    // not pick up.
+    if (name === "delivery_method") {
+      if (event.target.value !== 0) {
+        let delivery_time_limit = 2;
+        let delivery_method = 0;
+        if (this.state.weight < 15) {
+          //drone
+          delivery_method = 1;
+          delivery_time_limit = 1;
+        } else {
+          //truck
+          delivery_method = 2;
+          delivery_time_limit = 2;
+        }
+        this.setState({ delivery_method, delivery_time_limit });
+      } else if (event.target.value === 0) {
+        // pick up
+        this.setState({ delivery_method: 0, shippingFee: 0 });
+      }
+    }
+
+    // less than $100 and not pick up
+    if (
+      name === "delivery_time_limit" &&
+      this.state.subtotal < 100 &&
+      this.state.delivery_method !== 0
+    ) {
+      let shippingFee = 20;
+
+      // truck and one day === $25 else all others are $20
+      if (event.target.value === 1 && this.state.delivery_method === 2) {
+        // one day delivery
+        shippingFee = 25;
+      }
+
+      this.setState({ delivery_time_limit: event.target.value, shippingFee });
+    }
   };
 
   handleSubmit = event => {
@@ -69,7 +124,7 @@ class CheckOut extends Component {
         city,
         adState,
         zip,
-        0
+        from_address
       );
     }
   };
@@ -82,6 +137,7 @@ class CheckOut extends Component {
       marginLeft: "6.5%"
     };
 */
+    const { delivery_method, delivery_time_limit } = this.state;
     const hder = {
       padding: "0.5% 0% 0% 45%"
     };
@@ -99,8 +155,10 @@ class CheckOut extends Component {
       margin: "0% 10% 0% 10%"
     };
 
-    var subtotal = 0;
-    var shippingFee = 0;
+    let subtotal = 0;
+    let shippingFee = 0;
+    let weight = 0;
+
     return (
       <React.Fragment>
         <div style={{ alignItems: "flex-inline" }}>
@@ -109,85 +167,7 @@ class CheckOut extends Component {
           </div>
           <div>
             <form onSubmit={this.handleSubmit}>
-              <h4 style={subhder}>1. REVIEW ORDER</h4>
-              <div style={table}>
-                <Paper>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell
-                          style={{ background: "#f5f5f5", color: "black" }}
-                        >
-                          ID
-                        </TableCell>
-                        <TableCell
-                          style={{ background: "#f5f5f5", color: "black" }}
-                        >
-                          Item
-                        </TableCell>
-
-                        <TableCell
-                          style={{ background: "#f5f5f5", color: "black" }}
-                          align="right"
-                        >
-                          Quantity
-                        </TableCell>
-                        <TableCell
-                          style={{ background: "#f5f5f5", color: "black" }}
-                          align="right"
-                        >
-                          Weight
-                        </TableCell>
-                        <TableCell
-                          style={{ background: "#f5f5f5", color: "black" }}
-                          align="right"
-                        >
-                          Total
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {this.state.cart.map(item => {
-                        const individualTotal = item.price * item.quantity;
-                        subtotal += individualTotal;
-
-                        return (
-                          <TableRow key={item.id}>
-                            <TableCell>{item.id}</TableCell>
-                            <TableCell>{item.name}</TableCell>
-                            <TableCell align="right">{item.quantity}</TableCell>
-                            <TableCell align="right">
-                              {item.weight * item.quantity} lbs
-                            </TableCell>
-                            <TableCell align="right">
-                              ${individualTotal}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                      {/* Delete <br/><br/><br/><br/> after mapping for item -->*/}{" "}
-                      <br />
-                      <br />
-                      <TableRow>
-                        <TableCell rowSpan={4} />
-                        <TableCell colSpan={2}>Subtotal: ${subtotal}</TableCell>
-                        <TableCell align="left" />
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Shipping fee: ${shippingFee}</TableCell>
-                        <TableCell align="left" />
-                      </TableRow>
-                      <TableRow>
-                        <TableCell colSpan={2}>
-                          Total: ${subtotal + shippingFee}
-                        </TableCell>
-                        <TableCell align="left" />
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </Paper>
-              </div>
-              <h4 style={subhder}>2. SHIPPING</h4>
+              <h4 style={subhder}>1. SHIPPING</h4>
 
               <div
                 style={{
@@ -249,14 +229,14 @@ class CheckOut extends Component {
                   />{" "}
                   <br />
                   <p style={{ paddingLeft: "6.5%" }}>
-                    *Note: Your privacy is important to us. We will only contacy
+                    *Note: Your privacy is important to us. We will only contact
                     you if there is an issue with your order.
                   </p>
                   <br />
                 </Paper>
               </div>
 
-              <h4 style={subhder}>3. DELIVERY METHOD</h4>
+              <h4 style={subhder}>2. DELIVERY METHOD</h4>
               <div
                 style={{
                   margin: "0% 10% 2% 10%"
@@ -271,122 +251,164 @@ class CheckOut extends Component {
                     }}
                   >
                     {" "}
-                    &nbsp;&nbsp;&nbsp;*Note: Depending on you order's total
-                    weights and prices, our office will provide different
-                    delivery method: <br /> <br />
-                    1) Orders that are less than 15 lbs are delivered by a
-                    drone. Order that are 15 lbs or more are delivered by a
-                    truck.
-                    <br />
-                    2) If Grand Total is $100 or more, we offer free delivery
-                    service. If Grand Total is less than $100, there will be a
-                    surcharge of $20.
-                    <br />
-                    3) Drone delivery: Same day. Truck delivery: 2 days or 1 day
-                    (with a surchage of 25).
+                    &nbsp;&nbsp;&nbsp;*Note the pickup location: 1 Washington
+                    Sq, San Jose, CA 95192
                     <br />
                   </p>
-                  {/*This is for #1 from above*/}
                   <div style={{ paddingLeft: "6.5%", paddingBottom: "3%" }}>
                     <FormControl style={{ width: "30%" }}>
-                      <InputLabel shrink htmlFor="delivery-label-placeholder">
-                        Please select your delivery method:
+                      <InputLabel shrink htmlFor="delivery-method">
+                        Pickup or Delivery?
                       </InputLabel>
                       <Select
-                        input={
-                          <Input
-                            name="delivery"
-                            id="delivery-label-placeholder"
-                          />
-                        }
-                        displayEmpty
-                        name="dmethod"
+                        value={delivery_method}
+                        onChange={this.handleChange("delivery_method")}
                       >
-                        <MenuItem value="">
-                          <em>Please select...</em>
-                        </MenuItem>
-                        <MenuItem value={1}>
-                          Free services by truck (2 business days)
-                        </MenuItem>
-                        <MenuItem value={2}>
-                          $25 service fees by truck (same day)
+                        <MenuItem value={0}>Pickup</MenuItem>
+
+                        <MenuItem value={delivery_method === 1 ? 1 : 2}>
+                          Delivery
                         </MenuItem>
                       </Select>
                     </FormControl>
                   </div>
-                  {/*This is for #2 from above*/}
-                  <div style={{ paddingLeft: "6.5%", paddingBottom: "3%" }}>
-                    <FormControl style={{ width: "30%" }}>
-                      <InputLabel shrink htmlFor="delivery-label-placeholder">
-                        Please select your delivery method:
-                      </InputLabel>
-                      <Select
-                        input={
-                          <Input
-                            name="delivery"
-                            id="delivery-label-placeholder"
-                          />
-                        }
-                        displayEmpty
-                        name="dmethod"
+
+                  {delivery_method !== 0 && (
+                    <div>
+                      <p
+                        style={{
+                          paddingLeft: "6.5%",
+
+                          paddingBottom: "1%"
+                        }}
                       >
-                        <MenuItem value="">
-                          <em>Please select...</em>
-                        </MenuItem>
-                        <MenuItem value={1}>Free services by drone</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </div>
-                  {/*This is for #3 from above*/}
-                  <div style={{ paddingLeft: "6.5%", paddingBottom: "3%" }}>
-                    <FormControl style={{ width: "30%" }}>
-                      <InputLabel shrink htmlFor="delivery-label-placeholder">
-                        Please select your delivery method:
-                      </InputLabel>
-                      <Select
-                        input={
-                          <Input
-                            name="delivery"
-                            id="delivery-label-placeholder"
-                          />
-                        }
-                        displayEmpty
-                        name="dmethod"
-                      >
-                        <MenuItem value="">
-                          <em>Please select...</em>
-                        </MenuItem>
-                        <MenuItem value={1}>
-                          $20 services fee by truck (2 business days){" "}
-                        </MenuItem>
-                      </Select>
-                    </FormControl>
-                  </div>
-                  {/*This is for #4 from above*/}
-                  <div style={{ paddingLeft: "6.5%", paddingBottom: "3%" }}>
-                    <FormControl style={{ width: "30%" }}>
-                      <InputLabel shrink htmlFor="delivery-label-placeholder">
-                        Please select your delivery method:
-                      </InputLabel>
-                      <Select
-                        input={
-                          <Input
-                            name="delivery"
-                            id="delivery-label-placeholder"
-                          />
-                        }
-                        displayEmpty
-                        name="dmethod"
-                      >
-                        <MenuItem value="">
-                          <em>Please select...</em>
-                        </MenuItem>
-                        <MenuItem value={1}>
-                          $20 services by drone (same day during business hours)
-                        </MenuItem>
-                      </Select>
-                    </FormControl>
-                  </div>
+                        {" "}
+                        &nbsp;&nbsp;&nbsp;*Note: Depending on you order's total
+                        weights and prices, our office will provide different
+                        delivery method: <br /> <br />
+                        1) Orders that are less than 15 lbs are delivered by a
+                        drone. Order that are 15 lbs or more are delivered by a
+                        truck.
+                        <br />
+                        2) If Grand Total is $100 or more, we offer free
+                        delivery service. If Grand Total is less than $100,
+                        there will be a surcharge of $20.
+                        <br />
+                        3) Drone delivery: Same day. Truck delivery: 2 days or 1
+                        day (with a surchage of 25).
+                        <br />
+                      </p>
+                      <div style={{ paddingLeft: "6.5%", paddingBottom: "3%" }}>
+                        <FormControl style={{ width: "30%" }}>
+                          <InputLabel
+                            shrink
+                            htmlFor="delivery-label-placeholder"
+                          >
+                            {`Orders Will be delivered by ${
+                              this.state.weight < 15 ? "drone" : "truck"
+                            } in:`}
+                          </InputLabel>
+                          <Select
+                            value={delivery_time_limit}
+                            onChange={this.handleChange("delivery_time_limit")}
+                          >
+                            <MenuItem value={1}>
+                              One Day {this.state.weight >= 15 && "$25"}
+                            </MenuItem>
+                            {this.state.weight >= 15 && (
+                              <MenuItem value={2}>Two Day (FREE)</MenuItem>
+                            )}
+                          </Select>
+                        </FormControl>
+                      </div>
+                    </div>
+                  )}
+                </Paper>
+              </div>
+
+              <h4 style={subhder}>3. REVIEW ORDER</h4>
+              <div style={table}>
+                <Paper>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell
+                          style={{ background: "#f5f5f5", color: "black" }}
+                        >
+                          ID
+                        </TableCell>
+                        <TableCell
+                          style={{ background: "#f5f5f5", color: "black" }}
+                        >
+                          Item
+                        </TableCell>
+
+                        <TableCell
+                          style={{ background: "#f5f5f5", color: "black" }}
+                          align="right"
+                        >
+                          Quantity
+                        </TableCell>
+                        <TableCell
+                          style={{ background: "#f5f5f5", color: "black" }}
+                          align="right"
+                        >
+                          Weight
+                        </TableCell>
+                        <TableCell
+                          style={{ background: "#f5f5f5", color: "black" }}
+                          align="right"
+                        >
+                          Total
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {this.state.cart.map(item => {
+                        const individualTotal = item.price * item.quantity;
+                        subtotal += individualTotal;
+                        return (
+                          <TableRow key={item.id}>
+                            <TableCell>{item.id}</TableCell>
+                            <TableCell>{item.name}</TableCell>
+                            <TableCell align="right">{item.quantity}</TableCell>
+                            <TableCell align="right">
+                              {item.weight * item.quantity} lbs
+                            </TableCell>
+                            <TableCell align="right">
+                              ${individualTotal}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                      {/* Delete <br/><br/><br/><br/> after mapping for item -->*/}{" "}
+                      <br />
+                      <br />
+                      <TableRow>
+                        <TableCell rowSpan={4} />
+                        <TableCell colSpan={2}>
+                          Subtotal: ${this.state.subtotal}
+                        </TableCell>
+                        <TableCell align="left" />
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Weight: {this.state.weight}lbs</TableCell>
+                        <TableCell align="left" />
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>
+                          Shipping fee: ${this.state.shippingFee}
+                        </TableCell>
+                        <TableCell align="left" />
+                      </TableRow>
+                      <TableRow>
+                        <TableCell colSpan={2}>
+                          Total: ${subtotal + shippingFee}
+                        </TableCell>
+                        <TableCell align="left" />
+                      </TableRow>
+                    </TableBody>
+                  </Table>
                 </Paper>
               </div>
               <h4 style={subhder}>4. PAYMENT</h4>
