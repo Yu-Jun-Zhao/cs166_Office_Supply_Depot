@@ -326,8 +326,12 @@ class CheckOut extends Component {
                               "delivery_time_limit"
                             )}
                           >
-                            {this.state.subtotal >= 100 && (
-                              <MenuItem value={1}>One Day ($25)</MenuItem>
+                            {(this.state.subtotal >= 100 ||
+                              this.state.delivery_method === 1) && (
+                              <MenuItem value={1}>
+                                One Day{" "}
+                                {this.state.delivery_method === 2 ? "$25" : ""}
+                              </MenuItem>
                             )}
 
                             {this.state.weight >= 15 && (
