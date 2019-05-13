@@ -3,10 +3,13 @@ import {
   FINISHLOADINGORDERSFROM_DB,
   LOADALLORDERSFROM_DB,
   FETCHSHIPPINGADDRESS,
-  CHANGE_WAREHOUSE, GEOCODE_BEGIN, GEOCODE_FAIL, CHANGE_ORDER_ID
+  CHANGE_WAREHOUSE,
+  GEOCODE_BEGIN,
+  GEOCODE_FAIL,
+  CHANGE_ORDER_ID
 } from "../actions/types";
 import axios from "axios";
-import {GEOCODE_SUCCESS} from "./types";
+import { GEOCODE_SUCCESS } from "./types";
 
 // might not needed in redux
 // Create order and store in db
@@ -16,7 +19,9 @@ export const createOrder = (
   city,
   state,
   zip,
-  f_address
+  f_address,
+  delivery_method,
+  delivery_time
 ) => dispatch => {
   const orderData = {
     userId,
@@ -24,7 +29,9 @@ export const createOrder = (
     city,
     state,
     zip,
-    f_address
+    f_address,
+    delivery_method,
+    delivery_time
   };
 
   axios.post("/api/order/add", orderData).catch(err => console.log(err)); // for now
@@ -67,19 +74,19 @@ export const changeWarehouse = warehouse => dispatch => {
   dispatch({
     type: CHANGE_WAREHOUSE,
     payload: warehouse
-  })
+  });
 };
 
 export const changeOrderId = id => dispatch => {
   dispatch({
     type: CHANGE_ORDER_ID,
     payload: id
-  })
+  });
 };
 
 export const geocodeBegin = () => ({
   type: GEOCODE_BEGIN
-})
+});
 
 export const geocodeSuccess = origin => ({
   type: GEOCODE_SUCCESS,
@@ -94,29 +101,33 @@ export const geocodeFailure = error => ({
 export function geocodeOrigin(origin) {
   return dispatch => {
     dispatch(geocodeBegin());
-    return axios.post('/api/order/route', {
-      origin: origin
-    })
-        .then(  res => dispatch(geocodeSuccess(res.data.origin)))
-        .catch(error => dispatch(geocodeFailure(error)));
+    return axios
+      .post("/api/order/route", {
+        origin: origin
+      })
+      .then(res => dispatch(geocodeSuccess(res.data.origin)))
+      .catch(error => dispatch(geocodeFailure(error)));
   };
 }
 
 export function generateMap(shippingAddressId, warehouseId, orderId) {
   return dispatch => {
     axios
-        .get(`/api/order/address/${shippingAddressId}`)
-        .then(res => {
-          dispatch({ type: FETCHSHIPPINGADDRESS, payload: res.data })
-          let fullOrigin = `${res.data.address} ${res.data.city} ${res.data.zip}`
-          axios.post('/api/order/route', {
+      .get(`/api/order/address/${shippingAddressId}`)
+      .then(res => {
+        dispatch({ type: FETCHSHIPPINGADDRESS, payload: res.data });
+        let fullOrigin = `${res.data.address} ${res.data.city} ${res.data.zip}`;
+        axios
+          .post("/api/order/route", {
             origin: fullOrigin
           })
-              .then(  res => dispatch(geocodeSuccess(res.data.origin)))
-              .then(res => dispatch({ type: CHANGE_WAREHOUSE, payload: warehouseId}))
-              .then(res => dispatch({type: CHANGE_ORDER_ID, payload: orderId}))
-              .catch(error => dispatch(geocodeFailure(error)));
-        })
-        .catch(error => console.log(error))
-  }
+          .then(res => dispatch(geocodeSuccess(res.data.origin)))
+          .then(res =>
+            dispatch({ type: CHANGE_WAREHOUSE, payload: warehouseId })
+          )
+          .then(res => dispatch({ type: CHANGE_ORDER_ID, payload: orderId }))
+          .catch(error => dispatch(geocodeFailure(error)));
+      })
+      .catch(error => console.log(error));
+  };
 }

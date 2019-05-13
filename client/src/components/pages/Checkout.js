@@ -73,8 +73,11 @@ class CheckOut extends Component {
       };
     }
   }
-
   handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
+
+  handleDeliveryChange = name => event => {
     // not pick up.
     if (name === "delivery_method") {
       if (event.target.value !== 0) {
@@ -116,7 +119,14 @@ class CheckOut extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { address, city, adState, zip } = this.state;
+    const {
+      address,
+      city,
+      adState,
+      zip,
+      delivery_method,
+      delivery_time_limit
+    } = this.state;
     if (address !== null && city !== null && adState !== null && zip !== null) {
       this.props.createOrder(
         this.props.authentication.userInfo.sub,
@@ -124,7 +134,9 @@ class CheckOut extends Component {
         city,
         adState,
         zip,
-        from_address
+        0,
+        delivery_method,
+        delivery_time_limit
       );
     }
   };
@@ -262,7 +274,7 @@ class CheckOut extends Component {
                       </InputLabel>
                       <Select
                         value={delivery_method}
-                        onChange={this.handleChange("delivery_method")}
+                        onChange={this.handleDeliveryChange("delivery_method")}
                       >
                         <MenuItem value={0}>Pickup</MenuItem>
 
@@ -310,7 +322,9 @@ class CheckOut extends Component {
                           </InputLabel>
                           <Select
                             value={delivery_time_limit}
-                            onChange={this.handleChange("delivery_time_limit")}
+                            onChange={this.handleDeliveryChange(
+                              "delivery_time_limit"
+                            )}
                           >
                             <MenuItem value={1}>
                               One Day {this.state.weight >= 15 && "$25"}
@@ -418,17 +432,6 @@ class CheckOut extends Component {
                 }}
               >
                 <Paper>
-                  {/*
-                  <img src={visa} alt="Visa" style={iconsize} />
-                  <img src={master} alt="Master" style={iconsize} />
-                  <img src={maestro} alt="Maestro" style={iconsize} />
-                  <img src={discover} alt="Discover" style={iconsize} />
-                  <img
-                    src={americanexpress}
-                    alt="AmericanExpress"
-                    style={iconsize}
-                  />{" "}
-                  */}
                   <br />
                   <TextField
                     id="Card number"
